@@ -1,0 +1,92 @@
+<div class="card card-bordered card-preview my-2">
+    <div class="card-body px-1 py-2">
+        <div class="card-title"><h6 class="title">Área De Producción</h6></div>
+        <table class="table dataTable no-footer dtr-inline" id="modal-tbl-entrada-productos" data-btn-Add="true">
+            <thead>
+                <tr class="nk-tb-item nk-tb-head bg-dark">
+                    <th class="nk-tb-col text-white"></th>
+                    <th class="nk-tb-col text-white" style="width: 70%;">Descripción del estado</th>
+                    <th class="nk-tb-col text-white">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="hidden" name="area_produccion[accesorios_inteligentes][id]" value="{id_area_de_produccion_accesorios_inteligentes}">
+                        <input type="hidden" name="area_produccion[accesorios_inteligentes][item]" value="Accesorios Inteligentes">
+                        Accesorios Inteligentes
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="area_produccion[accesorios_inteligentes][descripcion_estado]" value="{area_de_produccion_accesorios_inteligentes_desc}"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="area_produccion-estado-accesorios-inteligentes1" name="area_produccion[accesorios_inteligentes][estado]" class="custom-control-input validate required" value="Bueno" {if {area_de_produccion_accesorios_inteligentes_estado}==1} checked {/if}>
+                            <label class="custom-control-label" for="area_produccion-estado-accesorios-inteligentes1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="area_produccion-estado-accesorios-inteligentes2" name="area_produccion[accesorios_inteligentes][estado]" class="custom-control-input validate required" value="Dañado" {if {area_de_produccion_accesorios_inteligentes_estado}==0} checked {/if}>
+                            <label class="custom-control-label" for="area_produccion-estado-accesorios-inteligentes2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="area_produccion[routers][id]" value="{id_area_de_produccion_routers}">
+                        <input type="hidden" name="area_produccion[routers][item]" value="Routers">
+                        Routers
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="area_produccion[routers][descripcion_estado]" value="{area_de_produccion_routers_desc}"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="area_produccion-estado-routers1" name="area_produccion[routers][estado]" class="custom-control-input validate required" value="Bueno" {if {area_de_produccion_routers_estado}==1} checked {/if}>
+                            <label class="custom-control-label" for="area_produccion-estado-routers1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="area_produccion-estado-routers2" name="area_produccion[routers][estado]" class="custom-control-input validate required" value="Dañado" {if {area_de_produccion_routers_estado}==0} checked {/if}>
+                            <label class="custom-control-label" for="area_produccion-estado-routers2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="area_produccion[sistemas_cables][id]" value="{id_area_de_produccion_sistemas_de_cables}">
+                        <input type="hidden" name="area_produccion[sistemas_cables][item]" value="Sistemas De Cables">
+                        Sistemas De Cables
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="area_produccion[sistemas_cables][descripcion_estado]" value="{area_de_produccion_sistemas_de_cables_desc}"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="area_produccion-estado-sistemas-cables1" name="area_produccion[sistemas_cables][estado]" class="custom-control-input validate required" value="Bueno" {if {area_de_produccion_sistemas_de_cables_estado}==1} checked {/if}>
+                            <label class="custom-control-label" for="area_produccion-estado-sistemas-cables1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="area_produccion-estado-sistemas-cables2" name="area_produccion[sistemas_cables][estado]" class="custom-control-input validate required" value="Dañado" {if {area_de_produccion_sistemas_de_cables_estado}==0} checked {/if}>
+                            <label class="custom-control-label" for="area_produccion-estado-sistemas-cables2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group mb-0">
+                                    <label class="form-label" for="area_pro_observaciones">Observaciones</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control validate required" id="area_pro_observaciones" name="area_pro_observaciones" value="{area_pro_observaciones}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group mb-0">
+                                    <label class="form-label" for="area_pro_am">Aspectos Mejora</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control validate required" id="area_pro_am" name="area_pro_am" value="{area_pro_am}" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

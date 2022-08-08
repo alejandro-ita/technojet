@@ -1,0 +1,35 @@
+<ul class="nk-tb-actions gx-1 task-data" data-dataEncription="{dataEncription}">
+    <li class="nk-tb-action-hidden">
+        <a href="#" class="btn btn-trigger btn-icon text-info add-comment" data-toggle="tooltip" data-placement="top" title="Comentar">
+        	<em class="icon ni ni-comments"></em>
+        </a>
+    </li>
+    {if {read-only}==1}
+    <li class="nk-tb-action-hidden">
+        <a href="#" class="btn btn-trigger btn-icon text-info view-task" data-toggle="tooltip" data-placement="top" title="Ver">
+        	<em class="icon ni ni-eye"></em>
+        </a>
+    </li>
+    {/if}
+	{if {can-edit}==1}
+    <li class="nk-tb-action-hidden">
+        <a href="#" class="btn btn-trigger btn-icon text-warning update-task" data-toggle="tooltip" data-placement="top" title="Editar">
+        	<em class="icon ni ni-edit"></em>
+        </a>
+    </li>
+    {/if}
+    {if {id_usuario_insert}=={get_userData(id_usuario)}}
+    <li class="nk-tb-action-hidden">
+        <a href="#" class="btn btn-trigger btn-icon text-danger rm-task" data-toggle="tooltip" data-placement="top" title="Eliminar">
+        	<em class="icon ni ni-trash-empty"></em>
+        </a>
+    </li>
+    {/if}
+    <li>
+        <div class="drodown">
+            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger">
+            	<em class="icon ni ni-more-h"></em>
+            </a>
+        </div>
+    </li>
+</ul>

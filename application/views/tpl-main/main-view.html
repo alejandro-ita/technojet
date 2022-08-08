@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es" class="js">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="shortcut icon" href="{base_url()}{get_var(path_img)}/favicon.ico"/>
+        <title>{get_var(site_name)}</title>
+
+        <!-- INCLUDE HEADERS -->
+        {include-headers}
+        <!-- END INCLUDE HEADERS -->
+        <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css"> -->
+
+        <script type="text/javascript">
+            var strLang  = '{get_system_lang()}';
+            var strsysConfig = '{system-config}';
+
+            var IS = {
+                 site_url: '{base_url()}'
+                ,lang: JSON.parse(strLang)
+                ,sysConfig: (strsysConfig ? JSON.parse(strsysConfig) : {})
+            };
+        </script>
+    </head>
+    
+    <body class="nk-body bg-lighter npc-default has-sidebar">
+        {page-preloader}
+        <div class="nk-app-root">
+            <!-- main @s -->
+            <div class="nk-main ">
+                <!-- sidebar @s -->
+                {page-left-sidebar}
+                <!-- sidebar @e -->
+                <!-- wrap @s -->
+                <div class="nk-wrap">
+                    <!-- main header @s -->
+                    {page-header}
+                    <!-- main header @e -->
+                    <!-- content @s -->
+                    {page-content}
+                    <!-- content @e -->
+                    <!-- footer @s -->
+                    {page-footer}
+                    <!-- footer @e -->
+                </div>
+                <!-- wrap @e -->
+            </div>
+            <!-- main @e -->
+        </div>
+        <!-- INCLUDE VENDOR -->
+        {include-vendor}
+        <!-- END INCLUDE VENDOR -->
+
+        <!-- INCLUDE FOOTER -->
+        {include-footer}
+        <!-- END INCLUDE FOOTER -->
+
+        <!-- INCLUDE LANGUAGE -->
+        {include-language}
+        <!-- END INCLUDE LANGUAGE -->
+
+        <!-- INCLUDE BOOTSTRAPS -->
+        {include-bootstraps}
+        <!-- END INCLUDE BOOTSTRAPS -->
+
+        <!-- INCLUDE MODULE -->
+        {include-modulo}
+        <!-- END INCLUDE MODULE -->
+    </body>
+</html>

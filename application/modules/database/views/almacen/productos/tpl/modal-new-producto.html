@@ -1,0 +1,86 @@
+<div class="modal fade" id="new-producto" aria-modal="true" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo producto</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="no_parte">No. de parte</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required" id="no_parte" name="no_parte" required/>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="id_tipo_producto">Tipo de producto</label>
+                        <div class="form-control-wrap">
+                            <select id="id_tipo_producto" name="id_tipo_producto" class="form-select init-select2 validate required">
+                                <option value="" disabled selected>{lang(general_select_option)}</option>
+                                {tipos-productos}
+                                    <option value="{id_tipo_producto}">{tipo_producto}</option>
+                                {/tipos-productos}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="id_unidad_medida">{lang(productos_unidad_medida)}</label>
+                        <div class="form-control-wrap">
+                            <select id="id_unidad_medida" name="id_unidad_medida" class="form-select init-select2 validate required">
+                                <option value="" disabled selected>{lang(general_select_option)}</option>
+                                {unidades-medida}
+                                <option value="{id_unidad_medida}">{custom_unidad_medida}</option>
+                                {/unidades-medida}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="descripcion">{lang(general_descripcion)}</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required" id="descripcion" name="descripcion" required/>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="precio_inventario">{lang(productos_precio_inventario)}</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required number" id="precio_inventario" name="precio_inventario" required/>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="id_moneda">{lang(general_moneda)}</label>
+                        <div class="form-control-wrap">
+                            <select id="id_moneda" name="id_moneda" class="form-select init-select2 validate required">
+                                <option value="" disabled selected>{lang(general_select_option)}</option>
+                                {monedas}
+                                <option value="{id_moneda}">{custom_moneda}</option>
+                                {/monedas}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="stock_min">{lang(productos_stock_min)}</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required number" id="stock_min" name="stock_min" required/>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="stock_max">{lang(productos_stock_max)}</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required number" id="stock_max" name="stock_max" required/>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="piezas_iniciales">{lang(productos_piezas_init)}</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required" id="piezas_iniciales" name="piezas_iniciales" required/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-save-producto" class="btn btn-dark">{lang(general_save)}</button>
+            </div>
+        </div>
+    </div>
+</div>

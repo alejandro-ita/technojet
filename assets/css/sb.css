@@ -1,0 +1,497 @@
+.validate + .error { 
+margin-bottom: 0;
+padding-top: 2px;
+}
+
+/*******************************************/
+/*****	MENU TOP SMART BUSINESS 		****/
+/*******************************************/
+.nk-menu.nk-menu-main li a {
+    vertical-align: middle;
+    display: flex;
+    position: relative;
+    align-items: center;
+    transition: color .3s, background-color .3s
+}
+
+.nk-menu.nk-menu-main .nk-menu-item {
+    padding: 2px 0
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub .nk-menu-item {
+    padding: 1px 0
+}
+
+.nk-menu.nk-menu-main .nk-menu-item.has-sub {
+    position: relative
+}
+
+.nk-menu.nk-menu-main >.nk-menu-item.menu-without-icon>.nk-menu-sub .nk-menu-link {
+    padding-left: 0
+}
+
+.nk-menu.nk-menu-main .nk-menu-link {
+    padding: .625rem 40px .625rem 24px;
+    color: #6e82a5;
+    font-family: Nunito,sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .01em;
+    text-transform: none;
+    line-height: 1.25rem
+}
+
+.nk-menu.nk-menu-main .nk-menu-link:hover,.active>.nk-menu-link {
+    color: #7f8dff
+}
+
+.nk-menu.nk-menu-main .nk-menu-link:hover .count,.nk-menu.nk-menu-main .active>.nk-menu-link .count {
+    color: #7f8dff
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub .nk-menu-link {
+    padding: .375rem 40px .375rem 36px;
+    font-family: Roboto,sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: normal;
+    text-transform: none;
+    line-height: 1.25rem;
+    color: #6e82a5
+}
+
+.nk-menu.nk-menu-main .nk-menu-link.is-disable {
+    cursor: default
+}
+
+.nk-menu.nk-menu-main .nk-menu-link.is-disable:hover,.nk-menu.nk-menu-main .active>.nk-menu-link.is-disable {
+    color: #6e82a5
+}
+
+.nk-menu.nk-menu-main .nk-menu-link.is-disable:hover .count,.nk-menu.nk-menu-main .active>.nk-menu-link.is-disable .count {
+    color: #6e82a5
+}
+
+.is-light .nk-menu-link {
+    color: #526484
+}
+
+.is-light .nk-menu.nk-menu-main .nk-menu-link:hover,
+.is-light .active>.nk-menu-link {
+    /*color: #7f8dff;*/
+    background: transparent;
+}
+
+.nk-menu.nk-menu-main .nk-menu-link span.small {
+    color: #8094ae;
+    margin-left: .5rem
+}
+
+.nk-menu.nk-menu-main .nk-menu-icon {
+    font-weight: normal;
+    letter-spacing: normal;
+    width: 36px;
+    line-height: 1;
+    flex-grow: 0;
+    color: #8094ae
+}
+
+.nk-menu.nk-menu-main .nk-menu-icon svg,.nk-menu.nk-menu-main .nk-menu-icon img {
+    width: 36px
+}
+
+.nk-menu.nk-menu-main .nk-menu-icon .icon {
+    font-size: 24px;
+    letter-spacing: normal;
+    vertical-align: middle;
+    color: currentColor;
+    transition: color .4s, background-color .4s
+}
+
+.nk-menu.nk-menu-main .nk-menu-link:hover .nk-menu-icon,
+.nk-menu.nk-menu-main .nk-menu-item.active>.nk-menu-link .nk-menu-icon,
+.nk-menu.nk-menu-main .nk-menu-item.current-menu>.nk-menu-link .nk-menu-icon {
+    color: #7f8dff
+}
+
+.nk-menu.nk-menu-main .nk-menu-link.is-disable:hover .nk-menu-icon {
+    color: #8094ae
+}
+
+.nk-menu.nk-menu-main .nk-menu-text {
+    flex-grow: 1;
+    display: inline-block
+}
+
+.nk-menu.nk-menu-main .nk-menu-badge {
+    border-radius: 3px;
+    padding: 0 .4rem;
+    font-size: 11px;
+    color: #798bff;
+    background: #eff1ff;
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%)
+}
+
+.nk-menu.nk-menu-main .has-sub .nk-menu-badge {
+    right: 48px
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub .nk-menu-badge {
+    color: #798bff;
+    background: #eff1ff
+}
+
+.nk-menu.nk-menu-main .nk-menu-heading {
+    padding: 0.75rem 1.25rem 0.5rem;
+    color: #8094ae
+}
+
+.nk-menu.nk-menu-main .nk-menu-item+.nk-menu-heading {
+    padding-top: 1.25rem
+}
+
+.nk-menu.nk-menu-main .nk-menu-heading .overline-title {
+    color: inherit
+}
+
+.nk-menu.nk-menu-main .nk-menu-heading span {
+    font-size: 13px;
+    font-weight: 400
+}
+
+.nk-menu.nk-menu-main .nk-menu-hr {
+    margin: 1.25rem 0;
+    border-bottom: 1px solid #dbdfea
+}
+
+.nk-menu.nk-menu-main .nk-menu-hr+.nk-menu-heading {
+    padding-top: 1rem
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub {
+    padding-bottom: .25rem
+}
+
+.nk-menu.nk-menu-main .nk-menu-toggle+.nk-menu-sub {
+    display: none
+}
+
+.nk-menu.nk-menu-main .active>.nk-menu-sub {
+    display: block
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub .nk-menu-link:hover {
+    color: #6576ff
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub .active>.nk-menu-link {
+    color: #6576ff
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub .nk-menu-icon {
+    width: 24px;
+    margin-top: -1px
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub .nk-menu-icon .icon {
+    margin-top: -1px;
+    font-size: 1.2em
+}
+
+.nk-menu.nk-menu-main .nk-menu-toggle {
+    position: relative
+}
+
+.nk-menu.nk-menu-main .nk-menu-toggle:after {
+    position: absolute;
+    font-family: "Nioicon";
+    top: 50%;
+    right: 1.25rem;
+    content: "";
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: #8094ae;
+    transition: transform .3s, color .1s
+}
+
+.nk-menu.nk-menu-main .has-sub.active>.nk-menu-toggle:after {
+    /*transform: translateY(-50%) rotate(90deg)*/
+}
+
+.nk-menu.nk-menu-main .count {
+    display: inline-block;
+    font-size: .85em;
+    margin-left: .25rem;
+    color: #8094ae;
+    line-height: 1
+}
+
+.nk-menu.nk-menu-main .nk-menu-icon-colored .nk-menu-icon {
+    color: #6576ff
+}
+
+.nk-menu.nk-menu-main .nk-menu-tooltip {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0
+}
+
+.nk-menu.nk-menu-main  {
+    padding-top: 0.75rem
+}
+
+.nk-menu.nk-menu-main .nk-menu-link {
+    color: #526484;
+    padding-left: 24px
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub {
+    padding: 0;
+    margin: 0;
+    transition: none
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub .nk-menu-link {
+    color: #526484
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub .nk-menu-sub {
+    border-left: 1px solid #dbdfea;
+    margin: 0.25rem 0 0.25rem 24px;
+    padding-bottom: 0
+}
+
+.nk-menu.nk-menu-main .nk-menu-sub .nk-menu-sub .nk-menu-link {
+    padding-left: .875rem
+}
+
+.nk-menu.nk-menu-main .nk-menu-link:hover,
+.nk-menu.nk-menu-main .nk-menu-link:focus,
+.nk-menu.nk-menu-main .nk-menu-item.active>.nk-menu-link,
+.nk-menu.nk-menu-main .nk-menu-item.current-menu>.nk-menu-link,
+.nk-menu.nk-menu-main .nk-menu-item:hover>.nk-menu-link {
+    color: #7f8dff
+}
+
+.nk-menu.nk-menu-main >li>.nk-menu-link {
+    text-transform: uppercase;
+    letter-spacing: 0.05rem
+}
+
+.nk-menu.nk-menu-main.ui-s2>li>.nk-menu-link {
+    font-family: Roboto,sans-serif;
+    font-weight: 500;
+    text-transform: initial;
+    letter-spacing: -0.01rem
+}
+
+@media (max-width: 991.98px) {
+    .nk-menu.nk-menu-main {
+        max-height:calc(100vh - 65px);
+        overflow: auto
+    }
+}
+
+@media (min-width: 992px) {
+    .nk-menu.nk-menu-main {
+        padding:0 1.5rem 0 2rem
+    }
+
+    .nk-menu.nk-menu-main>li {
+        padding: 0;
+        display: inline-block
+    }
+
+    .nk-menu.nk-menu-main>li.nk-menu-item {
+        padding: 0 1rem
+    }
+
+    .nk-menu.nk-menu-main>li.nk-menu-item>.nk-menu-link {
+        padding: 1.25rem 0;
+        font-size: 14px
+    }
+
+    .nk-menu.nk-menu-main>li>.nk-menu-link:before {
+        position: absolute;
+        content: '';
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        /*background: #7f8dff;*/
+        border-radius: 3px 3px 0 0;
+        opacity: 0
+    }
+
+    .nk-menu.nk-menu-main>li.nk-menu-item.active>.nk-menu-link:before,
+    .nk-menu.nk-menu-main>li.nk-menu-item.current-menu>.nk-menu-link:before {
+        opacity: 1
+    }
+
+    .nk-menu.nk-menu-main>li>.nk-menu-sub {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-link {
+        padding: .5rem 1.25rem;
+        font-size: 13px
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-icon {
+        display: none
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-text {
+        line-height: 1.5rem
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-item .nk-menu-toggle:after {
+        line-height: 1;
+        position: static;
+        transform: translateY(0);
+        content: "";
+        vertical-align: middle;
+        color: rgba(128,148,174,0.7);
+        margin-left: 0.5rem;
+        margin-right: -2px;
+        margin-top: -1px;
+        transition: color .1s
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-item:hover>.nk-menu-sub {
+        opacity: 1;
+        visibility: visible;
+        margin-top: 0
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-sub {
+        position: absolute;
+        left: 0;
+        top: 100%;
+        width: 200px;
+        background: #fff;
+        border: 1px solid #e5e9f2;
+        box-shadow: 0 0.125rem 0.25rem rgba(43,55,72,0.15);
+        border-radius: 4px;
+        padding: .5rem 0;
+        opacity: 0;
+        visibility: hidden;
+        margin-top: 6px;
+        transition: opacity .4s, margin .2s;
+        display: block !important
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-sub .nk-menu-link {
+        padding-top: .5rem;
+        padding-bottom: .5rem
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-sub .nk-menu-sub {
+        margin: 0;
+        margin-top: 6px;
+        margin-left: -0.75rem;
+        left: 100%;
+        top: -9px;
+        padding: .5rem 0;
+        border: 1px solid #e5e9f2
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-sub .nk-menu-sub .nk-menu-link {
+        padding-left: 1.5rem
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-sub .nk-menu-item:hover>a {
+        background: #f5f6fa
+    }
+
+    .nk-menu.nk-menu-main .nk-menu-sub .nk-menu-toggle:after {
+        content: ""
+    }
+}
+/*******************************************/
+/***** END MENU TOP SMART BUSINESS 		****/
+/*******************************************/
+
+/*******************************************/
+/***** MENU LEFT SMART BUSINESS         ****/
+/*******************************************/
+.nk-sidebar.nk-sidebar-fixed.is-light.is-compact:hover .logo-small.logo-img.logo-img-small,
+.nk-sidebar.nk-sidebar-fixed.is-light:not(.is-compact) .logo-small.logo-img.logo-img-small,
+body.as-mobile .is-compact .logo-small.logo-img.logo-img-small {
+    display: none;
+}
+/*******************************************/
+/***** END MENU LEFT SMART BUSINESS     ****/
+/*******************************************/
+
+/***DATATABLE***/
+.dataTable {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.dataTables_wrapper .dataTable .btn, .dataTables_wrapper .dataTable .fc button, .fc .dataTables_wrapper .dataTable button, .dataTables_wrapper .dataTable .ajax-upload-dragdrop .ajax-file-upload, .ajax-upload-dragdrop .dataTables_wrapper .dataTable .ajax-file-upload, .dataTables_wrapper .dataTable .swal2-modal .swal2-buttonswrapper .swal2-styled, .swal2-modal .swal2-buttonswrapper .dataTables_wrapper .dataTable .swal2-styled, .dataTables_wrapper .dataTable .wizard > .actions a, .wizard > .actions .dataTables_wrapper .dataTable a {
+    /*padding: 0; correccion de conflictos btn-trigger*/
+    vertical-align: middle;
+}
+
+.nk-tb-col-tools-tooltip {
+    left: 18px !important;
+}
+
+.dataTable.selected tbody tr:hover {
+    cursor: pointer;
+}
+
+.dataTable.selected tbody tr.active {
+    background: #f8f9fc;
+    box-shadow: 0 2px 15px -4px rgb(133 79 255 / 40%);
+}
+/***END DATATABLE***/
+
+
+/***TOATS***/
+.swal2-toast.success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.swal2-toast.error {
+    color: #fff;
+    background-color: #b71c1c;
+    border-color: #b71c1c;
+}
+
+.swal2-toast.warning {
+    color: #fff;
+    background-color: #f29d56;
+    border-color: #f29d56;
+}
+
+.swal2-toast.success .swal2-title,
+.swal2-toast.error .swal2-title,
+.swal2-toast.warning .swal2-title {
+    color: #fff;
+    font-weight: normal;
+}
+
+@media only screen and (min-width: 993px) {
+  #toast-container {
+      right: 1%;
+  }
+}
+/***END TOATS***/
+
+/***MODALS***/
+.modal-fs {
+    width: 98%;
+    max-width: 98%;
+}
+/***END MODALS***/

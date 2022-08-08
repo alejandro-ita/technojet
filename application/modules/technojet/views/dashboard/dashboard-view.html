@@ -1,0 +1,48 @@
+<!-- <div class="nk-block-head nk-block-head-sm">
+    <div class="nk-block-between">
+        <div class="nk-block-head-content"><h3 class="nk-block-title page-title">Calendar</h3></div>
+        <div class="nk-block-head-content">
+            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addEventPopup"><em class="icon ni ni-plus"></em><span>Add Event</span></a>
+        </div>
+    </div>
+</div> -->
+<div class="nk-block">
+	<div class="row g-gs">
+		<div class="col-md-12 col-lg-8">
+		    <div class="card card-bordered">
+		        <div class="card-inner">
+                    <div id="calendario" class="nk-calendar"></div>
+                </div>
+		    </div>
+		</div>
+		<div class="col-md-12 col-lg-4">
+			<div class="card card-full">
+                <div class="card-inner border-bottom">
+                    <div class="card-title-group">
+                        <div class="card-title"><h6 class="title">Mis tareas</h6></div>
+                        <div class="card-tools">
+                            <ul class="card-tools-nav">
+                                <li>
+                                    <a href="{base_url(dashboard/tareas)}">
+                                        <span>Todos</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a href="#" class="add-task text-success">
+                                        <span><em class="icon ni ni-plus-circle"></em> Nuevo</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <style type="text/css">.content-mis-tareas .simplebar-content .card-inner.card-inner-md:last-child {padding-bottom: 150px;}</style>
+                <div class="content-mis-tareas" style="max-height: calc(100vh - 6rem); min-height: calc(100vh - 6rem);">
+                	<div class="skeleton skeleton-circle-line" style="--c-w: 100%; --c-s: 60px; --l-h: 30px; --g-gap: 30px;"></div>
+                	<div class="skeleton skeleton-circle-line" style="--c-w: 100%; --c-s: 60px; --l-h: 30px; --g-gap: 30px;"></div>
+                	<div class="skeleton skeleton-circle-line" style="--c-w: 100%; --c-s: 60px; --l-h: 30px; --g-gap: 30px;"></div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>

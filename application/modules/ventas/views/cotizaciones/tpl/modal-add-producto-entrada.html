@@ -1,0 +1,132 @@
+<div class="modal fade" id="modal-add-producto-entrada" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-top modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo producto de cotizaciones</h5>
+                <a href="#" class="close" data-dismiss-modal="modal-add-producto-entrada" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    
+                    
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="cantidad">Cantidad</label>
+                        <div class="form-control-wrap">
+                            <input type="number" class="form-control validate required number" id="cantidad" name="cantidad" required />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="id_producto">No. de parte</label>
+                        <div class="form-control-wrap">
+                            <select id="id_producto" name="id_producto" class="form-select init-select2 validate required">
+                                <option value="" selected>{lang(general_select_option)}</option>
+                            </select>
+                        </div>
+                    </div>
+                   
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="">Unidad</label>
+                        <div class="form-control-wrap">
+                            <select id="" name="id_tipo_producto" class="form-select init-select2 validate required">
+                                <option value="" disabled selected>{lang(general_select_option)}</option>
+                                {tipos-productos}
+                                <option value="{id_tipo_producto}">{tipo_producto}</option>
+                                {/tipos-productos}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="id_tipo_producto">Tipo de producto</label>
+                        <div class="form-control-wrap">
+                            <select name="id_tipo_producto" class="form-select init-select2 validate required">
+                                <option value="" disabled selected>{lang(general_select_option)}</option>
+                                {tipos-productos}
+                                <option value="{id_tipo_producto}">{tipo_producto}</option>
+                                {/tipos-productos}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="precio_unitario">Precio unitario</label>
+                        <div class="form-control-wrap">
+                            <input type="number" class="form-control validate required number" id="" name="precio_unitario" required />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="precio_unitario">Descuento</label>
+                        <div class="form-control-wrap">
+                            <input type="number" class="form-control validate required number" id="" name="precio_unitario" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="total">Total</label>
+                        <div class="form-control-wrap">
+                            <input type="number" class="form-control validate required number" id="" name="total" required />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="id_tipo_producto">Incluye</label>
+                        <div class="form-control-wrap">
+                            <select class="form-select init-select2 validate required">
+                                <option value="-A"  selected>-A</option>
+                                <option value="-B"  selected>-B</option>
+                                <option value="-C"  selected>-B</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="id_tipo_producto">Productos opcionales</label>
+                        <div class="form-control-wrap">
+                            <select name="id_tipo_producto" class="form-select init-select2 validate required">
+                                <option value="" disabled selected>{lang(general_select_option)}</option>
+                                {tipos-productos}
+                                <option value="{id_tipo_producto}">{tipo_producto}</option>
+                                {/tipos-productos}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group mb-0">
+                        <label class="form-label" for="id_unidad_medida">Unidad de medida</label>
+                        <div class="form-control-wrap">
+                            <select id="id_unidad_medida" name="id_unidad_medida" class="form-select init-select2 validate required">
+                                <option value="" selected>{lang(general_select_option)}</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                 -->
+
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="descripcion">Descripción</label>
+                        <div class="form-control-wrap">
+                            <textarea class="form-control no-resize" id="descripcion" name="descripcion" required readonly></textarea>
+                        </div>
+                    </div>
+<!--                     
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="referencia_alfanumerica">Referencia alfanúmerica</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate" id="referencia_alfanumerica" name="referencia_alfanumerica" />
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="referencia_entrada">Referencia de entrada</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate" id="referencia_entrada" name="referencia_entrada" />
+                        </div>
+                    </div> -->
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-add-producto-entrada" class="btn btn-dark">{lang(general_agregar)}</button>
+            </div>
+        </div>
+    </div>
+</div>

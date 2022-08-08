@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" class="js">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="shortcut icon" href="{base_url()}{get_var(path_img)}/favicon.ico"/>
+        <title>{get_var(site_name)}</title>
+
+        <!-- INCLUDE HEADERS -->
+        {include-headers}
+        <!-- END INCLUDE HEADERS -->
+
+        <script type="text/javascript">
+            var strLang  = '{get_system_lang()}';
+            var IS = {
+                site_url: '{base_url()}',
+                lang: JSON.parse(strLang)
+            };
+        </script>
+    </head>
+    <body class="nk-body bg-white npc-default pg-auth">
+        {page-preloader}
+        <div class="nk-app-root">
+            <div class="nk-main">
+                <div class="nk-wrap nk-wrap-nosidebar">
+                    <div class="nk-content">
+                        <div class="nk-block nk-block-middle nk-auth-body wide-xs">
+                            <div class="brand-logo text-center">
+                                <a href="javascript:void(0);" class="logo-link" style="width: 250px;">
+                                    <img class="logo-light logo-img logo-img-lg" src="{base_url()}{get_var(path_img)}/logo/logo2x.png" srcset="{base_url()}{get_var(path_img)}/logo/logo2x.png 2x" alt="logo" />
+                                    <img class="logo-dark logo-img logo-img-lg" src="{base_url()}{get_var(path_img)}/logo/logo-dark2x.png" srcset="{base_url()}{get_var(path_img)}/logo/logo-dark2x.png 2x" alt="logo-dark" />
+                                </a>
+                            </div>
+                            <div class="card">
+                                <div class="card-inner card-inner-lg">
+                                    <div class="nk-block-head">
+                                        <div class="nk-block-head-content">
+                                            <h4 class="nk-block-title">{lang(login_iniciar_sesion)}</h4>
+                                            <div class="nk-block-des"><p>{lang(login_note12)}</p></div>
+                                        </div>
+                                    </div>
+                                    <form class="form-login">
+                                        <div class="form-group">
+                                            <div class="form-label-group"><label class="form-label" for="username">{lang(login_user)}</label></div>
+                                            <div class="form-control-wrap">
+                                            	<input type="text" id="username" class="form-control form-control-lg validate required encript-md5" name="username" placeholder="{lang(login_username)}" autofocus tabindex="1" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-label-group">
+                                            	<label class="form-label" for="password">{lang(login_password)}</label>
+                                            	<a class="link link-primary link-sm" href="{base_url()}">{lang(login_forgot_password)}</a>
+                                            </div>
+                                            <div class="form-control-wrap">
+                                                <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="password">
+                                                    <em class="passcode-icon icon-show icon ni ni-eye"></em><em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                                </a>
+                                                <input type="password" id="password" class="form-control form-control-lg validate required encript-md5" name="password" placeholder="{lang(login_password)}" tabindex="2"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                        	<button class="btn btn-dark btn-block" data-reloadpage="{reloadPage}" tabindex="3">{lang(login_entrar)}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nk-footer nk-auth-footer-full">
+                            <div class="container wide-lg">
+                                <div class="row g-3">
+                                    <div class="col-lg-6">
+                                        <div class="nk-block-content text-center text-lg-left">
+                                            <p class="text-soft">Copyright © {date(Y)} <a href="https://adysacode.com/" target="_blank">AdysaCode</a>. All rights reserved.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INCLUDE VENDOR -->
+        {include-vendor}
+        <!-- END INCLUDE VENDOR -->
+
+        <!-- INCLUDE FOOTER -->
+        {include-footer}
+        <!-- END INCLUDE FOOTER -->
+
+        <!-- INCLUDE LANGUAGE -->
+        {include-language}
+        <!-- END INCLUDE LANGUAGE -->
+
+        <!-- INCLUDE BOOTSTRAPS -->
+        {include-bootstraps}
+        <!-- END INCLUDE BOOTSTRAPS -->
+
+        <!-- INCLUDE MODULE -->
+        {include-modulo}
+        <!-- END INCLUDE MODULE -->
+    </body>
+</html>

@@ -1,0 +1,208 @@
+<div class="card card-bordered card-preview my-2">
+    <div class="card-body px-1 py-2">
+        <div class="card-title"><h6 class="title">Oficina</h6></div>
+        <table class="table dataTable no-footer dtr-inline" id="modal-tbl-entrada-productos" data-btn-Add="true">
+            <thead>
+                <tr class="nk-tb-item nk-tb-head bg-dark">
+                    <th class="nk-tb-col text-white"></th>
+                    <th class="nk-tb-col text-white" style="width: 70%;">Descripción del estado</th>
+                    <th class="nk-tb-col text-white">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="hidden" name="oficina[equipo_computo][item]" value="Equipos De Cómputo">
+                        Equipos De Cómputo
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="oficina[equipo_computo][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-ec1" name="oficina[equipo_computo][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="estado-ec1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-ec2" name="oficina[equipo_computo][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="estado-ec2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="oficina[servidor][item]" value="Servidor">
+                        Servidor
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="oficina[servidor][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-server1" name="oficina[servidor][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="estado-server1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-server2" name="oficina[servidor][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="estado-server2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="oficina[software][item]" value="Software">
+                        Software
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="oficina[software][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-software1" name="oficina[software][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="estado-software1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-software2" name="oficina[software][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="estado-software2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="oficina[reloj_checador][item]" value="Reloj Checador">
+                        Reloj Checador
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="oficina[reloj_checador][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-reloj_checador1" name="oficina[reloj_checador][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="estado-reloj_checador1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-reloj_checador2" name="oficina[reloj_checador][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="estado-reloj_checador2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="oficina[accesorios_inteligentes][item]" value="Accesorios Inteligentes">
+                        Accesorios Inteligentes
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="oficina[accesorios_inteligentes][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="oficina-estado-accesorios-inteligentes1" name="oficina[accesorios_inteligentes][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="oficina-estado-accesorios-inteligentes1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="oficina-estado-accesorios-inteligentes2" name="oficina[accesorios_inteligentes][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="oficina-estado-accesorios-inteligentes2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="oficina[routers][item]" value="Routers">
+                        Routers
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="oficina[routers][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="oficina-estado-routers1" name="oficina[routers][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="oficina-estado-routers1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="oficina-estado-routers2" name="oficina[routers][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="oficina-estado-routers2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="oficina[impresoras][item]" value="Impresoras">
+                        Impresoras
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="oficina[impresoras][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-impresoras1" name="oficina[impresoras][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="estado-impresoras1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-impresoras2" name="oficina[impresoras][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="estado-impresoras2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="oficina[conmutador][item]" value="Conmutador">
+                        Conmutador
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="oficina[conmutador][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-conmutador1" name="oficina[conmutador][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="estado-conmutador1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-conmutador2" name="oficina[conmutador][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="estado-conmutador2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="oficina[telefonos][item]" value="Teléfonos">
+                        Teléfonos
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="oficina[telefonos][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-telefonos1" name="oficina[telefonos][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="estado-telefonos1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="estado-telefonos2" name="oficina[telefonos][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="estado-telefonos2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="oficina[sistemas_cables][item]" value="Sistemas De Cables">
+                        Sistemas De Cables
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="oficina[sistemas_cables][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="oficina-estado-sistemas-cables1" name="oficina[sistemas_cables][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="oficina-estado-sistemas-cables1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="oficina-estado-sistemas-cables2" name="oficina[sistemas_cables][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="oficina-estado-sistemas-cables2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group mb-0">
+                                    <label class="form-label" for="oficina_observaciones">Observaciones</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control validate required" id="oficina_observaciones" name="oficina_observaciones"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group mb-0">
+                                    <label class="form-label" for="oficina_am">Aspectos Mejora</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control validate required" id="oficina_am" name="oficina_am" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

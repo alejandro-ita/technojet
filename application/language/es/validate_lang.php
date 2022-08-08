@@ -1,0 +1,32 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+$lang['validate_required'] 		= 'Este campo es obligatorio.';
+$lang['validate_remote'] 		= 'Por favor, rellena este campo.';
+$lang['validate_email'] 		= 'Por favor, escribe una dirección de correo válida.';
+$lang['validate_url'] 			= 'Por favor, escribe una URL válida.';
+$lang['validate_date'] 			= 'Por favor, escribe una fecha válida.';
+$lang['validate_dateISO'] 		= 'Por favor, escribe una fecha (ISO) válida.';
+$lang['validate_number'] 		= 'Por favor, escribe un número válido.';
+$lang['validate_digits'] 		= 'Por favor, escribe sólo números enteros.';
+$lang['validate_creditcard']	= 'Por favor, escribe un número de tarjeta válido.';
+$lang['validate_equalTo'] 		= 'Por favor, escribe el mismo valor de nuevo.';
+$lang['validate_extension'] 	= 'Por favor, escribe un valor con una extensión aceptada.';
+$lang['validate_maxlength'] 	= 'Por favor, no escribas más de {0} caracteres.';
+$lang['validate_minlength'] 	= 'Por favor, no escribas menos de {0} caracteres.';
+$lang['validate_rangelength'] 	= 'Por favor, escribe un valor entre {0} y {1} caracteres.';
+$lang['validate_range'] 		= 'Por favor, selecciona un valor entre {0} y {1}.';
+$lang['validate_max'] 			= 'Por favor, escribe un valor menor o igual a {0}.';
+$lang['validate_min'] 			= 'Por favor, escribe un valor mayor o igual a {0}.';
+$lang['validate_nifES'] 		= 'Por favor, escribe un NIF válido.';
+$lang['validate_nieES'] 		= 'Por favor, escribe un NIE válido.';
+$lang['validate_cifES'] 		= 'Por favor, escribe un CIF válido.';
+$lang['validate_specialperiod'] = 'Por favor, ingrese un periodo especial válido.';
+$lang['validate_total_horas'] 	= 'Por favor, ingrese una hora válida.';
+$lang['validate_require_from_group'] = 'Seleccione al menos {0} de estos campos.';
+$lang['validate_phoneUS'] = 'Ingresa un número con formato de teléfono valido';
+$lang['validate_emailNotEquals'] = 'Los correos deben ser diferentes';
+$lang['validate_time_compare'] = 'Esta hora debe ser mayor a la inicial';
+$lang['validate_alphanumeric'] = 'Por favor, escribe solo letras, números y guiones bajos';
+$lang['validate_only_dates'] 	= 'Por favor, ingrese solo fechas validas.';
+$lang['validate_listDate'] 		= 'Las fechas deben de estar entre {0} y {1}.';

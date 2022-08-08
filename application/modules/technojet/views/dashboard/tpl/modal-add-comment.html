@@ -1,0 +1,23 @@
+<div class="modal fade" id="modal-add-comment" aria-modal="true" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar comentario a la tarea Tar-{id_tarea}</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="dataEncription" value="{dataEncription}">
+                    <div class="form-group mb-0">
+                        <div class="form-control-wrap">
+                            <textarea class="form-control validate required" id="comentario" name="comentario" required></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-add-comment" class="btn btn-dark">{lang(general_save)}</button>
+            </div>
+        </div>
+    </div>
+</div>

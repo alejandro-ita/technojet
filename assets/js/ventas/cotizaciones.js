@@ -3,9 +3,11 @@ jQuery(function($) {
 		ignore: '.col-sm-12.d-none select'
 	});
 	initDataTable('#tbl-almacenes-productos', {
+		
 		ajax: {
-		 	 url: base_url('ventas/almacenes/get_productos_almacenes')
-		 	,data: function(dataFilter) {
+			url: base_url('ventas/almacenes/get_productos_almacenes')
+			,data: function(dataFilter) {
+				
 	    		dataFilter.id_uso = $('select#id_uso').val();
 	    		dataFilter.id_categoria = $('select#id_categoria').val();
 	    	}

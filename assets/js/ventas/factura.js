@@ -1,18 +1,18 @@
 jQuery(function($) {
 
 
-	$('body')
 
+	$('body')
 	.on('click' , '.add-factura', function(e) {
 		$('#form-filtro').formAjaxSend({
 			url: base_url('ventas/ventas/get_modal_add_factura'),
 			dataType: 'html',
 			success: function(modal) {
 				$('#content-modals').html(modal);
-				initModal('#modal-nuevo-vale-entrada', {
+				initModal('#modal-nuevo-vale-entrada-factura', {
 					onOpenEnd: function() {
-						//initSelect2('.modal select');
-						//$('#modal-nuevo-vale-entrada form').validate();
+						initSelect2('.modal select');
+						$('#modal-add-producto-entrada').validate();
 						init_tbl_entrada_nuevos_productos();
 					},
 					onCloseEnd: function() {
@@ -34,6 +34,7 @@ jQuery(function($) {
 				$('#content-modals').append(modal);
 				initModal('#modal-add-producto-entrada', {
 					onOpenEnd: function() {
+						initSelect2('.modal select');
 					},
 					onCloseEnd: function() {
 						$('#modal-add-producto-entrada').remove();

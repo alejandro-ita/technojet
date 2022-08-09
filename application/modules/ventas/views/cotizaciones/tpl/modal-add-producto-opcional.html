@@ -1,9 +1,9 @@
-<div class="modal fade" id="modal-add-producto-entrada" aria-modal="true" role="dialog">
+<div class="modal fade" id="modal-add-producto-opcional" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-dialog-top modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Nuevo producto de cotizaciones</h5>
-                <a href="#" class="close" data-dismiss-modal="modal-add-producto-entrada" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+                <h5 class="modal-title">Nuevo producto opcional de cotizaciones</h5>
+                <a href="#" class="close" id="close-option-product" data-dismiss-modal="modal-add-producto-opcional" aria-label="Close"><em class="icon ni ni-cross"></em></a>
             </div>
             <div class="modal-body">
                 <form action="#" class="form-validate">
@@ -12,7 +12,7 @@
                     <div class="form-group mb-0">
                         <label class="form-label" for="cantidad">Cantidad</label>
                         <div class="form-control-wrap">
-                            <input type="number" class="form-control validate required number" id="cantidad" name="cantidad" required />
+                            <input type="number" class="form-control validate required number" id="" name="cantidad" required />
                         </div>
                     </div>
                     
@@ -81,48 +81,13 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="form-group mb-0">
-                        <label class="form-label" for="id_tipo_producto">Productos opcionales</label>
-                        <div class="form-control-wrap">
-                            <div class="dt-buttons btn-group flex-wrap" id="content-new-option">
-                                <button class="btn btn-icon btn-sm btn-success btn-option ml-2 p-1 init-tooltip" tabindex="0" aria-controls="modal-tbl-entrada-productos" type="button" title="Nuevo">
-                                    <span>
-                                        <em class="icon ni ni-plus font-medium-2"></em>
-                                    </span>
-                                </button> 
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="form-group mb-0">
-                        <label class="form-label" for="id_unidad_medida">Unidad de medida</label>
-                        <div class="form-control-wrap">
-                            <select id="id_unidad_medida" name="id_unidad_medida" class="form-select init-select2 validate required">
-                                <option value="" selected>{lang(general_select_option)}</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                 -->
 
                     <div class="form-group mb-0">
                         <label class="form-label" for="descripcion">Descripción</label>
                         <div class="form-control-wrap">
-                            <textarea class="form-control no-resize" id="descripcion" name="descripcion" required readonly></textarea>
+                            <textarea class="form-control no-resize" id="" name="descipcion" required readonly></textarea>
                         </div>
                     </div>
-<!--                     
-                    <div class="form-group mb-0">
-                        <label class="form-label" for="referencia_alfanumerica">Referencia alfanúmerica</label>
-                        <div class="form-control-wrap">
-                            <input type="text" class="form-control validate" id="referencia_alfanumerica" name="referencia_alfanumerica" />
-                        </div>
-                    </div>
-                    <div class="form-group mb-0">
-                        <label class="form-label" for="referencia_entrada">Referencia de entrada</label>
-                        <div class="form-control-wrap">
-                            <input type="text" class="form-control validate" id="referencia_entrada" name="referencia_entrada" />
-                        </div>
-                    </div> -->
                 </form>
             </div>
             <div class="modal-footer py-2">

@@ -11,8 +11,8 @@ jQuery(function($) {
 				$('#content-modals').html(modal);
 				initModal('#modal-nuevo-vale-entrada', {
 					onOpenEnd: function() {
-						//initSelect2('.modal select');
-						//$('#modal-nuevo-vale-entrada form').validate();
+						initSelect2('.modal select');
+						$('#modal-nuevo-vale-entrada form').validate();
 						init_tbl_entrada_nuevos_productos();
 					},
 					onCloseEnd: function() {

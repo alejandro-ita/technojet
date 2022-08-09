@@ -58,6 +58,10 @@ class Ventas extends SB_Controller {
 		$this->parser_view('ventas/cotizaciones/tpl/modal-nuevo-entrada', $dataView, FALSE);
 		//modal-add-producto-entrada
 	}
+	public function get_modal_add_product_option(){
+		$this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-opcional', FALSE, FALSE);
+	}
+
 	
 	public function mostrador() {
 		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador');

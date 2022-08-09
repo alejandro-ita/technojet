@@ -82,18 +82,49 @@ jQuery(function($) {
 				$('#content-modals').html(modal);
 				initModal('#modal-nuevo-vale-entrada', {
 					onOpenEnd: function() {
-						//initSelect2('.modal select');
-						//$('#modal-nuevo-vale-entrada form').validate();
+						initSelect2('.modal select');
+						$('#modal-nuevo-vale-entrada form').validate();
 						init_tbl_entrada_nuevos_productos();
-					}
+					},
+					onCloseEnd: function() {
+						$('#modal-add-producto-opcional').remove();
+						$('.modal-backdrop').remove();
+					},
 				});
 			}
 		});
 		e.preventDefault();
 	})
+	
+
+	.on('click', '#content-new-option .btn-option', function(e) {
+
+		$('#form-filtro').formAjaxSend({
+			url: base_url('ventas/ventas/get_modal_add_product_option'),
+			dataType: 'html',
+			success: function(modal) {
+				$('#content-modals').append(modal);
+				initModal('#modal-add-producto-opcional', {
+					onOpenEnd: function() {
+						initSelect2('.modal select');
+					},
+					onCloseEnd: function() {
+						$('#modal-add-producto-opcional').remove();
+					},
+				});
+			}
+		});
+		e.preventDefault();
+	})
+	.on('click','#close-option-product', function(e){
+		$('#modal-add-producto-opcional').remove();
+	})
+
+
 
 	.on('click', 'button#load-productos', function(e) {
 		if ($('#form-filtro').valid()) {
+			// console.log('fds');
 			IS.init.dataTable['tbl-almacenes-productos'].ajax.reload();
 			IS.init.dataTable['tbl-almacenes-productos-entrada'].ajax.reload(function(jsonData) {
 			    IS.init.dataTable['tbl-almacenes-productos-entrada'].columns.adjust().draw();

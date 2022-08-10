@@ -2,7 +2,7 @@
     <div class="nk-block-between g-3">
         <div class="nk-block-head-content">
             <h3 class="nk-block-title page-title text-primary">
-            	<!-- {lang(menu_almacenes)} --> Mostrador | Pedidos internos
+            	<!-- {lang(menu_almacenes)} --> Factura | Notas de crédito
             </h3>
         </div>
     </div>
@@ -15,8 +15,8 @@
 					<div class="col-sm-12">
 						<div class="form-group">
 						    <label class="form-label d-block">&nbsp;</label>
-							<a class="btn btn-success add-mostrador" title="{lang(general_nuevo)}">
-			            		<em class="icon ni ni-plus-sm"></em><span>nueva venta mostrador</span>
+							<a class="btn btn-success add-factura" title="{lang(general_nuevo)}">
+			            		<em class="icon ni ni-plus-sm"></em><span>nueva factura</span>
 			            	</a>
 							<!--<button type="button" id="load-productos" class="btn btn-dim btn-primary">Nueva cotización</button>-->
 						</div>
@@ -27,7 +27,7 @@
 				<div class="col-sm-12">
 					<ul class="nav nav-tabs">
 						<li class="nav-item">
-					        <a class="nav-link active" data-toggle="tab" href="#Mostrador">
+					        <a class="nav-link active" data-toggle="tab" href="#Factura">
 					        	<em class="icon ni ni-home"></em>
 					        	<span>Consecutivo</span>
 					        </a>
@@ -45,20 +45,11 @@
 					        	<span>Reportes detallados</span>
 					        	<!-- <span>{lang(vales_almacen)}</span> -->
 					        </a>
-					    <!-- </li>
-					    <li class="nav-item">
-					        <a class="nav-link" data-toggle="tab" href="#Formato">
-					        	<em class="icon ni ni-signout"></em>
-					        	<span>Formato</span>
-					        </a>
-					    </li> -->
+						</li>
 					</ul>
-
-					
-
 					<div class="tab-content">
-						<div class="tab-pane active" id="Mostrador">
-							{tpl-tbl-mostrador}
+						<div class="tab-pane active" id="Factura">
+							{tpl-tbl-factura}
 						</div>
 						<div class="tab-pane " id="Reporte_mensual">
 							{tpl-tbl-reporte-mensual}
@@ -67,11 +58,11 @@
 							{tpl-tbl-reporte-detallado}
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 

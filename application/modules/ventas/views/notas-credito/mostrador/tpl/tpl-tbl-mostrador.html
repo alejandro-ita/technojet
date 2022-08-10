@@ -1,0 +1,110 @@
+<div class="nk-block-head nk-block-head-sm bg-white px-2 pb-1">
+    <div class="nk-block-between g-3">
+        <div class="nk-block-head-content"></div>
+        <div class="nk-block-head-content">
+		    <div class="toggle-wrap nk-block-tools-toggle">
+			    <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+			    <div class="toggle-expand-content" data-content="pageMenu">
+			        <ul class="nk-block-tools g-3 tools-tbl-almacen">
+			            <li>
+			                <div class="form-control-wrap">
+			                    <div class="form-icon form-icon-right">
+			                    	<em class="icon ni ni-search"></em>
+			                    </div>
+			                    <input type="text" id="buscar" class="form-control form-control-outlined" autocomplete="off" />
+							        <label class="form-label-outlined" for="buscar">{lang(lib_sSearchPlaceholder)}</label>
+			                </div>
+			            </li>
+			            <li>
+			            	<div class="dropdown">
+				                <a href="#" class="btn btn-outline-light btn-icon dropdown-toggle bg-transparent text-soft" data-toggle="dropdown" title="{lang(lib_total_rows)}">
+				                    <em class="icon ni ni-list-ol"></em>
+				                </a>
+				                <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
+				                    <ul class="link-check almacen_length">
+				                        <li><span>{lang(lib_mostrar)}</span></li>
+				                        <li class="active">
+				                            <a href="#" data-length="10">10 {lang(lib_registros_min)}</a>
+				                        </li>
+				                        <li>
+				                            <a href="#" data-length="25">25 {lang(lib_registros_min)}</a>
+				                        </li>
+				                        <li>
+				                            <a href="#" data-length="50">50 {lang(lib_registros_min)}</a>
+				                        </li>
+				                        <li>
+				                            <a href="#" data-length="-1">{lang(general_todos)}</a>
+				                        </li>
+				                    </ul>
+				                </div>
+				            </div>
+			            </li>
+			        </ul>
+			    </div>
+			</div>
+		</div>
+    </div>
+</div>
+<div class="nk-block">
+	<div class="table-responsive">
+		<table class="table dataTable no-footer dtr-inline"  data-btn-col-vis="true">
+	    	<thead>
+			    <tr class="nk-tb-item nk-tb-head bg-dark">
+					<th class="nk-tb-col text-white">N° Nota de crédito</th>
+					<th class="nk-tb-col text-white">Status nota</th>
+					<th class="nk-tb-col text-white">Nota de crédito</th>
+					<th class="nk-tb-col text-white">Status notas</th>
+					<th class="nk-tb-col text-white">Fecha de la nota</th>
+					<th class="nk-tb-col text-white">Uso del CFDI</th>
+					<th class="nk-tb-col text-white">Forma de pago</th>
+					<th class="nk-tb-col text-white">Método de pago</th>
+					<th class="nk-tb-col text-white">Cliente</th>
+					<th class="nk-tb-col text-white">Razón social</th>
+					<th class="nk-tb-col text-white">Contacto</th>
+					<th class="nk-tb-col text-white">Localidad</th>
+					<th class="nk-tb-col text-white">Departamento</th>
+					<th class="nk-tb-col text-white">Fecha nota de crédito</th>
+					<th class="nk-tb-col text-white">Factura relacionada</th>
+					<th class="nk-tb-col text-white">Medio</th>
+					<th class="nk-tb-col text-white">Tipo de producto</th>
+					<th class="nk-tb-col text-white">Tipo de servicio</th>
+					<th class="nk-tb-col text-white">Nro° Poliza de servicio</th>
+					<th class="nk-tb-col text-white">O.C</th>
+					<th class="nk-tb-col text-white">Fecha de entrega</th>
+					<th class="nk-tb-col text-white">Tipo de entrega</th>
+					<th class="nk-tb-col text-white">Forma de envío</th>
+					<th class="nk-tb-col text-white">Fecha de envío</th>
+					<th class="nk-tb-col text-white">Nro° Guía</th>
+					<th class="nk-tb-col text-white">Nro° Guía</th>
+					<th class="nk-tb-col text-white">Requisición</th>
+					<th class="nk-tb-col text-white">Vale de salida</th>
+					<th class="nk-tb-col text-white">Status</th>
+					<th class="nk-tb-col text-white">Subtotal</th>
+					<th class="nk-tb-col text-white">Descuento</th>
+					<th class="nk-tb-col text-white">Total</th>
+					<th class="nk-tb-col text-white">Motivo de crédito</th>
+					<th class="nk-tb-col text-white">Notas internas</th>
+					<th class="nk-tb-col text-white">Notas nota de crédito</th>
+					<th class="nk-tb-col text-white">Tipo de cambio</th>
+					<th class="nk-tb-col text-white">Remisión</th>
+					<th class="nk-tb-col text-white">Condiciones</th>
+					<th class="nk-tb-col text-white">Email para nota de crédito</th>
+					<th class="nk-tb-col text-white">Semana</th>
+					<th class="nk-tb-col text-white">Mes</th>
+					<th class="nk-tb-col text-white">Año</th>
+					<th class="nk-tb-col text-white">Solvente</th>
+					<th class="nk-tb-col text-white">Tinta</th>
+					<th class="nk-tb-col text-white">Solución de limpieza</th>
+					<th class="nk-tb-col text-white">Cartucho</th>
+					<th class="nk-tb-col text-white">Servicio</th>
+					<th class="nk-tb-col text-white">Poliza</th>
+					<th class="nk-tb-col text-white">Paquetería</th>
+					<th class="nk-tb-col text-white">Viáticos</th>
+					<th class="nk-tb-col text-white">Kit</th>
+					<th class="nk-tb-col text-white">Otros</th>
+					<th class="nk-tb-col text-white">Equipo</th>
+			    </tr>
+			</thead>
+	    </table>
+	</div>
+</div>

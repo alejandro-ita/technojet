@@ -62,70 +62,90 @@ class Ventas extends SB_Controller {
 		$this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-opcional', FALSE, FALSE);
 	}
 
+
+	#==============Mostrador y factura | pedidos internos================
 	
 	public function mostrador() {
 		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-detallado');
-
+		
 		$pathJS = get_var('path_js');
     	$includes['modulo']['js'][] = ['name'=>'mostrador', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-
+		
 		$this->load_view('ventas/pedidos-internos/mostrador/mostrador_view', $dataView, $includes);
 	}
-
+	
 	public function get_modal_add_mostrador(){
 		$this->parser_view('ventas/pedidos-internos/mostrador/tpl/modal-nuevo-entrada', FALSE, FALSE);
 	}
 	public function get_modal_add_mostrador_product(){
 		$this->parser_view('ventas/pedidos-internos/mostrador/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
-
-
+	
+	
 	public function factura() {
 		$dataView['tpl-tbl-factura']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-factura');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-reporte-detallado');
-
+		
 		$pathJS = get_var('path_js');
     	$includes['modulo']['js'][] = ['name'=>'factura', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-
+		
 		$this->load_view('ventas/pedidos-internos/factura/factura_view', $dataView, $includes);
 	}
-
+	
 	public function get_modal_add_factura(){
 		$this->parser_view('ventas/pedidos-internos/factura/tpl/modal-nuevo-entrada', FALSE, FALSE);
 	}
 	public function get_modal_add_factura_product(){
 		$this->parser_view('ventas/pedidos-internos/factura/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
-
+	#==============fin Mostrador y factura | pedidos internos================
+	
 	
 
-	// public function index() {
-	// 	$dataView['usos'] = $this->db_catalogos->get_usos();
-	// 	$dataView['tpl-tbl-reporte-mensual'] 		= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-reporte-mensual');
-	// 	$dataView['tpl-tbl-reporte-detallado'] 		= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-reporte-detallado');
-	// 	$dataView['tpl-tbl-almacen']				= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-almacenes');
-	// 	$dataView['tpl-tbl-almacen']				= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-almacenes');
+	
+	
+	#==============Mostrador y factura | notas de crédito================
+	public function mostrador_notas() {
+		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-mostrador');
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-reporte-detallado');
+		
+		$pathJS = get_var('path_js');
+    	$includes['modulo']['js'][] = ['name'=>'mostrador', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 
-	// 	// $dataView['tpl-tbl-factura']				= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-factura');
-	// 	// $dataView['tpl-tbl-mostrador']				= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador');
-
-
-	// 	$includes 	= get_includes_vendor(['moment', 'dataTables', 'DTRowGroup', 'jQValidate']);
-	// 	$pathJS 	= get_var('path_js');
-    //     $includes['modulo']['js'][] = ['name'=>'cotizaciones', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-    //     $includes['modulo']['js'][] = ['name'=>'reporte-mensual', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-    //     $includes['modulo']['js'][] = ['name'=>'reporte-detallado', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-
-    //     // $includes['modulo']['js'][] = ['name'=>'factura', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-    //     // $includes['modulo']['js'][] = ['name'=>'mostrador', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-
-	// 	$this->load_view('ventas/cotizaciones/almacen_view', $dataView, $includes);
-	// 	// $this->load_view('ventas/pedidos-internos/factura/mostrador_view', $dataView, $includes);
-	// 	// $this->load_view('ventas/pedidos-internos/mostrador/mostrador_view', $dataView, $includes);
+		$this->load_view('ventas/notas-credito/mostrador/mostrador_view', $dataView, $includes);
+	}
+	// public function get_modal_add_mostrador(){
+	// 	$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-nuevo-entrada', FALSE, FALSE);
 	// }
+	// public function get_modal_add_mostrador_product(){
+	// 	$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-add-producto-entrada', FALSE, FALSE);
+	// }
+
+
+	public function factura_notas() {
+		$dataView['tpl-tbl-factura']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-factura');
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-reporte-detallado');
+
+		$pathJS = get_var('path_js');
+    	$includes['modulo']['js'][] = ['name'=>'factura', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+
+		$this->load_view('ventas/notas-credito/factura/factura_view', $dataView, $includes);
+	}
+	public function get_modal_add_factura_notas(){
+		$this->parser_view('ventas/notas-credito/factura/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
+	public function get_modal_add_factura_notas_product(){
+		$this->parser_view('ventas/notas-credito/factura/tpl/modal-add-producto-entrada', FALSE, FALSE);
+	}
+	#==============FIN Mostrador y factura | notas de crédito================
+
+
+
 
 	public function get_productos_almacenes() {
 		if ($_POST['id_categoria'] || ($_POST['id_uso']==5)) {

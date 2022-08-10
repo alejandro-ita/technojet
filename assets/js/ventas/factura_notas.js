@@ -2,11 +2,11 @@ jQuery(function($) {
 	$('body')
 	.on('click' , '.add-factura', function(e) {
 		$('#form-filtro').formAjaxSend({
-			url: base_url('ventas/ventas/get_modal_add_factura'),
+			url: base_url('ventas/ventas/get_modal_add_factura_notas'),
 			dataType: 'html',
 			success: function(modal) {
 				$('#content-modals').html(modal);
-				initModal('#modal-nuevo-vale-entrada-factura', {
+				initModal('#modal-entrada-factura-notas', {
 					onOpenEnd: function() {
 						initSelect2('.modal select');
 						$('#modal-add-producto-entrada').validate();
@@ -25,7 +25,7 @@ jQuery(function($) {
 	.on('click', '#modal-tbl-entrada-productos_filter .btn-add', function(e) {
 
 		$('#form-filtro').formAjaxSend({
-			url: base_url('ventas/ventas/get_modal_add_factura_product'),
+			url: base_url('ventas/ventas/get_modal_add_factura_notas_product'),
 			dataType: 'html',
 			success: function(modal) {
 				$('#content-modals').append(modal);
@@ -98,4 +98,7 @@ jQuery(function($) {
 			,columns: columns
 		});
 	}
+
+
+
 });

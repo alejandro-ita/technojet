@@ -109,6 +109,7 @@ jQuery(function($) {
 						initSelect2('.modal select');
 					},
 					onCloseEnd: function() {
+						initSelect2('.modal select');
 						$('#modal-add-producto-opcional').remove();
 					},
 				});

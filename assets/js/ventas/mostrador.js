@@ -34,6 +34,7 @@ jQuery(function($) {
 				$('#content-modals').append(modal);
 				initModal('#modal-add-producto-entrada', {
 					onOpenEnd: function() {
+						initSelect2('.modal select');
 					},
 					onCloseEnd: function() {
 						$('#modal-add-producto-entrada').remove();

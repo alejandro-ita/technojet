@@ -47,6 +47,7 @@ $lang['menu_ventas_lista_precios']	= 'Lista de precios';
 $lang['menu_pedido_interno_mostrador']	= 'Mostrador';
 $lang['menu_pedido_interno_factura']	= 'Factura';
 
+
 #MENÚ NOTAS DE CRÉDITO| VENTAS
 $lang['menu_notas_credito_mostrador']	= 'Mostrador';
 $lang['menu_notas_credito_factura']	= 'Factura';

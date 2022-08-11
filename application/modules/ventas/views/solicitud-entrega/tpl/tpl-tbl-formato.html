@@ -5,7 +5,7 @@
 		    <div class="toggle-wrap nk-block-tools-toggle">
 			    <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
 			    <div class="toggle-expand-content" data-content="pageMenu">
-			        <ul class="nk-block-tools g-3 tools-tbl-productos-entrada">
+			        <ul class="nk-block-tools g-3 tools-tbl-almacen">
 			            <li>
 			                <div class="form-control-wrap">
 			                    <div class="form-icon form-icon-right">
@@ -21,7 +21,7 @@
 				                    <em class="icon ni ni-list-ol"></em>
 				                </a>
 				                <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
-				                    <ul class="link-check entrada_length">
+				                    <ul class="link-check almacen_length">
 				                        <li><span>{lang(lib_mostrar)}</span></li>
 				                        <li class="active">
 				                            <a href="#" data-length="10">10 {lang(lib_registros_min)}</a>
@@ -37,15 +37,8 @@
 				                        </li>
 				                    </ul>
 				                </div>
-				            </div><!-- .dropdown -->
+				            </div>
 			            </li>
-			            {if {get_userData(crear)}==1}
-			            <li>
-			            	<a href="#" class="btn btn-icon btn-success init-tooltip add-entrada" title="{lang(general_nuevo)}" data-custom-Class="nk-tb-col-tools-tooltip">
-			            		<em class="icon ni ni-plus-sm"></em>
-			            	</a>
-			            </li>
-						{/if}
 			        </ul>
 			    </div>
 			</div>
@@ -57,8 +50,25 @@
 		<table class="table dataTable no-footer dtr-inline" id="tbl-almacenes-productos-entrada" data-btn-col-vis="true" data-btn-Add="true">
 	    	<thead>
 			    <tr class="nk-tb-item nk-tb-head bg-dark">
-					<th class="nk-tb-col text-white">...</th>
-				</tr>
+					
+			        <th class="nk-tb-col text-white">Mes</th>
+			        <th class="nk-tb-col text-white noVis">Nombre</th>
+
+
+			        <!-- <th class="nk-tb-col text-white noVis all" data-visible="false">Folio</th>
+			        <th class="nk-tb-col text-white noVis all">Referencia de entrada</th>
+			        <th class="nk-tb-col text-white noVis all" data-visible="false">Fecha</th>
+			        <th class="nk-tb-col text-white noVis all">Cantidad</th>
+			        <th class="nk-tb-col text-white noVis all">No. de parte</th>
+			        <th class="nk-tb-col text-white noVis all">Tipo de producto</th>
+			        <th class="nk-tb-col text-white noVis all">{lang(productos_unidad_medida)}</th>
+			        <th class="nk-tb-col text-white noVis all">Concepto</th>
+			        <th class="nk-tb-col text-white noVis all" data-visible="false">Recibió</th>
+			        <th class="nk-tb-col text-white noVis all" data-visible="false">Entregó</th>
+			        <th class="nk-tb-col text-white noVis all" data-visible="false">Vo. Bo</th>
+			        <th class="nk-tb-col text-white noVis all" data-visible="false">Estatus</th>
+			        <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th> -->
+			    </tr>
 			</thead>
 	    </table>
 	</div>

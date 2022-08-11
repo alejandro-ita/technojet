@@ -62,6 +62,22 @@ class Ventas extends SB_Controller {
 		$this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-opcional', FALSE, FALSE);
 	}
 
+	#==============Facturación================
+	public function facturacion() {
+		// $dataView['tpl-tbl-facturacion']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-reporte-detallado');
+		$dataView['tpl-tbl-registros']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-registros');
+		
+		$pathJS = get_var('path_js');
+    	$includes['modulo']['js'][] = ['name'=>'facturacion', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/facturacion/facturacion_view', $dataView, $includes);
+	}
+	#==============FIN Facturación================
+	
+
+
 
 	#==============Mostrador y factura | pedidos internos================
 	
@@ -114,16 +130,16 @@ class Ventas extends SB_Controller {
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-reporte-detallado');
 		
 		$pathJS = get_var('path_js');
-    	$includes['modulo']['js'][] = ['name'=>'mostrador', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+    	$includes['modulo']['js'][] = ['name'=>'mostrador_notas', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 
 		$this->load_view('ventas/notas-credito/mostrador/mostrador_view', $dataView, $includes);
 	}
-	// public function get_modal_add_mostrador(){
-	// 	$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-nuevo-entrada', FALSE, FALSE);
-	// }
-	// public function get_modal_add_mostrador_product(){
-	// 	$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-add-producto-entrada', FALSE, FALSE);
-	// }
+	public function get_modal_add_mostrador_notas(){
+		$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
+	public function get_modal_add_mostrador_notas_product(){
+		$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-add-producto-entrada', FALSE, FALSE);
+	}
 
 
 	public function factura_notas() {
@@ -132,7 +148,7 @@ class Ventas extends SB_Controller {
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-reporte-detallado');
 
 		$pathJS = get_var('path_js');
-    	$includes['modulo']['js'][] = ['name'=>'factura', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+    	$includes['modulo']['js'][] = ['name'=>'factura_notas', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 
 		$this->load_view('ventas/notas-credito/factura/factura_view', $dataView, $includes);
 	}
@@ -144,6 +160,21 @@ class Ventas extends SB_Controller {
 	}
 	#==============FIN Mostrador y factura | notas de crédito================
 
+
+
+	#==============solicitud de entrega================
+	public function solicitud_entrega() {
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/solicitud-entrega/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/solicitud-entrega/tpl/tpl-tbl-reporte-detallado');
+		$dataView['tpl-tbl-solicitud']= $this->parser_view('ventas/solicitud-entrega/tpl/tpl-tbl-solicitud');
+		
+		$pathJS = get_var('path_js');
+		$includes['modulo']['js'][] = ['name'=>'solicitud_entrega', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/solicitud/solicitud_view', $dataView, $includes);
+	}
+	#==============FIN Facturación================
+		
 
 
 

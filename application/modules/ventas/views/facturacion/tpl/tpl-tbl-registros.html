@@ -40,11 +40,11 @@
 				            </div><!-- .dropdown -->
 			            </li>
 			            {if {get_userData(crear)}==1}
-			            <li>
-			            	<a href="#" class="btn btn-icon btn-success init-tooltip add-entrada" title="{lang(general_nuevo)}" data-custom-Class="nk-tb-col-tools-tooltip">
+			            <!--<li>
+			            	<a class="btn btn-icon btn-success init-tooltip add-entrada" title="{lang(general_nuevo)}" data-custom-Class="nk-tb-col-tools-tooltip">
 			            		<em class="icon ni ni-plus-sm"></em>
 			            	</a>
-			            </li>
+			            </li>-->
 						{/if}
 			        </ul>
 			    </div>
@@ -57,8 +57,23 @@
 		<table class="table dataTable no-footer dtr-inline" id="tbl-almacenes-productos-entrada" data-btn-col-vis="true" data-btn-Add="true">
 	    	<thead>
 			    <tr class="nk-tb-item nk-tb-head bg-dark">
-					<th class="nk-tb-col text-white">...</th>
-				</tr>
+			        <th class="nk-tb-col text-white">Nro° Factura</th>
+			        <th class="nk-tb-col text-white">Estatus de factura</th>
+			        <th class="nk-tb-col text-white">Fecha de elaboración</th>
+			        <th class="nk-tb-col text-white">Uso de CFDI</th>
+			        <th class="nk-tb-col text-white">N° P.I</th>
+			        <th class="nk-tb-col text-white">Cliente</th>
+			        <th class="nk-tb-col text-white">Subtotal</th>
+			        <th class="nk-tb-col text-white">Descuento</th>
+			        <th class="nk-tb-col text-white">Iva</th>
+			        <th class="nk-tb-col text-white">Moneda</th>
+			        <th class="nk-tb-col text-white">Concepto</th>
+			        <th class="nk-tb-col text-white">Método de pago</th>
+			        <th class="nk-tb-col text-white">Semana</th>
+			        <th class="nk-tb-col text-white">Mes</th>
+			        <th class="nk-tb-col text-white">Año</th>
+			        
+			    </tr>
 			</thead>
 	    </table>
 	</div>

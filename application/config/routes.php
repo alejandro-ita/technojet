@@ -70,6 +70,7 @@ $route['configuracion/cuenta'] 					= 'technojet/administracion/cuenta';
 $route['database/almacen/vales-entrada'] 		= 'database/almacen/vales_entrada';
 $route['database/almacen/vales-salida'] 		= 'database/almacen/vales_salida';
 $route['database/ventas/cotizaciones'] 		    = 'database/ventas/cotizaciones';
+$route['database/ventas/vendedores'] 		    = 'database/vendedores/catalogo';
 
 #ALMACEN
 $route['almacen/requisicion-material'] 			= 'almacen/requisicion_material';

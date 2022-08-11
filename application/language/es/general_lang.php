@@ -190,3 +190,5 @@ $lang['general_row_exist'] 				= '¡El valor ya está registrado!';
 $lang['general_row_add_success'] 		= '¡El valor se registró con éxito!';
 $lang['general_row_update_success'] 	= '¡El valor se actualizado con éxito!';
 $lang['general_row_rm_success'] 		= '¡El valor se eliminó con éxito!';
+$lang['general_new_vendedor']           = 'Nuevo vendedor';
+$lang['general_vendedor']           = 'Vendedor';

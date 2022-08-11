@@ -45,3 +45,10 @@ $lang['cotizacion_save_success'] 		= '!Datos registrados con éxito!';
 $lang['cotizacion_update_success'] 	= '!Datos actualizados con éxito!';
 $lang['cotizacion_rm_success'] 		= '!El registro se ha eliminado con éxito!';
 $lang['editar_registro'] = 'Editar registro';
+
+###Vendedores
+$lang['vendedor_registro_exist'] 	= '!El registro que está intentando agregar, ya existe!';
+$lang['vendedor_save_success'] 		= '!Datos registrados con éxito!';
+$lang['vendedor_update_success'] 	= '!Datos actualizados con éxito!';
+$lang['vendedor_rm_success'] 		= '!El registro se ha eliminado con éxito!';
+$lang['editar_vendedor'] = 'Editar vendedor';

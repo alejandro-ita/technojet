@@ -29,7 +29,7 @@ class Ventas extends SB_Controller {
 
 	public function get_modal_add_cotizacion(){
 		//cargar contenido de vistas / CATALOGOS
-		//Tiempo de netrega
+		//Tiempo de entrega
 		$sqlWhere['id_categoria'] = 23;
 		$sqlWhere['grupo'] = 6;
 		$dataView['tiempo-entrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);

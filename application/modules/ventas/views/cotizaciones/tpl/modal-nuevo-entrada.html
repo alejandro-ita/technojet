@@ -34,8 +34,10 @@
                                 <label class="form-label" for="id_vale_estatus">Estatus vigencia</label>
                                 <div class="form-control-wrap">
                                     <select id="" name="id_vale_estatus" class="form-select init-select2 validate required">
-                                        <option value="1" disabled selected>Entregado</option>
-                                        <option value="2" disabled selected>Cancelado</option>
+                                        <option value="" disabled selected>Seleccione estatus vigencia</option>
+                                        {estatus-vigencia}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/estatus-vigencia}
                                     </select>
                                 </div>
                             </div>
@@ -44,9 +46,11 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="id_vale_estatus">Estatus entrega</label>
                                 <div class="form-control-wrap">
-                                    <select id="" name="id_vale_estatus" disabled aria-readonly="true" class="form-select init-select2 validate required">
-                                        <option value="false"  selected>No</option>
-                                        <option value="true">Si</option>
+                                    <select id="" name="id_vale_estatus" aria-readonly="true" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione estatus entrega</option>
+                                        {estatus-entrega}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/estatus-entrega}
                                     </select>
                                 </div>
                             </div>
@@ -102,9 +106,10 @@
                                 <label class="form-label" for="">Condiciones de pago</label>
                                 <div class="form-control-wrap">
                                     <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
-                                        <option value="1"  selected>Condicion1</option>
-                                        <option value="3">Condicion2</option>
-                                        <option value="4">Condicion3</option>
+                                        <option value="" disabled selected>Seleccione condiciones de pago</option>
+                                        {condiciones-pago}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/condiciones-pago}
                                     </select>
                                 </div>
                             </div>
@@ -114,9 +119,10 @@
                                 <label class="form-label" for="">Tiempo de entrega</label>
                                 <div class="form-control-wrap">
                                     <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
-                                        <option value="1"  selected>1 día</option>
-                                        <option value="3">2 días</option>
-                                        <option value="4">3 días</option>
+                                        <option value="" disabled selected>Seleccione tiempo de entrega</option>
+                                        {tiempo-entrega}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/tiempo-entrega}
                                     </select>
                                 </div>
                             </div>
@@ -138,9 +144,10 @@
                                 <label class="form-label" for="">Vigencia</label>
                                 <div class="form-control-wrap">
                                     <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
-                                        <option value="1"  selected>Una semana</option>
-                                        <option value="3">Un mes</option>
-                                        <option value="4">Un año</option>
+                                        <option value="" disabled selected>Seleccione vigencia</option>
+                                        {vigencia}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/vigencia}
                                     </select>
                                 </div>
                             </div>

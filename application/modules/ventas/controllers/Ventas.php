@@ -11,6 +11,7 @@ class Ventas extends SB_Controller {
 		$this->load->model('technojet/Productos_model', 'db_productos');
 		$this->load->model('ventas/Vales_productos_model', 'db_vales_pro');
 		$this->load->model('technojet/Almacen_requisiciones_model', 'db_ar');
+		$this->load->model('technojet/Ventas_cotizaciones_model', 'db_vc');
 	}
 
 	public function cotizaciones() {
@@ -28,11 +29,35 @@ class Ventas extends SB_Controller {
 
 	public function get_modal_add_cotizacion(){
 		//cargar contenido de vistas / CATALOGOS
+		//Tiempo de netrega
+		$sqlWhere['id_categoria'] = 23;
+		$sqlWhere['grupo'] = 6;
+		$dataView['tiempo-entrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		
+		//Estatus vigencia
+		$sqlWhere['id_categoria'] = 24;
+		$sqlWhere['grupo'] = 6;
+		$dataView['estatus-vigencia'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+
+		//Estatus entrega
+		$sqlWhere['id_categoria'] = 25;
+		$sqlWhere['grupo'] = 6;
+		$dataView['estatus-entrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+
+		//Condiciones de pago
+		$sqlWhere['id_categoria'] = 26;
+		$sqlWhere['grupo'] = 6;
+		$dataView['condiciones-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+
+		//Vigencia
+		$sqlWhere['id_categoria'] = 27;
+		$sqlWhere['grupo'] = 6;
+		$dataView['vigencia'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
 
 		//cargar JS's / INTERACCIÓN
 
 		//Carga de vista principal
-		$sqlWhere['tipo'] = 'ENTRADA';
+		/*$sqlWhere['tipo'] = 'ENTRADA';
 		$vales_almacen = $this->db_av->get_vales_almacenes($sqlWhere);
 		$dataView['vales-almacen'] = $vales_almacen;
 
@@ -44,7 +69,7 @@ class Ventas extends SB_Controller {
 
 		#OBTENEMOS LAS REQUISICIONES EXISTENTES
 		$requisiciones = $this->db_ar->get_requisiciones_select2();
-		$dataView['requisiciones'] = $requisiciones;
+		$dataView['requisiciones'] = $requisiciones;*/
 
 		#OBTENEMOS EL CONSECUTIVO DEL VALE DE ENTRADA
 		$folio = $this->db_vales_pro->get_ultimo_vale_entrada();
@@ -61,7 +86,6 @@ class Ventas extends SB_Controller {
 	public function get_modal_add_product_option(){
 		$this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-opcional', FALSE, FALSE);
 	}
-
 	
 	public function mostrador() {
 		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador');

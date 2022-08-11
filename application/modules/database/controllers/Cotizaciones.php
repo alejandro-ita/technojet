@@ -1,14 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Ventas extends SB_Controller {
+class Cotizaciones extends SB_Controller {
 
 	public function __construct() {
 		parent::__construct();
 
 		$this->load->model('technojet/Productos_model', 'db_productos');
-		$this->load->model('technojet/Ventas_cotizaciones_model', 'db_vc');
-		
 	}
 
 	public function index() {
@@ -172,129 +170,6 @@ class Ventas extends SB_Controller {
 
 		echo json_encode($response);
 	}
-
-	public function cotizaciones() {
-		$includes = get_includes_vendor(['dataTables', 'jQValidate']);
-		$pathJS = get_var('path_js');
-        $includes['modulo']['js'][] = ['name'=>'template_helper', 'dirname'=>"$pathJS/helpers", 'fulldir'=>TRUE];
-        $includes['modulo']['js'][] = ['name'=>'cotizaciones', 'dirname'=>"$pathJS/database/ventas", 'fulldir'=>TRUE];
-
-        $dataTools['categorias']= $this->db_catalogos->get_categorias(['grupo'=>6]);
-        $dataView['tpl-tools'] = $this->parser_view('database/ventas/cotizaciones/tpl/tpl-tools', $dataTools);
-
-		$this->load_view('database/ventas/cotizaciones/cotizaciones_view', $dataView, $includes);
-	}
-
-	public function get_catalog_cotizaciones() {
-		$sqlWhere = $this->input->post('id_categoria') ? $this->input->post(['id_categoria']) : [];
-		$sqlWhere['grupo']=6;
-		$cotizaciones = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
-		$cotizaciones = $cotizaciones ? $cotizaciones : [];
-
-		$tplAcciones = $this->parser_view('database/ventas/cotizaciones/tpl/tpl-acciones');
-		foreach ($cotizaciones as &$rec) {
-			$rec['acciones'] = $tplAcciones;
-		}
-
-		echo json_encode($cotizaciones, JSON_NUMERIC_CHECK);
-	}
-
-	public function get_modal_new_c_cotizacion() {
-		$this->parser_view('database/ventas/cotizaciones/tpl/modal-new-cotizacion', [], FALSE);
-	}
-
-	public function process_save_c_cotizacion() {
-		try {
-			$sqlWhere = $this->input->post(['c_cotizacion', 'id_categoria']);
-			$exist = $this->db_vc->get_ventas_cotizacion_min($sqlWhere, FALSE);
-
-			if (!$exist) {
-				$sqlData = $this->input->post(['id_categoria', 'c_cotizacion']);
-				$insert = $this->db_vc->insert_ventas_cotizacion($sqlData);
-				$insert OR set_exception();
-				$actividad 		= "ha creado un registro en su catálogo de cotizaciones con categoría: ".$_POST['categoria'];
-				$data_change 	= ['insert'=>['newData'=>$sqlData]];
-				registro_bitacora_actividades($insert, 'tbl_ventas_cotizacion', $actividad, $data_change);
-				
-			} else set_alert(lang('cotizacion_registro_exist'));
-
-			$response = [
-				'success'	=> TRUE,
-				'msg' 		=> lang('cotizacion_save_success'),
-				'icon' 		=> 'success'
-			];
-
-		} catch (SB_Exception $e) {
-			$response = get_exception($e);
-		}
-
-		echo json_encode($response);
-	}
-
-	public function get_modal_update_c_cotizacion() {
-		$sqlWhere = $this->input->post(['id_ventas_cotizacion']);
-		$dataView = $this->db_vc->get_ventas_cotizacion_min($sqlWhere, FALSE);
-
-		$this->parser_view('database/ventas/cotizaciones/tpl/modal-update-cotizacion', $dataView, FALSE);
-	}
-
-	public function process_update_c_cotizacion() {
-		try {
-			$sqlWhere = [
-				'notIN' 		=> $this->input->post('id_ventas_cotizacion'),
-				'c_cotizacion' 	=> $this->input->post('c_cotizacion'),
-				'id_categoria' => $this->input->post('id_categoria')
-			];
-			$exist = $this->db_vc->get_ventas_cotizacion_min($sqlWhere, FALSE);
-
-			if (!$exist) {
-				$sqlWhere = $this->input->post(['id_ventas_cotizacion']);
-				$sqlData = $this->input->post(['c_cotizacion']);
-				$update = $this->db_vc->update_ventas_cotizacion($sqlData, $sqlWhere);
-				$update OR set_exception();
-				$actividad 		= "ha editado un registro en el catálogo de cotizaciones con categoría: ".$_POST['categoria'];
-				$data_change 	= ['update'=>['newData'=>$sqlData]];
-				registro_bitacora_actividades($sqlWhere['id_ventas_cotizacion'], 'tbl_ventas_cotizacion', $actividad, $data_change);
-				
-			} else set_alert(lang('cotizacion_registro_exist'));
-
-			$response = [
-				'success'	=> TRUE,
-				'msg' 		=> lang('cotizacion_update_success'),
-				'icon' 		=> 'success'
-			];
-
-		} catch (SB_Exception $e) {
-			$response = get_exception($e);
-		}
-
-		echo json_encode($response);
-	}
-
-	public function process_remove_c_cotizacion() {
-		try {
-			$sqlWhere = $this->input->post(['id_ventas_cotizacion', 'id_categoria']);
-			$remove = $this->db_vc->update_ventas_cotizacion(['activo'=>0], $sqlWhere);
-			$remove OR set_exception();
-			
-			$actividad 		= "ha eliminado un registro del catálogo cotizaciones con categoría: ".$_POST['categoria'];
-			$data_change 	= ['delete'=>['oldData'=>$_POST]];
-			registro_bitacora_actividades($sqlWhere['id_ventas_cotizacion'], 'tbl_ventas_cotizacion', $actividad, $data_change);
-
-			$response = [
-				'success'	=> TRUE,
-				'msg' 		=> lang('cotizacion_rm_success'),
-				'icon' 		=> 'success'
-			];
-		} catch (SB_Exception $e) {
-			$response = get_exception($e);
-		}
-
-		echo json_encode($response);
-	}
-
-
-
 }
 
 /* End of file Ventas.php */

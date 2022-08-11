@@ -36,3 +36,12 @@ $lang['almacenes_referencia_alfanum'] 	= 'Referencia alfanúmerica';
 $lang['almacenes_no_serie'] 			= 'Número de serie';
 $lang['almacenes_ref_entrada'] 			= 'Referencia de entrada';
 $lang['almacenes_edo_producto'] 		= 'Estado del producto';
+
+###Cotizaciones
+$lang['cotizaciones_title'] 			= 'Cotizaciones';
+$lang['nuevo_registro']			= 'Nuevo registro';
+$lang['cotizacion_registro_exist'] 	= '!El registro que está intentando agregar, ya existe!';
+$lang['cotizacion_save_success'] 		= '!Datos registrados con éxito!';
+$lang['cotizacion_update_success'] 	= '!Datos actualizados con éxito!';
+$lang['cotizacion_rm_success'] 		= '!El registro se ha eliminado con éxito!';
+$lang['editar_registro'] = 'Editar registro';

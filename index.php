@@ -309,8 +309,8 @@ switch (ENVIRONMENT)
 	if(!defined('URLPATH')) {
 		$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https" : "http";
 		$i = explode('index.php', $_SERVER['PHP_SELF']);
-		define('URLPATH', $protocol."://".$_SERVER['SERVER_NAME'].$i[0]);
-		//define('URLPATH', $protocol."://".$_SERVER['SERVER_NAME'].":7777".$i[0]);
+		//define('URLPATH', $protocol."://".$_SERVER['SERVER_NAME'].$i[0]);
+		define('URLPATH', $protocol."://".$_SERVER['SERVER_NAME'].":7777".$i[0]);
 	}
 
 	if(!defined('LOCALPATH')) {

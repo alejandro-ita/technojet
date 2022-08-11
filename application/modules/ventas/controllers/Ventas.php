@@ -12,6 +12,8 @@ class Ventas extends SB_Controller {
 		$this->load->model('ventas/Vales_productos_model', 'db_vales_pro');
 		$this->load->model('technojet/Almacen_requisiciones_model', 'db_ar');
 		$this->load->model('technojet/Ventas_cotizaciones_model', 'db_vc');
+		$this->load->model('technojet/Vendedores_model', 'db_vendedor');
+		$this->load->model('technojet/Catalogos_model', 'db_catalog');
 	}
 
 	public function cotizaciones() {
@@ -26,7 +28,7 @@ class Ventas extends SB_Controller {
 
 		$this->load_view('ventas/cotizaciones/cotizaciones_view',$dataView, $includes);
 	}
-
+	
 	public function get_modal_add_cotizacion(){
 		//cargar contenido de vistas / CATALOGOS
 		//Tiempo de entrega
@@ -53,6 +55,22 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 27;
 		$sqlWhere['grupo'] = 6;
 		$dataView['vigencia'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+
+		//Precios
+		$sqlWhere['id_categoria'] = 28;
+		$sqlWhere['grupo'] = 6;
+		$dataView['precios'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+
+		//Lugar de entrega
+		$sqlWhere['id_categoria'] = 29;
+		$sqlWhere['grupo'] = 6;
+		$dataView['lentrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+
+		//Vendedores
+		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
+
+		//Monedas
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min();
 
 		//cargar JS's / INTERACCIÓN
 
@@ -83,74 +101,118 @@ class Ventas extends SB_Controller {
 		$this->parser_view('ventas/cotizaciones/tpl/modal-nuevo-entrada', $dataView, FALSE);
 		//modal-add-producto-entrada
 	}
+
 	public function get_modal_add_product_option(){
 		$this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-opcional', FALSE, FALSE);
 	}
+
+	#==============Facturación================
+	public function facturacion() {
+		// $dataView['tpl-tbl-facturacion']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-reporte-detallado');
+		$dataView['tpl-tbl-registros']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-registros');
+		
+		$pathJS = get_var('path_js');
+    	$includes['modulo']['js'][] = ['name'=>'facturacion', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/facturacion/facturacion_view', $dataView, $includes);
+	}
+	#==============FIN Facturación================
 	
+	#==============Mostrador y factura | pedidos internos================	
 	public function mostrador() {
 		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-detallado');
-
+		
 		$pathJS = get_var('path_js');
     	$includes['modulo']['js'][] = ['name'=>'mostrador', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-
+		
 		$this->load_view('ventas/pedidos-internos/mostrador/mostrador_view', $dataView, $includes);
 	}
-
+	
 	public function get_modal_add_mostrador(){
 		$this->parser_view('ventas/pedidos-internos/mostrador/tpl/modal-nuevo-entrada', FALSE, FALSE);
 	}
+
 	public function get_modal_add_mostrador_product(){
 		$this->parser_view('ventas/pedidos-internos/mostrador/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
-
-
+	
 	public function factura() {
 		$dataView['tpl-tbl-factura']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-factura');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-reporte-detallado');
-
+		
 		$pathJS = get_var('path_js');
     	$includes['modulo']['js'][] = ['name'=>'factura', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-
+		
 		$this->load_view('ventas/pedidos-internos/factura/factura_view', $dataView, $includes);
 	}
-
+	
 	public function get_modal_add_factura(){
 		$this->parser_view('ventas/pedidos-internos/factura/tpl/modal-nuevo-entrada', FALSE, FALSE);
 	}
+
 	public function get_modal_add_factura_product(){
 		$this->parser_view('ventas/pedidos-internos/factura/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
-
+	#==============fin Mostrador y factura | pedidos internos================
 	
+	#==============Mostrador y factura | notas de crédito================
+	public function mostrador_notas() {
+		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-mostrador');
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-reporte-detallado');
+		
+		$pathJS = get_var('path_js');
+    	$includes['modulo']['js'][] = ['name'=>'mostrador_notas', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 
-	// public function index() {
-	// 	$dataView['usos'] = $this->db_catalogos->get_usos();
-	// 	$dataView['tpl-tbl-reporte-mensual'] 		= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-reporte-mensual');
-	// 	$dataView['tpl-tbl-reporte-detallado'] 		= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-reporte-detallado');
-	// 	$dataView['tpl-tbl-almacen']				= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-almacenes');
-	// 	$dataView['tpl-tbl-almacen']				= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-almacenes');
+		$this->load_view('ventas/notas-credito/mostrador/mostrador_view', $dataView, $includes);
+	}
 
-	// 	// $dataView['tpl-tbl-factura']				= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-factura');
-	// 	// $dataView['tpl-tbl-mostrador']				= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador');
+	public function get_modal_add_mostrador_notas(){
+		$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
 
+	public function get_modal_add_mostrador_notas_product(){
+		$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-add-producto-entrada', FALSE, FALSE);
+	}
 
-	// 	$includes 	= get_includes_vendor(['moment', 'dataTables', 'DTRowGroup', 'jQValidate']);
-	// 	$pathJS 	= get_var('path_js');
-    //     $includes['modulo']['js'][] = ['name'=>'cotizaciones', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-    //     $includes['modulo']['js'][] = ['name'=>'reporte-mensual', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-    //     $includes['modulo']['js'][] = ['name'=>'reporte-detallado', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+	public function factura_notas() {
+		$dataView['tpl-tbl-factura']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-factura');
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-reporte-detallado');
 
-    //     // $includes['modulo']['js'][] = ['name'=>'factura', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-    //     // $includes['modulo']['js'][] = ['name'=>'mostrador', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		$pathJS = get_var('path_js');
+    	$includes['modulo']['js'][] = ['name'=>'factura_notas', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 
-	// 	$this->load_view('ventas/cotizaciones/almacen_view', $dataView, $includes);
-	// 	// $this->load_view('ventas/pedidos-internos/factura/mostrador_view', $dataView, $includes);
-	// 	// $this->load_view('ventas/pedidos-internos/mostrador/mostrador_view', $dataView, $includes);
-	// }
+		$this->load_view('ventas/notas-credito/factura/factura_view', $dataView, $includes);
+	}
 
+	public function get_modal_add_factura_notas(){
+		$this->parser_view('ventas/notas-credito/factura/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
+
+	public function get_modal_add_factura_notas_product(){
+		$this->parser_view('ventas/notas-credito/factura/tpl/modal-add-producto-entrada', FALSE, FALSE);
+	}
+	#==============FIN Mostrador y factura | notas de crédito================
+
+	#==============solicitud de entrega================
+	public function solicitud_entrega() {
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/solicitud-entrega/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/solicitud-entrega/tpl/tpl-tbl-reporte-detallado');
+		$dataView['tpl-tbl-solicitud']= $this->parser_view('ventas/solicitud-entrega/tpl/tpl-tbl-solicitud');
+		
+		$pathJS = get_var('path_js');
+		$includes['modulo']['js'][] = ['name'=>'solicitud_entrega', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/solicitud/solicitud_view', $dataView, $includes);
+	}
+	#==============FIN Facturación================
+		
 	public function get_productos_almacenes() {
 		if ($_POST['id_categoria'] || ($_POST['id_uso']==5)) {
 			$sqlWhere = $this->input->post(['id_uso', 'id_categoria']);

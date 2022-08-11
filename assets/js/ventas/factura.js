@@ -1,7 +1,4 @@
 jQuery(function($) {
-
-
-
 	$('body')
 	.on('click' , '.add-factura', function(e) {
 		$('#form-filtro').formAjaxSend({
@@ -101,7 +98,4 @@ jQuery(function($) {
 			,columns: columns
 		});
 	}
-
-
-
 });

@@ -82,9 +82,10 @@
                                 <label class="form-label" for="">Moneda</label>
                                 <div class="form-control-wrap">
                                     <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
-                                        <option value="1"  selected>Peso Mexicano</option>
-                                        <option value="3">Usd</option>
-                                        <option value="4">Euro</option>
+                                        <option value="" disabled selected>Seleccione Moneda</option>
+                                        {monedas}
+                                        <option value="{id_vendedor}">{moneda}</option>
+                                        {/monedas}
                                     </select>
                                 </div>
                             </div>
@@ -94,9 +95,10 @@
                                 <label class="form-label" for="">Precios</label>
                                 <div class="form-control-wrap">
                                     <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
-                                        <option value="1"  selected>Precio1</option>
-                                        <option value="3">Precio2</option>
-                                        <option value="4">Precio3</option>
+                                        <option value="" disabled selected>Seleccione precio</option>
+                                        {precios}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/precios}
                                     </select>
                                 </div>
                             </div>
@@ -132,9 +134,10 @@
                                 <label class="form-label" for="">Lugar de entrega</label>
                                 <div class="form-control-wrap">
                                     <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
-                                        <option value="1"  selected>Lugar1</option>
-                                        <option value="3">Lugar2</option>
-                                        <option value="4">Lugar3</option>
+                                        <option value="" disabled selected>Seleccione lugar de entrega</option>
+                                        {lentrega}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/lentrega}
                                     </select>
                                 </div>
                             </div>
@@ -165,7 +168,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-2 col-md-2">
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Notas</label>
                                 <div class="form-control-wrap">
@@ -178,37 +181,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group mb-0">
-                            <label class="form-label" for="">Fecha de recepción</label>
-                            <div class="form-control-wrap">
-                                <input type="date" class="form-control validate required" id="" name="" required="">
+                        <div class="col-sm-2 col-md-2 ">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Fecha de recepción</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="" name="" required="">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-12 col-md-4  ">
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Vendedor</label>
                                 <div class="form-control-wrap">
                                     <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
-                                        <option value="1"  selected>Vendedor1</option>
-                                        <option value="3">Vendedor2</option>
-                                        <option value="4">Vendedor3</option>
+                                        <option value="" disabled selected>Seleccione Vendedor</option>
+                                        {vendedores}
+                                        <option value="{id_vendedor}">{vendedor}</option>
+                                        {/vendedores}
                                     </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <div class="form-group mb-0">
-                                <label class="form-label" for="">Departamento nuestro</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name="" required />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-4">
-                            <div class="form-group mb-0">
-                                <label class="form-label" for="">Correo</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name="" required />
                                 </div>
                             </div>
                         </div>
@@ -251,7 +241,7 @@
             </div>
             <div class="modal-footer py-2">
                 <button type="button" id="btn-save-vale-entrada" class="btn btn-dark">{lang(general_save)}</button>
-                <button type="button" id="btn-save-vale-entrada" class="btn btn-dark">Imprimir</button>
+                <!-- <button type="button" id="btn-save-vale-entrada" class="btn btn-dark">Imprimir</button> -->
             </div>
         </div>
     </div>

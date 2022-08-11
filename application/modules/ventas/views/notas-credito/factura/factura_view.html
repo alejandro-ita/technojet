@@ -1,0 +1,68 @@
+<div class="nk-block-head nk-block-head-sm bg-white px-2 pb-1">
+    <div class="nk-block-between g-3">
+        <div class="nk-block-head-content">
+            <h3 class="nk-block-title page-title text-primary">
+            	<!-- {lang(menu_almacenes)} --> Factura | Notas de crédito
+            </h3>
+        </div>
+    </div>
+</div>
+<div class="nk-block">
+	<div class="card">
+		<div class="card-inner pt-0">
+			<form id="form-filtro">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+						    <label class="form-label d-block">&nbsp;</label>
+							<a class="btn btn-success add-factura" title="{lang(general_nuevo)}">
+			            		<em class="icon ni ni-plus-sm"></em><span>nueva factura</span>
+			            	</a>
+							<!--<button type="button" id="load-productos" class="btn btn-dim btn-primary">Nueva cotización</button>-->
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="row">
+				<div class="col-sm-12">
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+					        <a class="nav-link active" data-toggle="tab" href="#Factura">
+					        	<em class="icon ni ni-home"></em>
+					        	<span>Consecutivo</span>
+					        </a>
+					    </li>
+					    <li class="nav-item">
+					        <a class="nav-link " data-toggle="tab" href="#Reporte_mensual">
+					        	<em class="icon ni ni-home"></em>
+					        	<span>Reportes mensuales</span>
+					        	<!-- <span>{lang(vales_almacen)}</span> -->
+					        </a>
+					    </li>
+					    <li class="nav-item">
+					        <a class="nav-link" data-toggle="tab" href="#Reporte_completo">
+					        	<em class="icon ni ni-home"></em>
+					        	<span>Reportes detallados</span>
+					        	<!-- <span>{lang(vales_almacen)}</span> -->
+					        </a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="Factura">
+							{tpl-tbl-factura}
+						</div>
+						<div class="tab-pane " id="Reporte_mensual">
+							{tpl-tbl-reporte-mensual}
+						</div>
+						<div class="tab-pane" id="Reporte_completo">
+							{tpl-tbl-reporte-detallado}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

@@ -12,61 +12,75 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Nro° de pedido interno</label>
                                 <div class="form-control-wrap">
-                                    <input type="number" class="form-control validate required" id="" name=""  required />
+                                    <input type="number" class="form-control validate required" id="" name="" readonly  value="34345"  required />
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Status P.I.</label>
+                                <label class="form-label" for="id_vale_estatus">Estatus P.I</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name=""  required />
+                                    <select id="" name="id_vale_estatus" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>Entregado</option>
+                                        <option value="2"  selected>Cancelado</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-2">
+                        <!-- <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
                                 <label class="form-label">Nro° de Remision</label>
                                 <div class="form-control-wrap">
                                     <input type="number" class="form-control validate required" id="" name=""  required />
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-md-2">
+                        </div> -->
+                        <!-- <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
                                 <label class="form-label">Status de la remision</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control validate required" id="" name=""  required />
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group mb-0">
+                        </div> -->
+                        <!-- <div class="form-group mb-0">
                             <label class="form-label" >Fecha de Remision</label>
                             <div class="form-control-wrap">
                                 <input type="date" class="form-control validate required" id="" name="" required="">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Cotización</label>
+                                <label class="form-label" for="id_vale_estatus">Cotización</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name=""  required />
+                                    <select id="" name="id_vale_estatus" aria-readonly="true" disabled  class="form-select init-select2 validate required">
+                                        <option value="1" selected>cotizacion1</option>
+                                        <option value="1"  >cotizacion2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4" >
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_vale_almacen">Cliente</label>
+                                <div class="form-control-wrap">
+                                    <select name="id_vale_almacen" class="form-select validate required">
+                                        <option value="" selected>Cliente 1</option>
+                                        {vales-almacen}
+                                        <option value="{id_vale_almacen}">Cliente 2</option>
+                                        {/vales-almacen}
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Cliente</label>
+                                <label class="form-label" for="">Departamento</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name=""  required />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-2">
-                            <div class="form-group mb-0">
-                                <label class="form-label">Departamento</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name=""  required />
+                                    <select id="" name="" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>deparamento1</option>
+                                        <option value="1"  >deparamento2</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -76,55 +90,64 @@
                                 <input type="date" class="form-control validate required" id="" name="" required="">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-2">
+                        <!-- <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
                                 <label class="form-label">Tipo de pedido</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control validate required" id="" name=""  required />
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Medio</label>
+                                <label class="form-label" for="">Medio</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name=""  required />
+                                    <select id="" name="" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>medio1</option>
+                                        <option value="1"  >medio2</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-2">
+                        <!-- <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
                                 <label class="form-label">Tipo de servicio</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control validate required" id="" name=""  required />
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-md-2">
+                        </div> -->
+                        <!-- <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
                                 <label class="form-label">Nro° Poliza de servicio</label>
                                 <div class="form-control-wrap">
                                     <input type="number" class="form-control validate required" id="" name=""  required />
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Comisión asignada</label>
+                                <label class="form-label" for="">Comisión asignada</label>
                                 <div class="form-control-wrap">
-                                    <input type="number" class="form-control validate required" id="" name=""  required />
+                                    <select id="" name="" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>comision1</option>
+                                        <option value="1"  >comision2</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">O.C</label>
+                                <label class="form-label" for="">O.C</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name=""  required />
+                                    <select id="" name="" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>1</option>
+                                        <option value="1"  >2</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group mb-0">
+                        <!-- <div class="form-group mb-0">
                             <label class="form-label" >Fecha de entrega</label>
                             <div class="form-control-wrap">
                                 <input type="date" class="form-control validate required" id="" name="" required="">
@@ -137,16 +160,19 @@
                                     <input type="text" class="form-control validate required" id="" name=""  required />
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Forma de envío</label>
+                                <label class="form-label" for="">Forma de envío</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name=""  required />
+                                    <select id="" name="" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>envío1</option>
+                                        <option value="1"  >envío2</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group mb-0">
+                        <!-- <div class="form-group mb-0">
                             <label class="form-label" >Fecha de envío</label>
                             <div class="form-control-wrap">
                                 <input type="date" class="form-control validate required" id="" name="" required="">
@@ -181,30 +207,33 @@
                                 <label class="form-label" for="id_vale_estatus">Estatus</label>
                                 <div class="form-control-wrap">
                                     <select id="id_vale_estatus" name="id_vale_estatus" class="form-select init-select2 validate required">
-                                        <option value="" disabled selected>{lang(general_select_option)}</option>
+                                        <option value=""  selected>{lang(general_select_option)}</option>
                                         {vales-estatus}
                                         <option value="{id_vale_estatus}">{estatus}</option>
                                         {/vales-estatus}
                                     </select>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Incluír iva</label>
+                                <label class="form-label" for="">Incluír iva</label>
                                 <div class="form-control-wrap">
-                                    <input type="number" class="form-control validate required" id="" name=""  required />
+                                    <select id="" name="" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>SI</option>
+                                        <option value="1"  >NO</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-2">
+                        <!-- <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
                                 <label class="form-label">Subtotal</label>
                                 <div class="form-control-wrap">
                                     <input type="number" class="form-control validate required" id="" name=""  required />
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
                                 <label class="form-label">Descuento</label>
@@ -213,7 +242,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-2">
+                        <!-- <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
                                 <label class="form-label">Iva</label>
                                 <div class="form-control-wrap">
@@ -228,12 +257,16 @@
                                     <input type="number" class="form-control validate required" id="" name=""  required />
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Moneda</label>
+                                <label class="form-label" for="">Moneda</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name=""  required />
+                                    <select id="" name="" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>Peso Méxicano</option>
+                                        <option value="1"  >Dolar</option>
+                                        <option value="1"  >Euro</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -263,13 +296,16 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Condiciones</label>
+                                <label class="form-label" for="">Condiciones</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name=""  required />
+                                    <select id="" name="" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>condicion1</option>
+                                        <option value="1"  selected>condicion2</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group mb-0">
+                        <!-- <div class="form-group mb-0">
                             <label class="form-label" >Fecha de pago</label>
                             <div class="form-control-wrap">
                                 <input type="date" class="form-control validate required" id="" name="" required="">
@@ -306,7 +342,7 @@
                                     <input type="number" class="form-control validate required"  required  />
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row">
                         <div class="col-sm-12">

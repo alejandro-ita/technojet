@@ -179,7 +179,47 @@ class Ventas extends SB_Controller {
 	public function get_modal_add_solicitud_product(){
 		$this->parser_view('ventas/solicitud-entrega/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
-	#==============FIN Facturación================
+	#==============FIN solicitud de entrega================
+
+		
+	#==============solicitud de recoleccion================
+	public function solicitud_recoleccion() {
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/solicitud-recoleccion/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/solicitud-recoleccion/tpl/tpl-tbl-reporte-detallado');
+		$dataView['tpl-tbl-solicitud']= $this->parser_view('ventas/solicitud-recoleccion/tpl/tpl-tbl-solicitud');
+		
+		$pathJS = get_var('path_js');
+		$includes['modulo']['js'][] = ['name'=>'solicitud_recoleccion', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/solicitud-recoleccion/solicitud_recoleccion_view', $dataView, $includes);
+	}
+	public function get_modal_add_solicitud_recoleccion(){
+		$this->parser_view('ventas/solicitud-recoleccion/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
+	public function get_modal_add_recoleccion_product(){
+		$this->parser_view('ventas/solicitud-recoleccion/tpl/modal-add-producto-entrada', FALSE, FALSE);
+	}
+	#==============FIN recoleccion================
+
+
+	#==============Complementos de pago================
+	public function complementos_pago() {
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-reporte-detallado');
+		$dataView['tpl-tbl-solicitud']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-complemento');
+		
+		$pathJS = get_var('path_js');
+		$includes['modulo']['js'][] = ['name'=>'complementos_pago', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/complementos-pago/complementos_pago_view', $dataView, $includes);
+	}
+	public function get_modal_add_complementos_pago(){
+		$this->parser_view('ventas/complementos-pago/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
+	public function get_modal_add_complemento_product(){
+		$this->parser_view('ventas/complementos-pago/tpl/modal-add-producto-entrada', FALSE, FALSE);
+	}
+	#==============FIN complementos de pago================
 		
 
 

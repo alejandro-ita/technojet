@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{get_var(site_name)} - Vale de entrada</title>
+	<style type="text/css">
+		@font-face {
+			font-family: 'Arial';
+			font-style: normal;
+			font-weight: normal;
+			src: url({base_url()}{get_var(path_fonts)}/arial/arial.ttf) format('truetype');
+		}
+
+		body{
+			font-family: 'arial';
+			font-size: 12px;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		table {
+			font-family: 'arial';
+			width: 100%;
+			border: 2px solid black;
+			border-collapse: collapse;
+		}
+
+		th, td {
+			font-family: 'arial';
+			border: 1px solid black;
+			border-collapse: collapse;
+		}
+
+		.border-1 {
+			border: 1px solid black;
+		}
+
+		.border-2 {
+			border: 2px solid black;
+		}
+
+		.bb-2 {
+			border-bottom: 2px solid black;
+		}
+
+		.no-border {
+			border: 0px solid transparent;
+		}
+
+		.bx-0 {
+			border-left: 0px solid transparent;
+			border-right: 0px solid transparent;
+		}
+
+		.text-uc {
+			text-transform: uppercase;
+		}
+	</style>
+</head>
+<body>
+	<table>
+		<tbody>
+			<tr>
+				<th colspan="9">TECHNOCODING INTERNATIONAL S.A. DE C.V.</th>
+				<th colspan="2">FOLIO</th>
+			</tr>
+			<tr>
+				<th colspan="9">VALE DE SALIDAS DE ALMACEN</th>
+				<th>N°</th>
+				<th>VE-{id_vale_activo}</th>
+			</tr>
+			<tr>
+				<th colspan="2">Proveedor y/o departamento</th>
+				<th colspan="4">{cliente}</th>
+				<th colspan="2">Pedido interno/Nota crédito</th>
+				<th>{pedido_interno}</th>
+				<th>FECHA</th>
+				<th>{custom_fecha}</th>
+			</tr>
+			<tr>
+				<th class="border-2 text-uc">TIPO DE PRODUCTO</th>
+                <th class="border-2 text-uc">UNIDAD DE MEDIDA</th>
+                <th class="border-2 text-uc">NO. PARTE</th>
+                <th class="border-2 text-uc" colspan="3" style="width:400px !important;">DESCRIPCION</th>
+                <th class="border-2 text-uc">CANTIDAD</th>
+                <th class="border-2 text-uc">{lang(almacenes_no_serie)}</th>
+                <th class="border-2 text-uc">{lang(almacenes_edo_producto)}</th>
+                <th class="border-2 text-uc">COSTO</th>
+                <th class="border-2 text-uc">MONEDA</th>
+			</tr>
+			{list-productos}
+			<tr>
+				<th>{tipo_producto}</th>
+				<th>{unidad_medida}</th>
+				<th>{no_parte}</th>
+				<th colspan="3">{descripcion}</th>
+				<th>{cantidad}</th>
+				<th>{no_serie}</th>
+				<th>{estado_producto}</th>
+				<th>{costo}</th>
+				<th>{moneda}</th>
+			</tr>
+			{/list-productos}
+			<tr>
+				<td class="bb-2" colspan="11">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="bb-2" colspan="3" align="center" style="height: 35px;">CONCEPTO DE SALIDA</td>
+				<td class="bb-2" colspan="8" style="height: 35px;">{concepto}</td>
+			</tr>
+			<tr>
+				<td class="bb-2" colspan="3" rowspan="2" align="center">OBSERVACIONES</td>
+				<td class="bb-2" colspan="5" rowspan="2">{observaciones}</td>
+				<td colspan="3" align="center">ALMACEN DE SALIDA</td>
+			</tr>
+			<tr>
+				<td class="bb-2" colspan="3" align="center">{vale_almacen}</td>
+			</tr>
+			<tr><td class="no-border" colspan="11">&nbsp;</td></tr>
+			<tr>
+				<td class="no-border" colspan="2" align="center">RECIBIÓ</td>
+				<td class="no-border">&nbsp;</td>
+				<td class="no-border" colspan="2" align="center">AUTORIZÓ</td>
+				<td class="no-border">&nbsp;</td>
+				<td class="no-border" colspan="2" align="center">ENTREGÓ</td>
+				<td class="no-border">&nbsp;</td>
+				<td class="no-border" colspan="2" align="center">Vo. Bo.</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center" style="height: 35px;">&nbsp;</td>
+				<td class="no-border">&nbsp;</td>
+				<td colspan="2" align="center" style="height: 35px;">&nbsp;</td>
+				<td class="no-border">&nbsp;</td>
+				<td colspan="2" align="center" style="height: 35px;">&nbsp;</td>
+				<td class="no-border">&nbsp;</td>
+				<td colspan="2" align="center" style="height: 35px;">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="bb-2 bx-0" colspan="2" align="center">{recibio}</td>
+				<td class="no-border">&nbsp;</td>
+				<td class="bb-2 bx-0" colspan="2" align="center">{autorizo}</td>
+				<td class="no-border">&nbsp;</td>
+				<td class="bb-2 bx-0" colspan="2" align="center">{entrego}</td>
+				<td class="no-border">&nbsp;</td>
+				<td class="bb-2 bx-0" colspan="2" align="center">{vo_bo}</td>
+			</tr>
+			<tr><td class="no-border" colspan="11">&nbsp;</td></tr>
+		</tbody>
+	</table>
+</body>
+</html>

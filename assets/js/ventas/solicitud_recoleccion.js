@@ -2,18 +2,18 @@ jQuery(function($) {
 	$('body')
 	.on('click' , '.add-solicitud', function(e) {
 		$('#form-filtro').formAjaxSend({
-			url: base_url('ventas/ventas/get_modal_add_solicitud'),
+			url: base_url('ventas/ventas/get_modal_add_solicitud_recoleccion'),
 			dataType: 'html',
 			success: function(modal) {
 				$('#content-modals').html(modal);
-				initModal('#modal-nuevo-vale-solicitud', {
+				initModal('#modal-nuevo-vale-solicitud-recoleccion', {
 					onOpenEnd: function() {
 						initSelect2('.modal select');
-						$('#modal-add-producto-solicitud').validate();
+						$('#modal-add-producto-solicitud-recoleccion').validate();
 						init_tbl_entrada_nuevos_productos();
 					},
 					onCloseEnd: function() {
-						$('#modal-add-producto-solicitud').remove();
+						$('#modal-add-producto-solicitud-recoleccion').remove();
 						$('.modal-backdrop').remove();
 					},
 				});
@@ -22,23 +22,23 @@ jQuery(function($) {
 		e.preventDefault();
 	})
 	.on('click', '#close-solicitud', function(e){
-		$('#modal-nuevo-vale-solicitud').remove();
+		$('#modal-nuevo-vale-solicitud-recoleccion').remove();
 		$('.modal-backdrop').remove();
 	})
 	
 	.on('click', '#modal-tbl-entrada-productos_filter .btn-add', function(e) {
 
 		$('#form-filtro').formAjaxSend({
-			url: base_url('ventas/ventas/get_modal_add_solicitud_product'),
+			url: base_url('ventas/ventas/get_modal_add_recoleccion_product'),
 			dataType: 'html',
 			success: function(modal) {
 				$('#content-modals').append(modal);
-				initModal('#modal-add-producto-solicitud', {
+				initModal('#modal-add-producto-solicitud-recoleccion', {
 					onOpenEnd: function() {
 						initSelect2('.modal select');
 					},
 					onCloseEnd: function() {
-						$('#modal-add-producto-solicitud').remove();
+						$('#modal-add-producto-solicitud-recoleccion').remove();
 						$('.modal-backdrop').remove();
 					},
 				});
@@ -47,7 +47,7 @@ jQuery(function($) {
 		e.preventDefault();
 	})
 	.on('click', '#close-producto-solicitud',function(e){
-		$('#modal-add-producto-solicitud').remove();
+		$('#modal-add-producto-solicitud-recoleccion').remove();
 	})
 
 	

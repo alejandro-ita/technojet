@@ -1,9 +1,9 @@
-<div class="modal fade" id="modal-nuevo-vale-solicitud" aria-modal="true" role="dialog" style="overflow-y: auto;">
+<div class="modal fade" id="modal-nuevo-vale-solicitud-recoleccion" aria-modal="true" role="dialog" style="overflow-y: auto;">
     <div class="modal-dialog modal-fs" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Nueva solicitud de entrega</h5>
-                <a href="#" class="close" id="close-solicitud" data-dismiss="modal-nuevo-vale-solicitud" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+                <h5 class="modal-title">Nueva solicitud de recolección</h5>
+                <a href="#" class="close" id="close-solicitud" data-dismiss="modal-nuevo-vale-solicitud-recoleccion" aria-label="Close"><em class="icon ni ni-cross"></em></a>
             </div>
             <div class="modal-body">
                 <form action="#" class="form-validate">
@@ -37,32 +37,31 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label" for="s">Forma de envío</label>
+                                <label class="form-label" for="s">Forma de recolección</label>
                                 <div class="form-control-wrap">
                                     <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
-                                        <option value="false"  selected>Envío 1</option>
-                                        <option value="true">Envío 2</option>
+                                        <option value="false"  selected> recolección 1</option>
+                                        <option value="true"> recolección 2</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label" for="s">Tipo de envío</label>
+                                <label class="form-label" for="s">Tipo de recolección</label>
                                 <div class="form-control-wrap">
                                     <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
-                                        <option value="1"  selected>Envío 1</option>
-                                        <option value="2">Envío 2</option>
+                                        <option value="1"  selected>tipo 1</option>
+                                        <option value="2">tipo 2</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label" for="">Pedido interno / Nota crédito / O.C.</label>
+                                <label class="form-label" for="">Pedido interno/O.C.</label>
                                 <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
                                     <option value="1"  selected>pedido interno</option>
-                                    <option value="2">Nota de credito</option>
                                     <option value="3">O.C</option>
                                 </select>
                             </div>
@@ -75,10 +74,25 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
+                                <label class="form-label" for="">Almacén entrante</label>
+                                <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
+                                    <option value="1"  selected>Almacén1</option>
+                                    <option value="2">Almacén2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Observaciones</label>
+                                <input type="text" class="form-control validate required" value=""  id="" name="" required="">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
                                 <label class="form-label" for="">Status</label>
                                 <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
-                                    <option value="1"  selected>Pago</option>
-                                    <option value="2">No pago</option>
+                                    <option value="1"  selected>Recolectado</option>
+                                    <option value="2">No Recolectado</option>
                                 </select>
                             </div>
                         </div>
@@ -92,7 +106,7 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label" for="">Fecha de entrega</label>
+                                <label class="form-label" for="">Fecha de recolección</label>
                                 <div class="form-control-wrap">
                                     <input type="date" class="form-control validate required" id="" name="" required="">
                                 </div>

@@ -47,8 +47,15 @@ $lang['cotizacion_rm_success'] 		= '!El registro se ha eliminado con éxito!';
 $lang['editar_registro'] = 'Editar registro';
 
 ###Vendedores
-$lang['vendedor_registro_exist'] 	= '!El registro que está intentando agregar, ya existe!';
-$lang['vendedor_save_success'] 		= '!Datos registrados con éxito!';
-$lang['vendedor_update_success'] 	= '!Datos actualizados con éxito!';
-$lang['vendedor_rm_success'] 		= '!El registro se ha eliminado con éxito!';
+$lang['vendedor_registro_exist'] 	= '!El vendedor que está intentando agregar, ya existe!';
+$lang['vendedor_save_success'] 		= '!Vendedor registrado con éxito!';
+$lang['vendedor_update_success'] 	= '!Vendedor actualizado con éxito!';
+$lang['vendedor_rm_success'] 		= '!El vendedor se ha eliminado con éxito!';
 $lang['editar_vendedor'] = 'Editar vendedor';
+
+###Clientes
+$lang['cliente_registro_exist'] 	= '!El Cliente que está intentando agregar, ya existe!';
+$lang['cliente_save_success'] 		= '!Cliente registrado con éxito!';
+$lang['cliente_update_success'] 	= '!Cliente actualizado con éxito!';
+$lang['cliente_rm_success'] 		= '!El Cliente se ha eliminado con éxito!';
+$lang['editar_cliente'] = 'Editar cliente';

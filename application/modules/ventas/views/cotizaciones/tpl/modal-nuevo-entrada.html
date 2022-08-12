@@ -21,10 +21,10 @@
                                 <label class="form-label" for="id_vale_almacen">Cliente</label>
                                 <div class="form-control-wrap">
                                     <select name="id_vale_almacen" class="form-select validate required">
-                                        <!-- <option value="" disabled selected>Cliente 1</option> -->
-                                        <!-- {vales-almacen} -->
-                                        <option value="{id_vale_almacen}">Cliente 2</option>
-                                        <!-- {/vales-almacen} -->
+                                        <option value="" disabled selected>Seleccione cliente</option>
+                                        {clientes}
+                                        <option value="{id_cliente}">{cliente}</option>
+                                        {/clientes}
                                     </select>
                                 </div>
                             </div>
@@ -160,10 +160,10 @@
                                 <label class="form-label" for="id_vale_almacen">Tipo de producto</label>
                                 <div class="form-control-wrap">
                                     <select name="id_vale_almacen" class="form-select validate required">
-                                        <option value="" disabled selected>{lang(general_select_option)}</option>
-                                        {vales-almacen}
-                                        <option value="{id_vale_almacen}">{almacen}</option>
-                                        {/vales-almacen}
+                                        <option value="" disabled selected>Seleccione tipo de producto</option>
+                                        {tproducto}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/tproducto}
                                     </select>
                                 </div>
                             </div>

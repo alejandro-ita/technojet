@@ -14,6 +14,7 @@ class Ventas extends SB_Controller {
 		$this->load->model('technojet/Ventas_cotizaciones_model', 'db_vc');
 		$this->load->model('technojet/Vendedores_model', 'db_vendedor');
 		$this->load->model('technojet/Catalogos_model', 'db_catalog');
+		$this->load->model('technojet/Clientes_model', 'db_cliente');
 	}
 
 	public function cotizaciones() {
@@ -66,11 +67,22 @@ class Ventas extends SB_Controller {
 		$sqlWhere['grupo'] = 6;
 		$dataView['lentrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
 
+		//Tipos de producto
+		$sqlWhere['id_categoria'] = 30;
+		$sqlWhere['grupo'] = 6;
+		$dataView['tproducto'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+
 		//Vendedores
 		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
 
 		//Monedas
 		$dataView['monedas'] = $this->db_catalog->get_monedas_min();
+
+		//Clientes
+		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
+
+		//Clientes
+		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
 
 		//cargar JS's / INTERACCIÓN
 

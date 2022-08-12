@@ -1,0 +1,35 @@
+<div class="modal fade" id="new-cliente" aria-modal="true" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{lang(general_new_cliente)}</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="requisicion">{lang(general_cliente)}</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required" id="cliente" name="cliente" required/>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="requisicion">Razón Social</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required" id="razon_social" name="razon_social" required/>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="requisicion">RFC</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required" id="rfc" name="rfc" required/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-save-cliente" class="btn btn-dark">{lang(general_save)}</button>
+            </div>
+        </div>
+    </div>
+</div>

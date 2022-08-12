@@ -30,6 +30,7 @@ $lang['menu_reporte_sistemas'] 	    = 'Reporte de sistemas';
 $lang['menu_ventasp']			    = 'Ventas';
 $lang['menu_cotizaciones']			= 'Cotizaciones';
 $lang['menu_vendedores']			= 'Vendedores';
+$lang['menu_clientes']			    = 'Clientes';
 
 
 $lang['menu_ventas_cotizaciones']	= 'Cotizaciones';

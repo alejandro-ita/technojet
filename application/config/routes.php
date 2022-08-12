@@ -87,4 +87,4 @@ $route['ventas/notas-credito/mostrador'] 	    = 'ventas/ventas/mostrador_notas';
 $route['ventas/notas-credito/factura'] 	        = 'ventas/ventas/factura_notas';
 
 #Solicitud entrega
-$route['ventas/solicitud-entrega'] 	    = 'ventas/ventas/solicitud-entrega';
+$route['ventas/solicitud-entrega'] 	    = 'ventas/ventas/solicitud_entrega';

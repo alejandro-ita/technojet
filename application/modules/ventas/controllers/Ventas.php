@@ -171,7 +171,13 @@ class Ventas extends SB_Controller {
 		$pathJS = get_var('path_js');
 		$includes['modulo']['js'][] = ['name'=>'solicitud_entrega', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 		
-		$this->load_view('ventas/solicitud/solicitud_view', $dataView, $includes);
+		$this->load_view('ventas/solicitud-entrega/solicitud_view', $dataView, $includes);
+	}
+	public function get_modal_add_solicitud(){
+		$this->parser_view('ventas/solicitud-entrega/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
+	public function get_modal_add_solicitud_product(){
+		$this->parser_view('ventas/solicitud-entrega/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
 	#==============FIN Facturación================
 		

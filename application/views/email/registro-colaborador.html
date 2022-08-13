@@ -1,0 +1,50 @@
+<table style="width: 96%; max-width: 620px; margin: 0 auto; background: #ffffff;">
+    <tbody>
+        <tr>
+            <td style=" padding: 2.75rem 2.75rem 1rem 2.75rem !important;">
+                <h2 style="margin-bottom: 0; font-size: 18px; color: #854fff; font-weight: 600; margin: 0; line-height: 1.4; letter-spacing: -0.03em;">
+                    Crear una contraseña nueva.
+                </h2>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-left: 2.75rem !important; padding-right: 2.75rem !important; padding-bottom: 0.75rem !important;">
+                <p style="margin-top: 0; margin-bottom: 1rem;">
+                    Hola {nombre_completo}.
+                </p>
+                <p style="margin-top: 0; margin-bottom: 1rem;">
+                    ¡Bienvenido!<br />
+                    Usted está recibiendo este correo electrónico porque el administrador lo ha registrado al sistema como parte del equipo.
+                </p>
+                <p style="margin-top: 0; margin-bottom: 1rem;">
+                    Haga clic en el enlace a continuación para generar la contraseña de su cuenta {get_var(site_name)}
+                </p>
+                <a href="{link-check-email}" style="background: #854fff; border-radius: 4px; color: #ffffff !important; display: inline-block; font-size: 14px; font-weight: 600; line-height: 44px; text-align: center; text-decoration: none; text-transform: uppercase; padding: 0 30px; transition: color .4s, background-color .4s, border .4s, box-shadow .4s;">
+                    Generar contraseña
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-left: 2.75rem !important; padding-right: 2.75rem !important; padding-top: 1.5rem !important;">
+                <h4 style="font-size: 14px; color: #526484; font-weight: 600; margin: 0; text-transform: uppercase; margin-bottom: 10px; letter-spacing: -0.02em;">O</h4>
+                <p style="margin-top: 0; margin-bottom: 1rem;">
+                    Si el botón de arriba no funciona, pegue este enlace en su navegador web:
+                </p>
+                <a href="#" style="display: flex; transition: color .4s, background-color .4s, border .4s, box-shadow .4s; color: #9d72ff; text-decoration: none; background-color: transparent;">
+                    <label style="color: #854fff;">{link-check-email}</label>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-left: 2.75rem !important; padding-bottom: 2.75rem !important; padding-right: 2.75rem !important; padding-top: 1.5rem !important;">
+                <p style="margin-top: 0; margin-bottom: 1rem;">
+                    Si no reconoce este correo, es posible que alguien haya introducido su dirección de correo electrónico por error. Por favor ignore este mensaje ó simplemente elimenela.
+                </p>
+                <p style="margin-bottom: 0; margin: 0; font-size: 14px; line-height: 22px; color: #8094ae;">
+                    Saludos cordiales, <br>
+                    <b>{get_var(site_name)}</b>
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>

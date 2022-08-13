@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{get_var(site_name)} - Vale de entrada</title>
+	<style type="text/css">
+		@font-face {
+			font-family: 'Arial';
+			font-style: normal;
+			font-weight: normal;
+			src: url({base_url()}{get_var(path_fonts)}/arial/arial.ttf) format('truetype');
+		}
+
+		body{
+			font-family: 'arial';
+			font-size: 12px;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		table {
+			font-family: 'arial';
+			width: 100%;
+			border: 0px;
+			border-collapse: collapse;
+		}
+
+		table.tbl-productos {
+			border: 1px solid #black;
+			border-collapse: collapse;
+		}
+
+		th, td {
+			font-family: 'arial';
+			border: 1px solid black;
+			border-collapse: collapse;
+		}
+
+		.border-1 {
+			border: 1px solid black;
+		}
+
+		.border-2 {
+			border: 2px solid black;
+		}
+
+		.no-border {
+			border: 0px solid transparent;
+		}
+
+		.bb-2 {
+			border-bottom: 2px solid black;
+		}
+
+		.bx-0 {
+			border-left: 0px solid transparent;
+			border-right: 0px solid transparent;
+		}
+	</style>
+</head>
+<body>
+	<table>
+		<tbody>
+			<tr>
+				<th colspan="10" rowspan="2" class="no-border">
+					<h4>REPORTE DE SISTEMAS</h4>
+				</th>
+				<td colspan="4" class="no-border"></td>
+			</tr>
+				<th colspan="2">FOLIO</th>
+				<th colspan="2">{id_reporte_sistema}</th>
+			</tr>
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<tr>
+				<th colspan="3" class="no-border"></th>
+				<th colspan="2" class="no-border">Responsable:</th>
+				<th colspan="2">{responsable}</th>
+				<th colspan="3" class="no-border"></th>
+				<th colspan="2">Fecha:</th>
+				<th colspan="2">{custom_fecha}</th>
+			</tr>
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<tr>
+				<th colspan="11" rowspan="2" align="center">Oficina</th>
+				<th rowspan="2"class="no-border"></th>
+				<th colspan="2" align="center">Estado</th>
+			</tr>
+			<tr>
+				<th>Bueno</th>
+				<th>Dañado</th>
+			</tr>
+			<!-- OFICINA -->
+			{items_oficina}
+			<tr>
+				<td colspan="3" align="center">{item}</td>
+				<td>Descripción del estado:</td>
+				<td colspan="7" align="center">{descripcion_estado}</td>
+				<td class="no-border"></td>
+				<td align="center">{if {estado}==1}X{/if}</td>
+				<td align="center">{if {estado}==0}X{/if}</td>
+			</tr>
+			{/items_oficina}
+			<tr>
+				<td colspan="3" align="center">Observaciones:</td>
+				<td colspan="8">{oficina_observaciones}</td>
+				<td class="no-border"></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center">Aspectos Mejora:</td>
+				<td colspan="8">{oficina_am}</td>
+				<td class="no-border"></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<!-- END OFICINA -->
+
+			<!-- Taller -->
+			<tr>
+				<th colspan="11"align="center">Taller</th>
+				<th class="no-border"></th>
+				<th></th>
+				<th></th>
+			</tr>
+			{items_taller}
+			<tr>
+				<td colspan="3" align="center">{item}</td>
+				<td>Descripción del estado:</td>
+				<td colspan="7" align="center">{descripcion_estado}</td>
+				<td class="no-border"></td>
+				<td align="center">{if {estado}==1}X{/if}</td>
+				<td align="center">{if {estado}==0}X{/if}</td>
+			</tr>
+			{/items_taller}
+			<tr>
+				<td colspan="3" align="center">Observaciones:</td>
+				<td colspan="8">{taller_observaciones}</td>
+				<td class="no-border"></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center">Aspectos Mejora:</td>
+				<td colspan="8">{taller_am}</td>
+				<td class="no-border"></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<!-- END Taller -->
+			
+			<!-- Área De Producción -->
+			<tr>
+				<th colspan="11"align="center">Área De Producción</th>
+				<th class="no-border"></th>
+				<th></th>
+				<th></th>
+			</tr>
+			{items_area_produccion}
+			<tr>
+				<td colspan="3" align="center">{item}</td>
+				<td>Descripción del estado:</td>
+				<td colspan="7" align="center">{descripcion_estado}</td>
+				<td class="no-border"></td>
+				<td align="center">{if {estado}==1}X{/if}</td>
+				<td align="center">{if {estado}==0}X{/if}</td>
+			</tr>
+			{/items_area_produccion}
+			<tr>
+				<td colspan="3" align="center">Observaciones:</td>
+				<td colspan="8">{area_pro_observaciones}</td>
+				<td class="no-border"></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center">Aspectos Mejora:</td>
+				<td colspan="8">{area_pro_am}</td>
+				<td class="no-border"></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<!-- END Área De Producción -->
+
+			<!-- Gimnasio -->
+			<tr>
+				<th colspan="11"align="center">Gimnasio</th>
+				<th class="no-border"></th>
+				<th></th>
+				<th></th>
+			</tr>
+			{items_gimnasio}
+			<tr>
+				<td colspan="3" align="center">{item}</td>
+				<td>Descripción del estado:</td>
+				<td colspan="7" align="center">{descripcion_estado}</td>
+				<td class="no-border"></td>
+				<td align="center">{if {estado}==1}X{/if}</td>
+				<td align="center">{if {estado}==0}X{/if}</td>
+			</tr>
+			{/items_gimnasio}
+			<tr>
+				<td colspan="3" align="center">Observaciones:</td>
+				<td colspan="8">{gimnasio_observaciones}</td>
+				<td class="no-border"></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center">Aspectos Mejora:</td>
+				<td colspan="8">{gimnasio_am}</td>
+				<td class="no-border"></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<!-- END Gimnasio -->
+
+			<!-- Roof Garden -->
+			<tr>
+				<th colspan="11"align="center">Roof Garden</th>
+				<th class="no-border"></th>
+				<th></th>
+				<th></th>
+			</tr>
+			{items_roof_garden}
+			<tr>
+				<td colspan="3" align="center">{item}</td>
+				<td>Descripción del estado:</td>
+				<td colspan="7" align="center">{descripcion_estado}</td>
+				<td class="no-border"></td>
+				<td align="center">{if {estado}==1}X{/if}</td>
+				<td align="center">{if {estado}==0}X{/if}</td>
+			</tr>
+			{/items_roof_garden}
+			<tr>
+				<td colspan="3" align="center">Observaciones:</td>
+				<td colspan="8">{roof_garden_observaciones}</td>
+				<td class="no-border"></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center">Aspectos Mejora:</td>
+				<td colspan="8">{roof_garden_am}</td>
+				<td class="no-border"></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<!-- END Roof Garden -->
+
+			<!-- PRODUCTOS REPORTE SISTEMAS -->
+			<tr>
+				<td class="no-border" colspan="14">
+					<table class="tbl-productos" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Cantidad</th>
+                                <th>No. de parte</th>
+                                <th>Unidad de medida</th>
+                                <th style="width:250px !important;">Descripción</th>
+                                <th>Precio unitario</th>
+                                <th>Descuento</th>
+                                <th>Importe</th>
+                                <th>Autorizado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        	{productos}
+                        	<tr>
+                        		<td align="center">{cantidad}</td>
+			                    <td align="center">{no_parte}</td>
+			                    <td align="center">{unidad_medida}</td>
+			                    <td>{descripcion}</td>
+			                    <td align="right">$ {precio_unitario}</td>
+			                    <td align="right">{descuento} %</td>
+			                    <td align="right">$ {importe}</td>
+			                    <td>{autorizado}</td>
+                        	</tr>
+                        	{/productos}
+                        </tbody>
+                    </table>
+				</td>
+			</tr>
+			<!-- END PRODUCTOS REPORTE SISTEMAS -->
+
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<tr><td class="no-border" colspan="14">&nbsp;</td></tr>
+			<tr>
+				<td class="no-border">&nbsp;</td>
+				<td class="no-border bb-2" colspan="4" align="center">{encargado_elaboracion}</td>
+				<td class="no-border" colspan="3">&nbsp;</td>
+				<td class="no-border bb-2" colspan="5" align="center">{vo_bo}</td>
+				<td class="no-border">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="no-border">&nbsp;</td>
+				<td class="no-border" colspan="4" align="center">Firma Y Nombre Encargado De Elaboración</td>
+				<td class="no-border" colspan="3">&nbsp;</td>
+				<td class="no-border" colspan="5" align="center">Firma Y Nombre Vo. Bo</td>
+				<td class="no-border">&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

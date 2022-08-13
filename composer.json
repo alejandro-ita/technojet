@@ -1,0 +1,33 @@
+{
+	"description": "adysa Code framework",
+	"type": "project",
+	"homepage": "https://adysacode.com",
+	"license": "MIT",
+	"authors": [
+        {
+            "name": "Saul Hernandez Nicasio" ,
+            "email": "hernan.06_saul@hotmail.com"
+        }
+    ],
+	"support": {
+		"site": "https://adysacode.com"
+	},
+	"config": {
+        "vendor-dir": "application/third_party"
+    },
+    "autoload":{
+        "classmap":[
+            "application/core"
+        ]
+    },
+	"require": {
+		"php": ">=5.6",
+		"dompdf/dompdf":"v1.2.1",
+		"phpmailer/phpmailer":"v6.5.*",
+		"yidas/codeigniter-rest":">=1.7.0"
+	},
+	"suggest": {
+	},
+	"require-dev": {
+	}
+}

@@ -1,0 +1,100 @@
+<div class="nk-block-head nk-block-head-sm px-2 pb-1">
+    <div class="nk-block-between g-3">
+        <div class="nk-block-head-content">
+            <h3 class="nk-block-title page-title text-primary">
+                Vales de entrada
+            </h3>
+            <div class="nk-block-des text-soft">
+                <p>Información general</p>
+            </div>
+        </div>  
+    </div>
+</div>
+<div class="nk-block">
+    <div class="row">
+        <div class="col-sm-12 col-md-8">
+            <div class="card">
+                <div class="card-inner">
+                    <table class="table dataTable no-footer dtr-inline" id="tbl-vales-entrada-almacen" data-btn-Add="{get_userData(crear)}">
+                        <thead>
+                            <tr class="nk-tb-item nk-tb-head bg-dark">
+                                <th class="nk-tb-col text-white noVis">{lang(general_id)}</th>
+                                <th class="nk-tb-col text-white">Almacenes entrantes</th>
+                                <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="card">
+                <div class="card-inner">
+                    <table class="table dataTable no-footer dtr-inline" id="tbl-vales-entrada-estatus" data-btn-Add="{get_userData(crear)}">
+                        <thead>
+                            <tr class="nk-tb-item nk-tb-head bg-dark">
+                                <th class="nk-tb-col text-white noVis">{lang(general_id)}</th>
+                                <th class="nk-tb-col text-white">Estatus</th>
+                                <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modales-catalogo">
+    <!-- MODAL NUEVO ALMACEN ENTRANTE -->
+    <div class="modal fade" id="modal-vales-almacen-entrada">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="#" class="form-validate">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{lang(vales_almacen_entrante)}</h5>
+                        <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="form-control-wrap">
+                                <input type="text" class="form-control" id="almacen" name="almacen" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-dark">{lang(general_save)}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL NUEVO ESTATUS -->
+    <div class="modal fade" id="modal-vales-estatus-entrada">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="#" class="form-validate">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Estatus</h5>
+                        <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="form-control-wrap">
+                                <input type="text" class="form-control" id="estatus" name="estatus" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-dark">{lang(general_save)}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

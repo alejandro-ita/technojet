@@ -1,0 +1,125 @@
+<div class="nk-block">
+    <div class="card card-stretch">
+        <div class="card-inner-group">
+            <div class="card-inner">
+                <div class="card-title-group">
+                    <div class="card-title">
+                        <h5 class="title">
+                            <a href="{base_url(dashboard)}"><em class="icon ni ni-back-ios"></em></a>
+                            Mis tareas
+                        </h5>
+                    </div>
+                    <div class="card-tools tools-tbl-mis-tareas mr-n1">
+                        <ul class="btn-toolbar gx-1">
+                            <li>
+                                <a href="#" class="search-toggle toggle-search btn btn-icon" data-target="search"><em class="icon ni ni-search"></em></a>
+                            </li>
+                            <li class="btn-toolbar-sep"></li>
+                            <li>
+                                <div class="dropdown">
+                                    <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-toggle="dropdown">
+                                        <div class="badge badge-circle badge-primary">2</div>
+                                        <em class="icon ni ni-filter-alt"></em>
+                                    </a>
+                                    <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-right">
+                                        <div class="dropdown-head">
+                                            <span class="sub-title dropdown-title">Filtro avanzado</span>
+                                        </div>
+                                        <div class="dropdown-body dropdown-body-rg">
+                                            <div class="row gx-6 gy-4">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="overline-title overline-title-alt" for="filter-id_estatus">Estatus</label>
+                                                        <select class="form-control select2 validate required init-select2" id="filter-id_estatus" name="filter-id_estatus" data-placeholder="{lang(general_select_option)}" multiple>
+                                                            {list-estatus}
+                                                            <option value="{id_estatus}" {if {selected}==1}selected{/if}>{estatus}</option>
+                                                            {/list-estatus}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="overline-title overline-title-alt" for="filter-id_prioridad">Prioridad</label>
+                                                        <select class="form-control select2 validate required init-select2" id="filter-id_prioridad" name="filter-id_prioridad" data-placeholder="{lang(general_todos)}">
+                                                            <option value="0" selected>{lang(general_todos)}</option>
+                                                            {list-prioridad}
+                                                            <option value="{id_prioridad}">{prioridad}</option>
+                                                            {/list-prioridad}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label class="overline-title overline-title-alt" for="filter-fecha_inicio">Fecha inicio</label>
+                                                        <input type="date" class="form-control" id="filter-fecha_inicio" name="filter-fecha_inicio" value="{fecha_inicio}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label class="overline-title overline-title-alt" for="filter-fecha_fin">Fecha fin</label>
+                                                        <input type="date" class="form-control" id="filter-fecha_fin" name="filter-fecha_fin" value="{fecha_fin}">
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-foot between">
+                                            <a class="clickable" href="#"></a>
+                                            <a href="#" id="reload-tbl-task" class="btn btn-dark">Aplicar filtro</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown">
+                                    <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-toggle="dropdown"><em class="icon ni ni-setting"></em></a>
+                                    <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
+                                        <ul class="link-check mis-tareas_length">
+                                            <li><span>{lang(lib_mostrar)}</span></li>
+                                            <li class="active">
+                                                <a href="#" data-length="10">10 {lang(lib_registros_min)}</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" data-length="25">25 {lang(lib_registros_min)}</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" data-length="50">50 {lang(lib_registros_min)}</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" data-length="-1">{lang(general_todos)}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-search tools-tbl-mis-tareas search-wrap" data-search="search">
+                        <div class="search-content">
+                            <a href="#" class="search-back btn btn-icon toggle-search" data-target="search">
+                                <em class="icon ni ni-arrow-left"></em>
+                            </a>
+                            <input id="buscar" type="text" class="form-control border-transparent form-focus-none" placeholder="Buscar" />
+                            <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-inner py-1">
+                <table id="tbl-mis-tareas" class="nk-tb-list nk-tb-ulist dataTable" data-auto-responsive="false">
+                    <thead>
+                        <tr class="nk-tb-item nk-tb-head">
+                            <th class="nk-tb-col"><span class="sub-text">Tarea</span></th>
+                            <th class="nk-tb-col tb-col-mb"><span class="sub-text">Responsables</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">Participantes</span></th>
+                            <!-- <th class="nk-tb-col tb-col-lg"><span class="sub-text">Fecha inicio</span></th> -->
+                            <!-- <th class="nk-tb-col tb-col-lg"><span class="sub-text">Fecha fin</span></th> -->
+                            <th class="nk-tb-col tb-col-md"><span class="sub-text">Prioridad</span></th>
+                            <th class="nk-tb-col tb-col-md"><span class="sub-text">Estatus</span></th>
+                            <th class="nk-tb-col nk-tb-col-tools text-right"></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

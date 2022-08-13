@@ -1,0 +1,74 @@
+{if {total-tareas}>0}
+{mis-tareas}
+<div class="card-inner card-inner-md">
+    <div class="user-card">
+        <div class="user-avatar bg-primary-dim"><span>{get_userData(avatar)}</span></div>
+        <div class="user-info">
+        	<span class="lead-text">Tar-{id_tarea} {titulo}</span>
+        	<span class="sub-text">{descripcion}</span>
+    		{switch {id_estatus}}
+				{case 1}<span class="badge badge-dot badge-dot-xs badge-warning ml-1">Por hacer</span>{break}
+				{case 2}<span class="badge badge-dot badge-dot-xs badge-info ml-1">En curso</span>{break}
+				{case 3}<span class="badge badge-dot badge-dot-xs badge-success ml-1">Finalizada</span>{break}
+				{case 4}<span class="badge badge-dot badge-dot-xs badge-danger ml-1">Atrasada</span>{break}
+				{case 5}<span class="badge badge-dot badge-dot-xs badge-warning ml-1">Cancelada</span>{break}
+			{/switch}
+        </div>
+        <div class="user-action task-data" data-dataEncription="{dataEncription}">
+            <div class="drodown">
+                <a href="#" class="dropdown-toggle btn btn-icon btn-trigger mr-n1" data-toggle="dropdown" aria-expanded="false">
+                	<em class="icon ni ni-more-h"></em>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <ul class="link-list-opt no-bdr">
+                        <li>
+                            <a href="#" class="text-info add-comment">
+                            	<em class="icon ni ni-comments"></em>
+                            	<span>Comentar</span>
+                            </a>
+                        </li>
+                        {if {read-only}==1}
+                        <li>
+                            <a href="#" class="text-info view-task">
+                            	<em class="icon ni ni-eye"></em>
+                            	<span>Ver</span>
+                            </a>
+                        </li>
+                        {/if}
+                        {if {can-edit}==1}
+                        <li>
+                            <a href="#" class="text-warning update-task">
+                            	<em class="icon ni ni-edit"></em>
+                            	<span>Editar</span>
+                            </a>
+                        </li>
+                        {/if}
+                        {if {id_usuario_insert}=={get_userData(id_usuario)}}
+                        <li>
+                            <a href="#" class="text-danger rm-task">
+                            	<em class="icon ni ni-trash-empty"></em>
+                            	<span>Eliminar</span>
+                            </a>
+                        </li>
+                        {/if}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/mis-tareas}
+{else}
+<div class="card-inner">
+    <div class="example-alerts">
+        <div class="gy-4">
+			<div class="example-alert">
+				<div class="alert alert-secondary alert-icon">
+					<em class="icon ni ni-alert-circle"></em>
+					<strong>No tienes tareas registrados</strong>.
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/if}

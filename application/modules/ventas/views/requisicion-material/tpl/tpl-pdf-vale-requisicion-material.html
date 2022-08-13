@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{get_var(site_name)} - Vale de entrada</title>
+	<style type="text/css">
+		@font-face {
+			font-family: 'Arial';
+			font-style: normal;
+			font-weight: normal;
+			src: url({base_url()}{get_var(path_fonts)}/arial/arial.ttf) format('truetype');
+		}
+
+		body{
+			font-family: 'arial';
+			font-size: 12px;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		table {
+			font-family: 'arial';
+			width: 100%;
+			border: 2px solid black;
+			border-collapse: collapse;
+		}
+
+		th, td {
+			font-family: 'arial';
+			border: 1px solid black;
+			border-collapse: collapse;
+		}
+
+		.border-1 {
+			border: 1px solid black;
+		}
+
+		.border-2 {
+			border: 2px solid black;
+		}
+
+		.bb-2 {
+			border-bottom: 2px solid black;
+		}
+
+		.no-border {
+			border: 0px solid transparent;
+		}
+
+		.bx-0 {
+			border-left: 0px solid transparent;
+			border-right: 0px solid transparent;
+		}
+
+		.input-firma {
+			border-bottom: 1px solid black;
+			padding: 5px;
+		}
+
+		.text-uc {
+			text-transform: uppercase;
+		}
+
+		.pr-1 {
+			padding-right: 5px;
+		}
+
+		.spacing td {
+			height: 5px;
+		}
+	</style>
+</head>
+<body>
+	<table>
+		<tbody>
+			<tr>
+				<th colspan="3">Logo</th>
+				<th colspan="10">TECNOLOGÍAS,SUMINISTRO E IDENTIFICACION AL INSTANTE  SA DE CV.</th>
+			</tr>
+			<tr>
+				<th colspan="11">REQUISICION DE MATERIAL</th>
+				<th>FOLIO DE REQUISICION</th>
+				<th>RQ-{id_requisicion}</th>
+			</tr>
+			<tr class="spacing"><td class="no-border" colspan="13"></td></tr>
+			<tr>
+				<th class="no-border"></th>
+				<th class="no-border pr-1" colspan="2" align="right">FECHA DE SOLICITUD</th>
+				<th class="input-data" colspan="2">{fecha_solicitud}</th>
+				<th class="no-border" colspan="3"></th>
+				<th class="no-border pr-1" colspan="3" align="right">DEPARTAMENTO SOLICITANTE</th>
+				<th class="input-data" colspan="2">{departamento_solicitante}</th>
+			</tr>
+			<tr class="spacing"><td class="no-border" colspan="13"></td></tr>
+			<tr>
+				<th class="no-border"></th>
+				<th class="no-border pr-1" colspan="2" align="right">TIPO DE REQUISICION</th>
+				<th class="input-data" colspan="2">{tipo_requisicion}</th>
+				<th class="no-border" colspan="3"></th>
+				<th class="no-border pr-1" colspan="3" align="right">PERSONA SOLICITANTE</th>
+				<th class="input-data" colspan="2">{persona_solicitante}</th>
+			</tr>
+			<tr class="spacing"><td class="no-border" colspan="13"></td></tr>
+			<tr>
+				<th class="no-border"></th>
+				<th class="no-border pr-1" colspan="2" align="right">PEDIDO INTERNO</th>
+				<th class="input-data" colspan="2">{pedido_interno}</th>
+				<th class="no-border" colspan="3"></th>
+				<th class="no-border" colspan="3" align="right">ALMACÉN SOLICITANTE</th>
+				<th class="input-data" colspan="2">{almacen_solicitante}</th>
+			</tr>
+			<tr class="spacing"><td class="no-border" colspan="13"></td></tr>
+			<tr>
+				<th class="no-border"></th>
+				<th class="no-border" colspan="2" align="right">CLIENTE</th>
+				<th class="input-data" colspan="2">{cliente}</th>
+				<th class="no-border" colspan="3"></th>
+				<th class="no-border" colspan="3" align="right">ENCARGADO DE ALMACÉN</th>
+				<th class="input-data" colspan="2">{encargado_almacen}</th>
+			</tr>
+			<tr class="spacing"><td class="no-border" colspan="13"></td></tr>
+			<tr>
+				<th class="no-border"></th>
+				<th class="no-border" colspan="2" align="right">FECHA DE ENTREGA</th>
+				<th class="input-data" colspan="2">{fechas_ve}</th>
+				<th class="no-border" colspan="3"></th>
+				<th class="no-border" colspan="3" align="right">TIPO DE ENTREGA</th>
+				<th class="input-data" colspan="2">{tipo_entrega_ve}</th>
+			</tr>
+			<tr class="spacing"><td class="no-border" colspan="13"></td></tr>
+			<tr>
+				<th class="no-border"></th>
+				<th class="no-border" colspan="2" align="right">VALE DE ENTRADA</th>
+				<th class="input-data" colspan="2">{folios_ve}</th>
+				<th class="no-border"></th>
+				<th class="no-border" colspan="5" align="right">DEPARTAMENTO ENCARGADO DE SURTIR</th>
+				<th class="input-data" colspan="2">{departamento_encargado_surtir}</th>
+			</tr>
+			<tr>
+				<td class="no-border" colspan="13">&nbsp;</td>
+			</tr>
+			<tr>
+                <th class="border-2 text-uc" colspan="2">CANTIDAD</th>
+                <th class="border-2 text-uc" colspan="2">NO. PARTE</th>
+                <th class="border-2 text-uc" colspan="2">UNIDAD DE MEDIDA</th>
+                <th class="border-2 text-uc" colspan="7" style="width:400px !important;">DESCRIPCION</th>
+			</tr>
+			{list-productos}
+			<tr>
+				<th colspan="2">{cantidad}</th>
+				<th colspan="2">{no_parte}</th>
+				<th colspan="2">{unidad_medida}</th>
+				<th colspan="7">{descripcion}</th>
+			</tr>
+			{/list-productos}
+			<tr>
+				<td class="bb-2" colspan="13">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="bb-2" colspan="3" align="center">OBSERVACIONES</td>
+				<td class="bb-2" colspan="10">{observaciones}</td>
+			</tr>
+			<tr>
+				<td class="no-border" colspan="13" style="height: 40px;">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="no-border" colspan="3" align="right">NOMBRE Y FIRMA DE ALMACEN</td>
+				<td class="no-border input-firma" colspan="3">{nombre_almacen}</td>
+				<td class="no-border">&nbsp;</td>
+				<td class="no-border" colspan="3" align="right">NOMBRE Y FIRMA DE AUTORIZACIÓN</td>
+				<td class="no-border input-firma" colspan="3">{nombre_autorizacion}</td>
+			</tr>
+			<tr>
+				<td class="no-border" colspan="13" style="height: 40px;">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="no-border" colspan="3" align="right">NOMBRE Y FIRMA DE COMPRAS / PRODUCCIÓN</td>
+				<td class="no-border input-firma" colspan="3">{nombre_compras}</td>
+				<td class="no-border">&nbsp;</td>
+				<td class="no-border" colspan="3"></td>
+				<td class="no-border" colspan="3"></td>
+			</tr>
+			<tr><td class="no-border" colspan="13">&nbsp;</td></tr>
+		</tbody>
+	</table>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<div class="card card-bordered card-preview my-2">
+    <div class="card-body px-1 py-2">
+        <div class="card-title"><h6 class="title">Taller</h6></div>
+        <table class="table dataTable no-footer dtr-inline" id="modal-tbl-entrada-productos" data-btn-Add="true">
+            <thead>
+                <tr class="nk-tb-item nk-tb-head bg-dark">
+                    <th class="nk-tb-col text-white"></th>
+                    <th class="nk-tb-col text-white" style="width: 70%;">Descripción del estado</th>
+                    <th class="nk-tb-col text-white">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="hidden" name="taller[accesorios_inteligentes][item]" value="Accesorios Inteligentes">
+                        Accesorios Inteligentes
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="taller[accesorios_inteligentes][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="taller-estado-accesorios-inteligentes1" name="taller[accesorios_inteligentes][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="taller-estado-accesorios-inteligentes1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="taller-estado-accesorios-inteligentes2" name="taller[accesorios_inteligentes][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="taller-estado-accesorios-inteligentes2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="taller[routers][item]" value="Routers">
+                        Routers
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="taller[routers][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="taller-estado-routers1" name="taller[routers][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="taller-estado-routers1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="taller-estado-routers2" name="taller[routers][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="taller-estado-routers2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="taller[sistemas_cables][item]" value="Sistemas De Cables">
+                        Sistemas De Cables
+                    </td>
+                    <td><input type="text" class="form-control validate required" name="taller[sistemas_cables][descripcion_estado]"></td>
+                    <td>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="taller-estado-sistemas-cables1" name="taller[sistemas_cables][estado]" class="custom-control-input validate required" value="Bueno">
+                            <label class="custom-control-label" for="taller-estado-sistemas-cables1">Bueno</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="taller-estado-sistemas-cables2" name="taller[sistemas_cables][estado]" class="custom-control-input validate required" value="Dañado">
+                            <label class="custom-control-label" for="taller-estado-sistemas-cables2">Dañado</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group mb-0">
+                                    <label class="form-label" for="taller_observaciones">Observaciones</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control validate required" id="taller_observaciones" name="taller_observaciones"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group mb-0">
+                                    <label class="form-label" for="taller_am">Aspectos Mejora</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control validate required" id="taller_am" name="taller_am" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,204 @@
+<div class="modal fade" id="modal-nueva-vale-requisicion" aria-modal="true" role="dialog" style="overflow-y: auto;">
+    <div class="modal-dialog modal-fs" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Requisición de material</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="no-folio">Número de folio</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="no-folio" name="no-folio" value="RQ-{proximo_id}" required readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="fecha_solicitud">Fecha de solicitud</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="fecha_solicitud" name="fecha_solicitud" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_tipo_requisicion">Tipo de requisición</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_tipo_requisicion" name="id_tipo_requisicion" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>{lang(general_select_option)}</option>
+                                        {tipos-requisiciones}
+                                        <option value="{id_tipo_requisicion}">{tipo_requisicion}</option>
+                                        {/tipos-requisiciones}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="pedido_interno">Pedido interno</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="pedido_interno" name="pedido_interno" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="cliente">Cliente</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="cliente" name="cliente" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="fecha_entrega">Fecha de entrega</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="fecha_entrega" name="fecha_entrega" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_vale_entrada">Vale de entrada</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_vale_entrada" name="id_vale_entrada" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>{lang(general_select_option)}</option>
+                                        {vales-entrada}
+                                        <option value="{id_vale_entrada}">VE-{id_vale_entrada}</option>
+                                        {/vales-entrada}
+                                    </select>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_departamento_solicitante">Departamento solicitante</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_departamento_solicitante" name="id_departamento_solicitante" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>{lang(general_select_option)}</option>
+                                        {departamentos-solicitantes}
+                                        <option value="{id_departamento_solicitante}">{departamento_solicitante}</option>
+                                        {/departamentos-solicitantes}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="persona_solicitante">Persona solicitante</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="persona_solicitante" name="persona_solicitante" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_almacen_solicitante">Almacen solicitante</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_almacen_solicitante" name="id_almacen_solicitante" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>{lang(general_select_option)}</option>
+                                        {almacenes-solicitantes}
+                                        <option value="{id_almacen_solicitante}">{almacen_solicitante}</option>
+                                        {/almacenes-solicitantes}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="encargado_almacen">Encargado de almacén</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="encargado_almacen" name="encargado_almacen" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="tipo_entrega">Tipo de entrega</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="tipo_entrega" name="tipo_entrega" required/>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_departamento_encargado_surtir">Departamento encargado de surtir</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_departamento_encargado_surtir" name="id_departamento_encargado_surtir" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>{lang(general_select_option)}</option>
+                                        {departamento-encargado-surtir}
+                                        <option value="{id_departamento_encargado_surtir}">{departamento_encargado_surtir}</option>
+                                        {/departamento-encargado-surtir}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card bg-light my-2">
+                                <div class="card-body px-1 py-2">
+                                    <table class="table dataTable no-footer dtr-inline" id="modal-tbl-productos-requisicion" data-btn-Add="true">
+                                        <thead>
+                                            <tr class="nk-tb-item nk-tb-head bg-dark">
+                                                <th class="nk-tb-col text-white">Tipo de producto</th>
+                                                <th class="nk-tb-col text-white">Unidad de medida</th>
+                                                <th class="nk-tb-col text-white">No. de parte</th>
+                                                <th class="nk-tb-col text-white" style="width:350px !important;">Descripción</th>
+                                                <th class="nk-tb-col text-white">Cantidad</th>
+                                                <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="observaciones">Observaciones</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate" id="observaciones" name="observaciones" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center pt-2">
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="nombre_almacen">Nombre y firma de almacen</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="nombre_almacen" name="nombre_almacen" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="nombre_compras">Nombre y firma de compras/Producción</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="nombre_compras" name="nombre_compras" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="nombre_autorizacion">Nombre y firma de autorización</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="nombre_autorizacion" name="nombre_autorizacion" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-save-vale-requisicion" class="btn btn-dark">{lang(general_save)}</button>
+            </div>
+        </div>
+    </div>
+</div>

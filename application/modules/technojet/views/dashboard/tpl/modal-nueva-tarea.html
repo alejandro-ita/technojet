@@ -1,0 +1,132 @@
+<div class="modal fade" id="modal-add-task" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nueva tarea</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="titulo">Tarea</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required" id="titulo" name="titulo"  required />
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="descripcion">Descripción</label>
+                        <div class="form-control-wrap">
+                            <textarea class="form-control validate required" id="descripcion" name="descripcion" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label" for="id_responsables">Responsable</label>
+                                <div class="form-control-wrap">
+                                    <select class="form-control select2 validate required init-select2" id="id_responsables" name="id_responsables" multiple data-placeholder="{lang(general_select_option)}">
+                                        <option value="">{lang(general_select_option)}</option>
+                                        {users}
+                                        <option value="{id_usuario}">{nombre_completo}</option>
+                                        {/users}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label" for="id_participantes">Participantes</label>
+                                <div class="form-control-wrap">
+                                    <select class="form-control select2 init-select2" id="id_participantes" name="id_participantes" multiple data-placeholder="{lang(general_select_option)}">
+                                        <option value="">{lang(general_select_option)}</option>
+                                        {users}
+                                        <option value="{id_usuario}">{nombre_completo}</option>
+                                        {/users}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label" for="id_estatus">Estatus</label>
+                                <div class="form-control-wrap">
+                                    <select class="form-control select2 validate required init-select2" id="id_estatus" name="id_estatus" data-placeholder="{lang(general_select_option)}">
+                                        <option value="" selected>{lang(general_select_option)}</option>
+                                        {list-estatus}
+                                        <option value="{id_estatus}" {if {id_estatus}==1}selected{/if}>{estatus}</option>
+                                        {/list-estatus}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label" for="id_prioridad">Prioridad</label>
+                                <div class="form-control-wrap">
+                                    <select class="form-control select2 validate required init-select2" id="id_prioridad" name="id_prioridad" data-placeholder="{lang(general_select_option)}">
+                                        <option value="" selected>{lang(general_select_option)}</option>
+                                        {list-prioridad}
+                                        <option value="{id_prioridad}" {if {id_prioridad}==2}selected{/if}>{prioridad}</option>
+                                        {/list-prioridad}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mt-2">
+                            <div class="preview-block " data-toggle="collapse">
+                                <div class="custom-control custom-switch " data-toggle="collapse" href="#collapseExample"  aria-expanded="false" aria-controls="collapseExample">
+                                    <input type="checkbox" class="custom-control-input" id="collapseExample" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" name="mc" value="1" />
+                                    <label class="custom-control-label" for="collapseExample">
+                                        Mostrar en calendario
+                                        <span class="sub-text text-info">
+                                            Al activar esta casilla, la tarea parasá como un evento y se visualizará en el calendario.
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 collapse mt-3" id="collapseExample">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="fecha_inicio">Fecha inicio</label>
+                                        <div class="form-control-wrap">
+                                            <input type="date" class="form-control validate required" id="fecha_inicio" name="fecha_inicio" value="{fecha_inicio}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="hora_inicio">Hora inicio</label>
+                                        <div class="form-control-wrap">
+                                            <input type="time" class="form-control" id="hora_inicio" name="hora_inicio">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="fecha_fin">Fecha fin</label>
+                                        <div class="form-control-wrap">
+                                            <input type="date" class="form-control validate required" id="fecha_fin" name="fecha_fin" value="{fecha_fin}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="hora_fin">Hora fin</label>
+                                        <div class="form-control-wrap">
+                                            <input type="time" class="form-control" id="hora_fin" name="hora_fin">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-add-task" class="btn btn-dark">{lang(general_agregar)}</button>
+            </div>
+        </div>
+    </div>
+</div>

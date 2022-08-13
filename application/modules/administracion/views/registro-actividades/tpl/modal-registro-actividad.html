@@ -1,0 +1,39 @@
+<div class="modal fade" id="registro actividad" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{lang(menu_registro_actividades)}</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <p>El usuario {nombre_completo}, {actividad} con ID <b>{id_registro}</b></p>
+                <div class="row">
+                    {if {insert}==1}
+                    <div class="col-sm-12">
+                        Datos del nuevo registro
+                        <pre><code id="after" class="prettyprint" data-newData='{newData}'>{newData}</code></pre>
+                    </div>
+                    {/if}
+
+                    {if {update}==1}
+                    <!-- <div class="col-sm-6">
+                        Datos anteriores
+                        <pre><code id="before" class="prettyprint" data-oldData='{oldData}'>{oldData}</code></pre>
+                    </div> -->
+                    <div class="col-sm-12">
+                        Datos actuales
+                        <pre><code id="after" class="prettyprint" data-newData='{newData}'>{newData}</code></pre>
+                    </div>
+                    {/if}
+
+                    {if {delete}==1}
+                    <div class="col-sm-12">
+                        Registro eliminado
+                        <pre><code id="before" class="prettyprint" data-oldData='{oldData}'>{oldData}</code></pre>
+                    </div>
+                    {/if}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+<div class="modal fade" id="modal-nuevo-reporte" aria-modal="true" role="dialog" style="overflow-y: auto;">
+    <div class="modal-dialog modal-fs" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reporte de sistemas</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="no-folio">Número de folio</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="no-folio" name="no-folio" value="{proximo_id}" required readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="fecha">Fecha</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="fecha" name="fecha"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="responsable">Responsable</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="responsable" name="responsable" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {tbl-reporte-oficina}
+                        </div>
+                        <div class="col-sm-12">
+                            {tbl-reporte-taller}
+                        </div>
+                        <div class="col-sm-12">
+                            {tbl-reporte-area-produccion}
+                        </div>
+                        <div class="col-sm-12">
+                            {tbl-reporte-gimnasio}
+                        </div>
+                        <div class="col-sm-12">
+                            {tbl-reporte-roof-garden}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table dataTable no-footer dtr-inline" id="modal-tbl-productos-reporte-sistemas" data-btn-Add="true">
+                                <thead>
+                                    <tr class="nk-tb-item nk-tb-head bg-dark">
+                                        <th class="nk-tb-col text-white">Cantidad</th>
+                                        <th class="nk-tb-col text-white">No. de parte</th>
+                                        <th class="nk-tb-col text-white">Unidad de medida</th>
+                                        <th class="nk-tb-col text-white" style="width:350px !important;">Descripción</th>
+                                        <th class="nk-tb-col text-white">Precio unitario</th>
+                                        <th class="nk-tb-col text-white">Descuento</th>
+                                        <th class="nk-tb-col text-white">Importe</th>
+                                        <th class="nk-tb-col text-white">Autorizado</th>
+                                        <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center pt-2">
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="encargado_elaboracion">Nombre Encargado De Elaboración</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="encargado_elaboracion" name="encargado_elaboracion" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="vo_bo">Nombre Vo. Bo</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="vo_bo" name="vo_bo" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-guardar-reporte" class="btn btn-dark">{lang(general_save)}</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<div class="nk-block-head nk-block-head-sm bg-white px-2 pb-1">
+    <div class="nk-block-between g-3">
+        <div class="nk-block-head-content">
+            <h3 class="nk-block-title page-title text-primary">
+            	{lang(menu_almacenes)}
+            </h3>
+        </div>
+    </div>
+</div>
+<div class="nk-block">
+	<div class="card">
+		<div class="card-inner pt-0">
+			<form id="form-filtro">
+				<div class="row">
+					<div class="col-sm-12 col-md-3">
+						<div class="form-group">
+						    <label class="form-label" for="id_uso">Uso</label>
+						    <div class="form-control-wrap">
+						        <select id="id_uso" name="id_uso" class="form-select init-select2 validate required" data-minimum-results-for-search="4" data-placeholder="{lang(general_select_option)}">
+		                            <option value="" selected>{lang(general_select_option)}</option>
+	                            	{usos}
+	                                <option value="{id_uso}">{uso}</option>
+	                            	{/usos}
+		                        </select>
+						    </div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-md-3">
+						<div class="form-group">
+						    <label class="form-label" for="id_categoria">{lang(general_categoria)}</label>
+						    <div class="form-control-wrap">
+						        <select id="id_categoria" name="id_categoria" class="form-select init-select2 validate required" data-minimum-results-for-search="4" data-placeholder="{lang(general_select_option)}">
+		                            <option value="" selected>{lang(general_select_option)}</option>
+		                        </select>
+						    </div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-md-1">
+						<div class="form-group">
+						    <label class="form-label d-block">&nbsp;</label>
+							<button type="button" id="load-productos" class="btn btn-dim btn-primary">Buscar</button>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="row">
+				<div class="col-sm-12">
+					<ul class="nav nav-tabs">
+					    <li class="nav-item">
+					        <a class="nav-link active" data-toggle="tab" href="#almacen">
+					        	<em class="icon ni ni-home"></em>
+					        	<span>{lang(vales_almacen)}</span>
+					        </a>
+					    </li>
+					    <li class="nav-item">
+					        <a class="nav-link" data-toggle="tab" href="#entrada">
+					        	<em class="icon ni ni-signin"></em>
+					        	<span>Entrada</span>
+					        </a>
+					    </li>
+					    <li class="nav-item">
+					        <a class="nav-link" data-toggle="tab" href="#salida">
+					        	<em class="icon ni ni-signout"></em>
+					        	<span>Salida</span>
+					        </a>
+					    </li>
+					</ul>
+					<div class="tab-content">
+					    <div class="tab-pane active" id="almacen">
+					    	{tpl-tbl-almacen}
+					    </div>
+					    <div class="tab-pane" id="entrada">
+					    	{tpl-tbl-almacen-entrada}
+					    </div>
+					    <div class="tab-pane" id="salida">
+					    	{tpl-tbl-almacen-salida}
+					    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

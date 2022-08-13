@@ -1,0 +1,97 @@
+<div class="nk-block-head nk-block-head-sm bg-white px-2 pb-1">
+    <div class="nk-block-between g-3">
+        <div class="nk-block-head-content"></div>
+        <div class="nk-block-head-content">
+		    <div class="toggle-wrap nk-block-tools-toggle">
+			    <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+			    <div class="toggle-expand-content" data-content="pageMenu">
+			        <ul class="nk-block-tools g-3 tools-tbl-almacen">
+			            <li>
+			                <div class="form-control-wrap">
+			                    <div class="form-icon form-icon-right">
+			                    	<em class="icon ni ni-search"></em>
+			                    </div>
+			                    <input type="text" id="buscar" class="form-control form-control-outlined" autocomplete="off" />
+							        <label class="form-label-outlined" for="buscar">{lang(lib_sSearchPlaceholder)}</label>
+			                </div>
+			            </li>
+			            <li>
+			            	<div class="dropdown">
+				                <a href="#" class="btn btn-outline-light btn-icon dropdown-toggle bg-transparent text-soft" data-toggle="dropdown" title="{lang(lib_total_rows)}">
+				                    <em class="icon ni ni-list-ol"></em>
+				                </a>
+				                <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
+				                    <ul class="link-check almacen_length">
+				                        <li><span>{lang(lib_mostrar)}</span></li>
+				                        <li class="active">
+				                            <a href="#" data-length="10">10 {lang(lib_registros_min)}</a>
+				                        </li>
+				                        <li>
+				                            <a href="#" data-length="25">25 {lang(lib_registros_min)}</a>
+				                        </li>
+				                        <li>
+				                            <a href="#" data-length="50">50 {lang(lib_registros_min)}</a>
+				                        </li>
+				                        <li>
+				                            <a href="#" data-length="-1">{lang(general_todos)}</a>
+				                        </li>
+				                    </ul>
+				                </div>
+				            </div>
+			            </li>
+			        </ul>
+			    </div>
+			</div>
+		</div>
+    </div>
+</div>
+<div class="nk-block">
+	<div class="table-responsive">
+		<table class="table dataTable no-footer dtr-inline" id="tbl-almacenes-productos-entrada" data-btn-col-vis="true" data-btn-Add="true">
+			<thead>
+				<tr class="nk-tb-item nk-tb-head bg-dark">
+					<th class="nk-tb-col text-white">No facturado/No entregado/No Pagado</th>
+					<th class="nk-tb-col text-white">No facturado/Entregado/No Pagado</th>
+					<th class="nk-tb-col text-white">No facturado/Entregado/Pagado</th>
+					<th class="nk-tb-col text-white">Facturado/No pagado/No entregado</th>
+					<th class="nk-tb-col text-white">Facturado/Entregado/No pagado</th>
+					<th class="nk-tb-col text-white">Facturado/Pagado/No entregado</th>
+					<th class="nk-tb-col text-white noVis">Facturado/Pagado/Entregado</th>
+					<th class="nk-tb-col text-white noVis">Consumible por renta de equipo</th>
+					<th class="nk-tb-col text-white noVis">Cancelado</th>
+					<th class="nk-tb-col text-white noVis">Complemento de pago</th>
+					<th class="nk-tb-col text-white noVis">Subtotal</th>
+					<th class="nk-tb-col text-white noVis">IVA</th>
+					<th class="nk-tb-col text-white noVis">Total del mes</th>
+				</tr>
+			</thead>
+	    </table>
+		<br>
+		<br>
+		<hr>
+		<br>
+		<br>
+		<table class="table dataTable no-footer dtr-inline" id="tbl-almacenes-productos-entrada" data-btn-col-vis="true" data-btn-Add="true">
+			<thead>
+				<tr class="nk-tb-item nk-tb-head bg-dark">
+					<th class="nk-tb-col text-white">Solvente</th>
+					<th class="nk-tb-col text-white">Tinta</th>
+					<th class="nk-tb-col text-white">Solución de limpieza</th>
+					<th class="nk-tb-col text-white">Cartucho de solvente</th>
+					<th class="nk-tb-col text-white">Cartucho de tinta</th>
+					<th class="nk-tb-col text-white">Ribbon</th>
+					<th class="nk-tb-col text-white">Kit de aditivos</th>
+					<th class="nk-tb-col text-white">Etiqueta</th>
+					<th class="nk-tb-col text-white">Equipo</th>
+					<th class="nk-tb-col text-white">Equipo en renta</th>
+					<th class="nk-tb-col text-white">Refacción</th>
+					<th class="nk-tb-col text-white">Servicio</th>
+					<th class="nk-tb-col text-white">Accesorio</th>
+					<th class="nk-tb-col text-white">Otro</th>
+					<th class="nk-tb-col text-white">Totales</th>
+				</tr>
+			</thead>
+	    </table>
+		
+	</div>
+</div>

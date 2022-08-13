@@ -1,0 +1,28 @@
+<div class="nk-sidebar nk-sidebar-fixed is-light is-compact" data-content="sidebarMenu"><!--  is-compact -->
+    <div class="nk-sidebar-element nk-sidebar-head">
+        <div class="nk-sidebar-brand">
+            <a href="{base_url()}" class="logo-link nk-sidebar-logo">
+                <img class="logo-light logo-img" src="{base_url()}{get_var(path_img)}/logo/logo.png" alt="logo" />
+                <img class="logo-dark logo-img" src="{base_url()}{get_var(path_img)}/logo/logo-dark.png" alt="logo-dark" />
+                <img class="logo-small logo-img logo-img-small" src="{base_url()}{get_var(path_img)}/logo/logo-small.png" alt="logo-small" />
+            </a>
+        </div>
+        <div class="nk-menu-trigger mr-n2">
+            <a href="#" class="nk-nav-toggle nk-quick-nav-icon d-xl-none" data-target="sidebarMenu">
+                <em class="icon ni ni-arrow-left"></em>
+            </a>
+            <a href="#" class="nk-nav-compact nk-quick-nav-icon d-none d-xl-inline-flex" data-target="sidebarMenu">
+                <em class="icon ni ni-menu"></em>
+            </a>
+        </div>
+    </div>
+    <div class="nk-sidebar-element nk-sidebar-body">
+        <div class="nk-sidebar-content">
+            <div class="nk-sidebar-menu">
+                <ul class="nk-menu">
+                    {menu-left}
+                </ul>
+            </div><!-- .nk-sidebar-menu -->
+        </div><!-- .nk-sidebar-content -->
+    </div>
+</div>

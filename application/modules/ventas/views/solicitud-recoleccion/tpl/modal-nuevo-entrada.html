@@ -1,0 +1,159 @@
+<div class="modal fade" id="modal-nuevo-vale-solicitud-recoleccion" aria-modal="true" role="dialog" style="overflow-y: auto;">
+    <div class="modal-dialog modal-fs" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nueva solicitud de recolección</h5>
+                <a href="#" class="close" id="close-solicitud" data-dismiss="modal-nuevo-vale-solicitud-recoleccion" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="no-folio">Folio de solicitud</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="no-folio" name="no-folio" value="556786" required readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_vale_estatus">Estatus</label>
+                                <div class="form-control-wrap">
+                                    <select id="" name="id_vale_estatus" class="form-select init-select2 validate required">
+                                        <option value="1" disabled selected>Entregado</option>
+                                        <option value="2" disabled selected>Cancelado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Fecha de solicitud</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="" name="" required="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="s">Forma de recolección</label>
+                                <div class="form-control-wrap">
+                                    <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
+                                        <option value="false"  selected> recolección 1</option>
+                                        <option value="true"> recolección 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="s">Tipo de recolección</label>
+                                <div class="form-control-wrap">
+                                    <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>tipo 1</option>
+                                        <option value="2">tipo 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Pedido interno/O.C.</label>
+                                <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
+                                    <option value="1"  selected>pedido interno</option>
+                                    <option value="3">O.C</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Cliente / proveedor</label>
+                                <input type="text" class="form-control validate required" value="cliente" readonly disabled id="" name="" required="">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Almacén entrante</label>
+                                <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
+                                    <option value="1"  selected>Almacén1</option>
+                                    <option value="2">Almacén2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Observaciones</label>
+                                <input type="text" class="form-control validate required" value=""  id="" name="" required="">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Status</label>
+                                <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
+                                    <option value="1"  selected>Recolectado</option>
+                                    <option value="2">No Recolectado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Fecha de envío</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="" name="" required="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Fecha de recolección</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="" name="" required="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="card bg-light my-2">
+                                <div class="card-body px-1 py-2">
+                                    <table class="table dataTable no-footer dtr-inline" id="modal-tbl-entrada-productos" data-btn-Add="true">
+                                        <thead>
+                                            <tr class="nk-tb-item nk-tb-head bg-dark">
+                                                <th class="nk-tb-col text-white">Tipo de producto</th>
+                                                <th class="nk-tb-col text-white">Unidad de medida</th>
+                                                <th class="nk-tb-col text-white">No. de parte</th>
+                                                <th class="nk-tb-col text-white" style="width:350px !important;">Descripción</th>
+                                                <th class="nk-tb-col text-white">Cantidad</th>
+                                                <th class="nk-tb-col text-white">{lang(almacenes_referencia_alfanum)}</th>
+                                                <th class="nk-tb-col text-white">{lang(almacenes_ref_entrada)}</th>
+                                                <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-save-vale-entrada" class="btn btn-dark">{lang(general_save)}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -21,7 +21,6 @@ jQuery(function($) {
 		});
 		e.preventDefault();
 	})
-
 	.on('click', '#close-solicitud', function(e){
 		$('#modal-nuevo-vale-solicitud').remove();
 		$('.modal-backdrop').remove();

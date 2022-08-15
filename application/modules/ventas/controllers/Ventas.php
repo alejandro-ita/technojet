@@ -437,6 +437,9 @@ class Ventas extends SB_Controller {
 		
 		$this->load_view('ventas/facturacion/facturacion_view', $dataView, $includes);
 	}
+	public function get_modal_add_registro_facturacion(){
+		$this->parser_view('ventas/facturacion/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
 	#==============FIN Facturación================
 	
 	#==============Mostrador y factura | pedidos internos================	
@@ -537,7 +540,66 @@ class Ventas extends SB_Controller {
 	public function get_modal_add_solicitud_product(){
 		$this->parser_view('ventas/solicitud-entrega/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
-	#==============FIN Facturación================
+	#==============FIN solicitud de entrega================
+
+		
+	#==============solicitud de recoleccion================
+	public function solicitud_recoleccion() {
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/solicitud-recoleccion/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/solicitud-recoleccion/tpl/tpl-tbl-reporte-detallado');
+		$dataView['tpl-tbl-solicitud']= $this->parser_view('ventas/solicitud-recoleccion/tpl/tpl-tbl-solicitud');
+		
+		$pathJS = get_var('path_js');
+		$includes['modulo']['js'][] = ['name'=>'solicitud_recoleccion', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/solicitud-recoleccion/solicitud_recoleccion_view', $dataView, $includes);
+	}
+	public function get_modal_add_solicitud_recoleccion(){
+		$this->parser_view('ventas/solicitud-recoleccion/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
+	public function get_modal_add_recoleccion_product(){
+		$this->parser_view('ventas/solicitud-recoleccion/tpl/modal-add-producto-entrada', FALSE, FALSE);
+	}
+	#==============FIN recoleccion================
+
+
+	#==============Complementos de pago================
+	public function complementos_pago() {
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-reporte-detallado');
+		$dataView['tpl-tbl-solicitud']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-complemento');
+		
+		$pathJS = get_var('path_js');
+		$includes['modulo']['js'][] = ['name'=>'complementos_pago', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/complementos-pago/complementos_pago_view', $dataView, $includes);
+	}
+	public function get_modal_add_complementos_pago(){
+		$this->parser_view('ventas/complementos-pago/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
+	public function get_modal_add_complemento_product(){
+		$this->parser_view('ventas/complementos-pago/tpl/modal-add-producto-entrada', FALSE, FALSE);
+	}
+	#==============FIN complementos de pago================
+
+
+		
+	#==============lista de precios================
+	public function lista_precios() {
+		$dataView['tpl-tbl-consumibles']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-consumibles');
+		$dataView['tpl-tbl-refacciones']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-refacciones');
+		$dataView['tpl-tbl-servicios']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-servicios');
+
+		$dataView['tpl-tbl-equipos']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-equipos');
+		$dataView['tpl-tbl-accesorios']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-accesorios');
+		$dataView['tpl-tbl-otros']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-otros');
+		
+		$pathJS = get_var('path_js');
+		$includes['modulo']['js'][] = ['name'=>'lista_precios', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/lista-precios/precios_view', $dataView, $includes);
+	}
+	#==============FIN lista de precios================
 		
 	public function get_productos_almacenes() {
 		if ($_POST['id_categoria'] || ($_POST['id_uso']==5)) {

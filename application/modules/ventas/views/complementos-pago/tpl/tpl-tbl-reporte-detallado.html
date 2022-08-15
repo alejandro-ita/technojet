@@ -1,0 +1,80 @@
+<div class="nk-block-head nk-block-head-sm bg-white px-2 pb-1">
+    <div class="nk-block-between g-3">
+        <div class="nk-block-head-content"></div>
+        <div class="nk-block-head-content">
+		    <div class="toggle-wrap nk-block-tools-toggle">
+			    <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+			    <div class="toggle-expand-content" data-content="pageMenu">
+			        <ul class="nk-block-tools g-3 tools-tbl-productos-entrada">
+			            <li>
+			                <div class="form-control-wrap">
+			                    <div class="form-icon form-icon-right">
+			                    	<em class="icon ni ni-search"></em>
+			                    </div>
+			                    <input type="text" id="buscar" class="form-control form-control-outlined" autocomplete="off" />
+							        <label class="form-label-outlined" for="buscar">{lang(lib_sSearchPlaceholder)}</label>
+			                </div>
+			            </li>
+			            <li>
+			            	<div class="dropdown">
+				                <a href="#" class="btn btn-outline-light btn-icon dropdown-toggle bg-transparent text-soft" data-toggle="dropdown" title="{lang(lib_total_rows)}">
+				                    <em class="icon ni ni-list-ol"></em>
+				                </a>
+				                <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
+				                    <ul class="link-check entrada_length">
+				                        <li><span>{lang(lib_mostrar)}</span></li>
+				                        <li class="active">
+				                            <a href="#" data-length="10">10 {lang(lib_registros_min)}</a>
+				                        </li>
+				                        <li>
+				                            <a href="#" data-length="25">25 {lang(lib_registros_min)}</a>
+				                        </li>
+				                        <li>
+				                            <a href="#" data-length="50">50 {lang(lib_registros_min)}</a>
+				                        </li>
+				                        <li>
+				                            <a href="#" data-length="-1">{lang(general_todos)}</a>
+				                        </li>
+				                    </ul>
+				                </div>
+				            </div><!-- .dropdown -->
+			            </li>
+			            {if {get_userData(crear)}==1}
+			            <!--<li>
+			            	<a class="btn btn-icon btn-success init-tooltip add-entrada" title="{lang(general_nuevo)}" data-custom-Class="nk-tb-col-tools-tooltip">
+			            		<em class="icon ni ni-plus-sm"></em>
+			            	</a>
+			            </li>-->
+						{/if}
+			        </ul>
+			    </div>
+			</div>
+		</div>
+    </div>
+</div>
+<div class="nk-block">
+	<div class="table-responsive">
+		<table class="table dataTable no-footer dtr-inline" id="tbl-almacenes-productos-entrada" data-btn-col-vis="true" data-btn-Add="true">
+	    	<thead>
+			    <tr class="nk-tb-item nk-tb-head bg-dark">
+			        <th class="nk-tb-col text-white">Nro° Complemento de pago</th>
+			        <th class="nk-tb-col text-white">Estatus de complemento</th>
+			        <th class="nk-tb-col text-white">Fecha de complemento</th>
+			        <th class="nk-tb-col text-white">Cliente</th>
+			        <th class="nk-tb-col text-white">Nro° Factura</th>
+			        <th class="nk-tb-col text-white">Estatus de factura</th>
+			        <th class="nk-tb-col text-white">Fecha de factura</th>
+			        <th class="nk-tb-col text-white">Fecha de pago</th>
+			        <th class="nk-tb-col text-white">Importe de pago</th>
+			        <th class="nk-tb-col text-white">Importe restante</th>
+			        <th class="nk-tb-col text-white">Moneda</th>
+			        <th class="nk-tb-col text-white">Nro° de parcialidad</th>
+			        <th class="nk-tb-col text-white">Observaciones</th>
+			        <th class="nk-tb-col text-white">Semana</th>
+			        <th class="nk-tb-col text-white">Mes</th>
+			        <th class="nk-tb-col text-white">Año</th>
+			    </tr>
+			</thead>
+	    </table>
+	</div>
+</div>

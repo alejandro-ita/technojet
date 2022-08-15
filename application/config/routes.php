@@ -92,3 +92,15 @@ $route['ventas/notas-credito/factura'] 	        = 'ventas/ventas/factura_notas';
 
 #Solicitud entrega
 $route['ventas/solicitud-entrega'] 	    = 'ventas/ventas/solicitud_entrega';
+
+#Solicitud recoleccion
+$route['ventas/solicitud-recoleccion'] 	    = 'ventas/ventas/solicitud_recoleccion';
+
+#facturción
+$route['ventas/facturacion'] 	        = 'ventas/ventas/facturacion';
+
+#complementos pago
+$route['ventas/complementos-pago'] 	    = 'ventas/ventas/complementos_pago';
+
+#Listas de precios
+$route['ventas/lista-precios'] 	    = 'ventas/ventas/lista_precios';

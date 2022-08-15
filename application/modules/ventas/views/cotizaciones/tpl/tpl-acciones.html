@@ -1,0 +1,26 @@
+<ul class="nk-tb-actions gx-1">
+    <li class="nk-tb-action-hidden bg-transparent">
+        <button id="build-pdf" class="btn btn-dim btn-sm btn-primary init-tooltip py-0 px-1" title="{lang(vales_generar_pdf)}" data-custom-Class="nk-tb-col-tools-tooltip">
+            <em class="icon ni ni-file-pdf"></em>
+        </button>
+    </li>
+    {if {get_userData(editar)}==1}
+    <li class="nk-tb-action-hidden">
+        <button id="open-modal-update" class="btn btn-dim btn-sm btn-primary init-tooltip py-0 px-1" title="{lang(general_editar)}" data-custom-Class="nk-tb-col-tools-tooltip">
+            <em class="icon ni ni-edit"></em>
+        </button>
+    </li>
+    {/if}
+    {if {get_userData(eliminar)}==1}
+    <li class="nk-tb-action-hidden">
+        <button id="remove" class="btn btn-dim btn-sm btn-danger init-tooltip py-0 px-1" title="{lang(general_delete)}" data-custom-Class="nk-tb-col-tools-tooltip">
+        	<em class="icon ni ni-trash"></em>
+        </button>
+    </li>
+    {/if}
+    <li>
+        <button class="btn btn-dim btn-sm py-0 px-1">
+            <em class="icon ni ni-more-h"></em>
+        </button>
+    </li>
+</ul>

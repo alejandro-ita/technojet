@@ -72,6 +72,7 @@ $route['database/almacen/vales-salida'] 		= 'database/almacen/vales_salida';
 $route['database/ventas/cotizaciones'] 		    = 'database/ventas/cotizaciones';
 $route['database/ventas/vendedores'] 		    = 'database/vendedores/catalogo';
 $route['database/ventas/clientes'] 		        = 'database/clientes/catalogo';
+$route['database/ventas/pedidos-internos']      = 'database/ventas/pedidos_internos';
 
 #ALMACEN
 $route['almacen/requisicion-material'] 			= 'almacen/requisicion_material';

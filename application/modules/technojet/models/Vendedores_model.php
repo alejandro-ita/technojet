@@ -53,6 +53,24 @@ class Vendedores_model extends SB_Model {
 		return ($affectedRows ? $this->db->affected_rows() : TRUE);
 	}
 
+	public function get_vendedor_select(array $where=[], $all=TRUE) {
+		$tbl = $this->tbl;
+		$selected = isset($where['selected'])?$where['selected']:0;
+
+		!isset($where['id_vendedor']) OR $this->db->where('id_vendedor', $where['id_vendedor']);
+
+		$request = $this->db->select("
+				*,
+				IF(id_vendedor='$selected', 1, 0) AS selected /*PARA EL SELECT2*/", FALSE)
+			->where('activo', 1)
+			->get($tbl['vendedores']);
+		// debug($this->db->last_query());
+
+		return $all ? $request->result_array() : $request->row_array();
+	}
+
+	#####################################################################
+
 	public function get_ultimo_requisicion(array $where=[], $all=FALSE) {
 		$tbl = $this->tbl;
 

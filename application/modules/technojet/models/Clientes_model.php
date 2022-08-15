@@ -52,4 +52,20 @@ class Clientes_model extends SB_Model {
 
 		return ($affectedRows ? $this->db->affected_rows() : TRUE);
 	}
+
+	public function get_cliente_selected(array $where=[], $all=TRUE) {
+		$tbl = $this->tbl;
+		$selected = isset($where['selected'])?$where['selected']:0;
+
+		!isset($where['id_cliente']) OR $this->db->where('id_cliente', $where['id_cliente']);
+
+		$request = $this->db->select("
+				*,
+				IF(id_cliente='$selected', 1, 0) AS selected /*PARA EL SELECT2*/", FALSE)
+			->where('activo', 1)
+			->get($tbl['clientes']);
+		// debug($this->db->last_query());
+
+		return $all ? $request->result_array() : $request->row_array();
+	}
 }

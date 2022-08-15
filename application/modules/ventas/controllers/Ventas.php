@@ -9,7 +9,7 @@ class Ventas extends SB_Controller {
 		$this->load->model('technojet/Almacenes_vales_model', 'db_av');
 		$this->load->model('technojet/Ventas_productos_model', 'db_vp');
 		$this->load->model('technojet/Productos_model', 'db_productos');
-		$this->load->model('ventas/Vales_productos_model', 'db_vales_pro');
+		$this->load->model('ventas/Cotizaciones_model', 'db_cotizaciones');
 		$this->load->model('technojet/Almacen_requisiciones_model', 'db_ar');
 		$this->load->model('technojet/Ventas_cotizaciones_model', 'db_vc');
 		$this->load->model('technojet/Vendedores_model', 'db_vendedor');
@@ -18,14 +18,16 @@ class Ventas extends SB_Controller {
 	}
 
 	public function cotizaciones() {
-		$dataView['tpl-tbl-almacen']= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-almacenes');
+		$dataView['tpl-tbl-cotizaciones']= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-cotizaciones');
+		$dataView['tpl-tbl-cotizaciones-consecutivo']= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-cotizaciones-consecutivo');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/cotizaciones/tpl/tpl-tbl-reporte-detallado');
-
+		
+		$includes 	= get_includes_vendor(['dataTables', 'jQValidate']);
 		$pathJS = get_var('path_js');
     	$includes['modulo']['js'][] = ['name'=>'cotizaciones', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-    	$includes['modulo']['js'][] = ['name'=>'reporte-mensual', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
-    	$includes['modulo']['js'][] = ['name'=>'reporte-detallado', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+    	//$includes['modulo']['js'][] = ['name'=>'reporte-mensual', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+    	//$includes['modulo']['js'][] = ['name'=>'reporte-detallado', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 
 		$this->load_view('ventas/cotizaciones/cotizaciones_view',$dataView, $includes);
 	}
@@ -80,42 +82,347 @@ class Ventas extends SB_Controller {
 
 		//Clientes
 		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
-
-		//Clientes
-		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
-
 		//cargar JS's / INTERACCIÓN
-
-		//Carga de vista principal
-		/*$sqlWhere['tipo'] = 'ENTRADA';
-		$vales_almacen = $this->db_av->get_vales_almacenes($sqlWhere);
-		$dataView['vales-almacen'] = $vales_almacen;
-
-		$vales_estatus = $this->db_av->get_vales_estatus($sqlWhere);
-		$dataView['vales-estatus'] = $vales_estatus;
-
-		$tipos_entrada = $this->db_catalogos->get_ve_tipos_entrada();
-		$dataView['ve-tipos-entrada'] = $tipos_entrada;
-
-		#OBTENEMOS LAS REQUISICIONES EXISTENTES
-		$requisiciones = $this->db_ar->get_requisiciones_select2();
-		$dataView['requisiciones'] = $requisiciones;*/
-
-		#OBTENEMOS EL CONSECUTIVO DEL VALE DE ENTRADA
-		$folio = $this->db_vales_pro->get_ultimo_vale_entrada();
-		$dataView = array_merge($dataView, $folio);
-		// $dataView['vales-entrada'] = $this->db_vp->get_vales_entrada([], TRUE);
 		
-		#OBTENEMOS EL CONSECUTIVO DEL VALE DE REQUISICION DE MATERIAL
-		$folio = $this->db_ar->get_ultimo_requisicion();
+		#OBTENEMOS EL CONSECUTIVO DEL COTIZACION
+		$folio = $this->db_cotizaciones->get_ultima_cotizacion();
 		$dataView = array_merge($dataView, $folio);
 
-		$this->parser_view('ventas/cotizaciones/tpl/modal-nuevo-entrada', $dataView, FALSE);
+		$this->parser_view('ventas/cotizaciones/tpl/modal-nueva-cotizacion', $dataView, FALSE);
 		//modal-add-producto-entrada
 	}
 
 	public function get_modal_add_product_option(){
 		$this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-opcional', FALSE, FALSE);
+	}
+
+	public function get_cotizaciones(){
+		$response = $this->db_cotizaciones->get_cotizaciones_main();
+
+		$tplAcciones = $this->parser_view('ventas/cotizaciones/tpl/tpl-acciones');
+		foreach ($response as &$cotizacion) {
+			$cotizacion['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_add_producto_cotizacion() {
+		$dataView['tipo-producto'] = $this->db_catalogos->get_tipos_productos_min();
+		$this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-cotizacion', $dataView, FALSE);
+	}
+
+	public function get_unidades_medida_productos() {
+		$sqlWhere = $this->input->post(['id_tipo_producto']);
+		$response = $this->db_productos->get_unidad_medida_tipo_producto($sqlWhere);
+
+		echo json_encode($response);
+	}
+
+	public function get_productos() {
+		$sqlWhere = $this->input->post('id_tipo_producto') ? $this->input->post(['id_tipo_producto']) : [];
+		$sqlWhere['grupo']=3;
+		$sqlWhere['id_sitio']=2;
+		$productos = $this->db_productos->get_productos($sqlWhere);
+		$productos = $productos ? $productos : [];
+
+		/*$tplAcciones = $this->parser_view('database/ventas/productos/tpl/tpl-acciones');
+		foreach ($productos as &$di) {
+			$di['acciones'] = $tplAcciones;
+		}*/
+
+		echo json_encode($productos, JSON_NUMERIC_CHECK);
+	}
+
+	public function get_productos_por_tipo() {
+		$sqlWhere = $this->input->post(['id_tipo_producto', 'id_unidad_medida']);
+		$response = $this->db_productos->get_productos_por_tipo($sqlWhere);
+
+		echo json_encode($response);
+	}
+	
+	public function process_save_cotizacion() {
+		try {
+			$this->db->trans_begin();
+			#GUARDAMOS COTIZACIÓN
+			$sqlData = $this->input->post([
+				'id_cliente',
+				'id_estatus_vigencia',
+				'id_estatus_entrega',
+				'fecha_elaboracion',
+				'atencion',
+				'departamento',
+				'id_moneda',
+				'id_precio',
+				'id_condiciones_pago',
+				'id_tiempo_entrega',
+				'id_lugar_entrega',
+				'id_vigencia',
+				'id_tipo_producto',
+				'fecha_recepcion',
+				'id_vendedor',
+				'creador_cotizacion'
+			]);
+			
+			$sqlData['atencion'] 	= strtoupper($this->input->post('atencion'));
+			$sqlData['departamento'] 		= strtoupper($this->input->post('departamento'));
+			$sqlData['creador_cotizacion'] = strtoupper($this->input->post('creador_cotizacion'));
+			$insert = $this->db_cotizaciones->insert_cotizacion($sqlData);
+			$insert OR set_exception();
+
+			$productos 		= $this->input->post('productos');
+			foreach ($productos as $producto) {
+				$sqlData = [
+					'id_cotizacion' 		=> $insert,
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'precio_unitario' 		=> $producto['precio_unitario'],
+					'descuento' 			=> $producto['descuento'],
+					'total' 				=> $producto['total'],
+					'incluye' 				=> $producto['incluye'],
+					'comision_vendedor' 	=> $producto['comision_vendedor'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				$sqlDataBatch[] = $sqlData;
+			}
+
+			if ($sqlDataBatch) {
+				$insertBatch = $this->db_cotizaciones->insert_cotizacion_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			$sqlData['productos'] = $sqlData;
+			$actividad 		= "ha creado una cotización";
+			$data_change 	= ['insert'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($insert, 'tbl_cotizaciones', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_edit_cotizacion() {
+		$dataView = $this->input->post();
+		$dataEncription = json_encode($this->input->post(['id_cotizacion']));
+		$dataView['dataEncription'] = $this->encryption->encrypt($dataEncription);
+
+		#CATALOGOS & SELECTS
+		$sqlWhere['selected'] = $this->input->post('id_cliente');
+		$dataView['clientes'] = $this->db_cliente->get_cliente_selected($sqlWhere);
+		//Tiempo de entrega
+		$sqlWhere['id_categoria'] = 23;
+		$sqlWhere['selected'] = $this->input->post('id_tiempo_entrega');
+		$dataView['tiempo-entrega'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Vigencia
+		$sqlWhere['id_categoria'] = 24;
+		$sqlWhere['selected'] = $this->input->post('id_estatus_vigencia');
+		$dataView['estatus-vigencia'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Entrega
+		$sqlWhere['id_categoria'] = 25;
+		$sqlWhere['selected'] = $this->input->post('id_estatus_entrega');
+		$dataView['estatus-entrega'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Condiciones de pago
+		$sqlWhere['id_categoria'] = 26;
+		$sqlWhere['selected'] = $this->input->post('id_condiciones_pago');
+		$dataView['condiciones-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Vigencia
+		$sqlWhere['id_categoria'] = 27;
+		$sqlWhere['selected'] = $this->input->post('id_vigencia');
+		$dataView['vigencia'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Precios
+		$sqlWhere['id_categoria'] = 28;
+		$sqlWhere['selected'] = $this->input->post('id_precio');
+		$dataView['precios'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Lugar de entrega
+		$sqlWhere['id_categoria'] = 29;
+		$sqlWhere['selected'] = $this->input->post('id_lugar_entrega');
+		$dataView['lentrega'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Tipos de producto
+		$sqlWhere['id_categoria'] = 30;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_producto');
+		$dataView['tproducto'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Monedas
+		$sqlWhere['selected'] = $this->input->post('id_moneda');
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min($sqlWhere);
+		//Vendedores
+		$sqlWhere['selected'] = $this->input->post('id_vendedor');
+		$dataView['vendedores'] = $this->db_vendedor->get_vendedor_select($sqlWhere);
+
+		$sqlWhere 	= $this->input->post(['id_cotizacion']);
+		$productos 	= $this->db_cotizaciones->get_cotizacion_productos($sqlWhere);
+		$dataView['list-productos'] = json_encode($productos);
+		
+		#ELIMINACIÓN DE CONFLICTOS EN EL PARSER VIEW
+		unset($dataView['id_cliente'], $dataView['id_cliente']);
+		unset($dataView['id_tiempo_entrega'], $dataView['id_tiempo_entrega']);
+		unset($dataView['id_estatus_vigencia'], $dataView['id_estatus_vigencia']);
+		unset($dataView['id_estatus_entrega'], $dataView['id_estatus_entrega']);
+		unset($dataView['id_condiciones_pago'], $dataView['id_condiciones_pago']);
+		unset($dataView['id_vigencia'], $dataView['id_vigencia']);
+		unset($dataView['id_precio'], $dataView['id_precio']);
+		unset($dataView['id_tipo_producto'], $dataView['id_tipo_producto']);
+		unset($dataView['id_moneda'], $dataView['id_moneda']);
+		unset($dataView['moneda'], $dataView['moneda']);
+		unset($dataView['id_vendedor'], $dataView['id_vendedor']);
+		unset($dataView['vendedor'], $dataView['vendedor']);
+
+		$this->parser_view('ventas/cotizaciones/tpl/modal-editar-cotizacion', $dataView, FALSE);
+	}
+
+	public function process_update_cotizacion() {
+		try {
+			$this->db->trans_begin();
+			$sqlData = $this->input->post([
+				'id_cliente',
+				'id_estatus_vigencia',
+				'id_estatus_entrega',
+				'fecha_elaboracion',
+				'atencion',
+				'departamento',
+				'id_moneda',
+				'id_precio',
+				'id_condiciones_pago',
+				'id_tiempo_entrega',
+				'id_lugar_entrega',
+				'id_vigencia',
+				'id_tipo_producto',
+				'fecha_recepcion',
+				'id_vendedor',
+				'creador_cotizacion'
+			]);
+
+			$sqlData['atencion'] 	= strtoupper($this->input->post('atencion'));
+			$sqlData['departamento'] 		= strtoupper($this->input->post('departamento'));
+			$sqlData['creador_cotizacion'] = strtoupper($this->input->post('creador_cotizacion'));
+			$sqlWhere = $this->input->post(['id_cotizacion']);
+			$update = $this->db_cotizaciones->update_cotizacion($sqlData, $sqlWhere);
+			$update OR set_exception();
+
+			/*DATA PARA EL PDF
+			$dataView = $sqlData;
+			$dataView['id_requisicion'] 				= $this->input->post('id_requisicion');
+			$dataView['tipo_requisicion'] 				= $this->input->post('tipo_requisicion');
+			$dataView['vale_entrada'] 					= $this->input->post('vale_entrada');
+			$dataView['departamento_solicitante'] 		= $this->input->post('departamento_solicitante');
+			$dataView['almacen_solicitante'] 			= $this->input->post('almacen_solicitante');
+			$dataView['departamento_encargado_surtir'] 	= $this->input->post('departamento_encargado_surtir');*/
+
+			$productos = $this->input->post('productos');
+			#ELIMINACION DE PRODUCTOS QUE NO LLEGAN EN LA LIST
+			$productosActivos = array_filter(array_column($productos, 'id_cotizacion_producto'));
+			$sqlWhere = $this->input->post(['id_cotizacion']);
+			$sqlWhere['activo'] = 1;
+			if($productosActivos) $sqlWhere['notIn'] = $productosActivos;
+			$update = $this->db_cotizaciones->update_cotizacion_productos(['activo'=>0], $sqlWhere);
+			#$update OR set_exception();
+
+			#REGISTRO DE NUEVOS PRODUCTOS
+			$sqlDataBatch = [];
+			foreach ($productos as $producto) {
+				$sqlDataPro = [
+					'id_cotizacion' 		=> $this->input->post('id_cotizacion'),
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'precio_unitario' 		=> $producto['precio_unitario'],
+					'descuento' 			=> $producto['descuento'],
+					'total' 				=> $producto['total'],
+					'incluye' 				=> $producto['incluye'],
+					'comision_vendedor' 	=> $producto['comision_vendedor'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				if (!isset($producto['id_cotizacion_producto'])) {
+					$sqlDataBatch[] = $sqlDataPro;
+				}
+
+				/*DATA PARA EL PDF
+				$sqlDataPro['no_parte'] 	= $producto['no_parte'];
+				$sqlDataPro['descripcion'] = $producto['descripcion'];
+				$sqlDataPro['unidad_medida'] = $producto['unidad_medida'];
+				$sqlDataPro['tipo_producto'] = $producto['tipo_producto'];*/
+				$dataView['list-productos'][] = $sqlDataPro;
+			}
+
+			if ($sqlDataBatch) {
+				//$insertBatch = $this->db_ar->insert_requisiciones_productos($sqlDataBatch);
+				$insertBatch = $this->db_cotizaciones->insert_cotizacion_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			#GENERANDO EL PDF
+			/*$this->load->library('Create_pdf');
+			$sqlWhere 	= $this->input->post(['id_requisicion']);
+			$estatusRQ 	= $this->db_ar->get_estatus_requisicion($sqlWhere);
+			$dataView 	= array_merge($dataView, $estatusRQ);
+			$settings = array(
+				 'file_name' 	=> 'Vale_requisicion_'.date('YmdHis')
+				,'content_file' => $this->parser_view('almacen/requisicion-material/tpl/tpl-pdf-vale-requisicion-material', $dataView)
+				,'load_file' 	=> FALSE
+				,'orientation' 	=> 'landscape'
+			);*/
+
+			$sqlData['productos'] = $dataView['list-productos'];
+			$actividad 		= "ha editado una cotización";
+			$data_change 	= ['update'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($sqlWhere['id_cotizacion'], 'tbl_cotizaciones', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+				//'file_path' => $this->create_pdf->create_file($settings)
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function process_remove_cotizacion() {
+		try {
+			$this->db->trans_begin();
+
+			$sqlWhere 	= $this->input->post(['id_cotizacion']);
+			#ELIMIANCIÓN DE COTIZACION
+			$update = $this->db_cotizaciones->update_cotizacion(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			#ELIMIANCIÓN DE LOS PRODUCTOS DEL VALE DE ENTRADA
+			$update = $this->db_cotizaciones->update_cotizacion_productos(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			$actividad 		= "ha eliminado una cotización";
+			$data_change 	= ['delete'=>['oldData'=>$_POST]];
+			registro_bitacora_actividades($sqlWhere['id_cotizacion'], 'tbl_cotizaciones', $actividad, $data_change);
+			
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_rm_success'),
+				'icon' 		=> 'success'
+			];
+
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
 	}
 
 	#==============Facturación================
@@ -135,6 +442,7 @@ class Ventas extends SB_Controller {
 	#==============Mostrador y factura | pedidos internos================	
 	public function mostrador() {
 		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador');
+		$dataView['tpl-tbl-mostrador-consecutivo']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador-consecutivo');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-detallado');
 		
@@ -319,19 +627,6 @@ class Ventas extends SB_Controller {
 		} else $productos = [];
 
 		echo json_encode($productos);
-	}
-
-	public function get_modal_add_producto_entrada() {
-		$dataView['tipos-productos'] = $this->db_catalogos->get_tipos_productos_min();
-
-		if($this->input->post('id_uso')==5) {
-			$unidades_medida = $this->db_catalogos->get_unidades_medida_min();
-			$dataView['unidades-medida'] = $unidades_medida;
-			$dataView['monedas'] 		= $this->db_catalogos->get_monedas_min();
-
-			$this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-entrada-activos', $dataView, FALSE);
-
-		} else $this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-entrada', $dataView, FALSE);
 	}
 
 	public function get_modal_add_producto_salida() {
@@ -796,20 +1091,6 @@ class Ventas extends SB_Controller {
 			'success'	=> TRUE,
 			'file_path' => $this->create_pdf->create_file($settings)
 		];
-	}
-
-	public function get_unidades_medida_productos() {
-		$sqlWhere = $this->input->post(['id_categoria', 'id_tipo_producto']);
-		$response = $this->db_productos->get_unidad_medida_tipo_producto($sqlWhere);
-
-		echo json_encode($response);
-	}
-
-	public function get_productos_por_tipo() {
-		$sqlWhere = $this->input->post(['id_categoria', 'id_tipo_producto', 'id_unidad_medida']);
-		$response = $this->db_productos->get_productos_por_tipo($sqlWhere);
-
-		echo json_encode($response);
 	}
 
 	public function get_modal_edit_vale_entrada() {

@@ -50,6 +50,9 @@ class SB_Model extends CI_Model {
 		$this->tbl['ventas_cotizaciones'] = "$technojet.tbl_ventas_cotizaciones";
 		$this->tbl['vendedores'] = "$technojet.tbl_vendedores";
 		$this->tbl['clientes'] = "$technojet.tbl_clientes";
+		$this->tbl['cotizaciones'] = "$technojet.tbl_cotizaciones";
+		$this->tbl['cotizaciones_productos'] = "$technojet.tbl_cotizaciones_productos";
+		$this->tbl['cotizaciones_notas'] = "$technojet.tbl_cotizaciones_notas";
 
 		$this->tbl['tarea_estatus'] 		= "$technojet.cat_tarea_estatus";
 		$this->tbl['tarea_prioridad'] 		= "$technojet.cat_tarea_prioridad";

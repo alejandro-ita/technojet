@@ -173,6 +173,7 @@ class Ventas extends SB_Controller {
 		echo json_encode($response);
 	}
 
+	############################# COTIZACIONES
 	public function cotizaciones() {
 		$includes = get_includes_vendor(['dataTables', 'jQValidate']);
 		$pathJS = get_var('path_js');
@@ -292,9 +293,44 @@ class Ventas extends SB_Controller {
 
 		echo json_encode($response);
 	}
+	
+	############################# PEDIDOS INTERNOS
+	public function pedidos_internos(){
+		$includes = get_includes_vendor(['dataTables', 'jQValidate']);
+		$pathJS = get_var('path_js');
+        $includes['modulo']['js'][] = ['name'=>'template_helper', 'dirname'=>"$pathJS/helpers", 'fulldir'=>TRUE];
+        $includes['modulo']['js'][] = ['name'=>'pedidos-internos', 'dirname'=>"$pathJS/database/ventas", 'fulldir'=>TRUE];
 
+        $dataTools['categorias']= $this->db_catalogos->get_categorias(['grupo'=>7]);
+        $dataView['tpl-tools'] = $this->parser_view('database/ventas/pedidos-internos/tpl/tpl-tools', $dataTools);
 
+		$this->load_view('database/ventas/pedidos-internos/pedidos_internos_view', $dataView, $includes);
+	}
 
+	public function get_catalog_pedidos_internos() {
+		$sqlWhere = $this->input->post('id_categoria') ? $this->input->post(['id_categoria']) : [];
+		$sqlWhere['grupo']=7;
+		$pedidos_internos = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		$pedidos_internos = $pedidos_internos ? $pedidos_internos : [];
+
+		$tplAcciones = $this->parser_view('database/ventas/cotizaciones/tpl/tpl-acciones');
+		foreach ($pedidos_internos as &$rec) {
+			$rec['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($pedidos_internos, JSON_NUMERIC_CHECK);
+	}
+
+	public function get_modal_new_pi() {
+		$this->parser_view('database/ventas/pedidos-internos/tpl/modal-new-pi', [], FALSE);
+	}
+
+	public function get_modal_update_pi() {
+		$sqlWhere = $this->input->post(['id_ventas_cotizacion']);
+		$dataView = $this->db_vc->get_ventas_cotizacion_min($sqlWhere, FALSE);
+
+		$this->parser_view('database/ventas/pedidos-internos/tpl/modal-update-pi', $dataView, FALSE);
+	}
 }
 
 /* End of file Ventas.php */

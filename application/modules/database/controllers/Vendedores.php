@@ -10,6 +10,7 @@ class Vendedores extends SB_Controller {
 	}
 
 	public function catalogo() {
+		$includes 	= get_includes_vendor(['dataTables', 'jQValidate']);
         $pathJS = get_var('path_js');
         $includes['modulo']['js'][] = ['name'=>'vendedores', 'dirname'=>"$pathJS/database/vendedores", 'fulldir'=>TRUE];
 

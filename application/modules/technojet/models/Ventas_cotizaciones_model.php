@@ -58,6 +58,27 @@ class Ventas_cotizaciones_model extends SB_Model {
 		return ($affectedRows ? $this->db->affected_rows() : TRUE);
 	}
 
+	public function get_ventas_cotizacion_select(array $where=[], $all=TRUE) {
+		$tbl = $this->tbl;
+		$selected = isset($where['selected'])?$where['selected']:0;
+
+		!isset($where['id_ventas_cotizacion']) OR $this->db->where('id_ventas_cotizacion', $where['id_ventas_cotizacion']);
+		!isset($where['id_categoria']) OR $this->db->where('TAR.id_categoria', $where['id_categoria']);
+
+		$request = $this->db->select("
+				*,
+				IF(TAR.id_ventas_cotizacion='$selected', 1, 0) AS selected /*PARA EL SELECT2*/", FALSE)
+			->from("$tbl[ventas_cotizaciones] AS TAR")
+			->where('TAR.activo', 1)
+			->join("$tbl[categorias] AS CC", 'CC.id_categoria=TAR.id_categoria', 'LEFT')
+			->get();
+		// debug($this->db->last_query());
+
+		return $all ? $request->result_array() : $request->row_array();
+	}
+
+	####################################################################################
+
 	public function get_ultimo_requisicion(array $where=[], $all=FALSE) {
 		$tbl = $this->tbl;
 

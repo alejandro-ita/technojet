@@ -35,22 +35,28 @@
 						    </div>
 						</div>
 					</div>-->
-					<div class="col-sm-12">
+					<!--<div class="col-sm-12">
 						<div class="form-group">
 						    <label class="form-label d-block">&nbsp;</label>
 							<a class="btn btn-success add-entrada" title="{lang(general_nuevo)}">
 			            		<em class="icon ni ni-plus-sm"></em><span>nueva cotización</span>
 			            	</a>
-							<!--<button type="button" id="load-productos" class="btn btn-dim btn-primary">Nueva cotización</button>-->
+							<button type="button" id="load-productos" class="btn btn-dim btn-primary">Nueva cotización</button>
 						</div>
-					</div>
+					</div>-->
 				</div>
 			</form>
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="nav nav-tabs">
 						<li class="nav-item">
-					        <a class="nav-link active" data-toggle="tab" href="#Consecutivos">
+					        <a class="nav-link active" data-toggle="tab" href="#Cotizaciones">
+					        	<em class="icon ni ni-home"></em>
+					        	<span>Cotizaciones</span>
+					        </a>
+					    </li>
+						<li class="nav-item">
+					        <a class="nav-link" data-toggle="tab" href="#Consecutivos">
 					        	<em class="icon ni ni-home"></em>
 					        	<span>Consecutivo</span>
 					        </a>
@@ -74,8 +80,11 @@
 					
 
 					<div class="tab-content">
-						<div class="tab-pane active" id="Consecutivos">
-							{tpl-tbl-almacen}
+						<div class="tab-pane active" id="Cotizaciones">
+							{tpl-tbl-cotizaciones}
+						</div>
+						<div class="tab-pane" id="Consecutivos">
+							{tpl-tbl-cotizaciones-consecutivo}
 						</div>
 						<div class="tab-pane " id="Reporte_mensual">
 							{tpl-tbl-reporte-mensual}

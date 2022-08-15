@@ -1,8 +1,8 @@
-<div class="modal fade" id="modal-nuevo-vale-entrada" aria-modal="true" role="dialog" style="overflow-y: auto;">
+<div class="modal fade" id="modal-nueva-cotizacion" aria-modal="true" role="dialog" style="overflow-y: auto;">
     <div class="modal-dialog modal-fs" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Consecutivo cotizaciones</h5>
+                <h5 class="modal-title">Nueva cotización</h5>
                 <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
             </div>
             <div class="modal-body">
@@ -12,15 +12,15 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="no-folio">Número de folio</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="no-folio" name="no-folio" value="VE-{proximo_id}" required readonly />
+                                    <input type="text" class="form-control validate required" id="id_cotizacion" name="id_cotizacion" value="CT-{proximo_id}" required readonly />
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4" >
                             <div class="form-group mb-0">
-                                <label class="form-label" for="id_vale_almacen">Cliente</label>
+                                <label class="form-label" for="">Cliente</label>
                                 <div class="form-control-wrap">
-                                    <select name="id_vale_almacen" class="form-select validate required">
+                                    <select name="id_cliente" id="id_cliente" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione cliente</option>
                                         {clientes}
                                         <option value="{id_cliente}">{cliente}</option>
@@ -31,9 +31,9 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label" for="id_vale_estatus">Estatus vigencia</label>
+                                <label class="form-label" for="id_estatus_vigencia">Estatus vigencia</label>
                                 <div class="form-control-wrap">
-                                    <select id="" name="id_vale_estatus" class="form-select init-select2 validate required">
+                                    <select id="id_estatus_vigencia" name="id_estatus_vigencia" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione estatus vigencia</option>
                                         {estatus-vigencia}
                                         <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
@@ -44,9 +44,9 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label" for="id_vale_estatus">Estatus entrega</label>
+                                <label class="form-label" for="id_estatus_entrega">Estatus entrega</label>
                                 <div class="form-control-wrap">
-                                    <select id="" name="id_vale_estatus" aria-readonly="true" class="form-select init-select2 validate required">
+                                    <select id="id_estatus_entrega" name="id_estatus_entrega" aria-readonly="true" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione estatus entrega</option>
                                         {estatus-entrega}
                                         <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
@@ -58,14 +58,14 @@
                         <div class="form-group mb-0">
                             <label class="form-label" for="">Fecha de elaboración</label>
                             <div class="form-control-wrap">
-                                <input type="date" class="form-control validate required" id="" name="" required="">
+                                <input type="date" class="form-control validate required" id="fecha_elaboracion" name="fecha_elaboracion" required="">
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Atención</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name="" required />
+                                    <input type="text" class="form-control validate required" id="atencion" name="atencion" required />
                                 </div>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Departamento</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name="" required />
+                                    <input type="text" class="form-control validate required" id="departamento" name="departamento" required />
                                 </div>
                             </div>
                         </div>
@@ -81,10 +81,10 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Moneda</label>
                                 <div class="form-control-wrap">
-                                    <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
+                                    <select name="id_moneda" id="id_moneda" class="form-select init-select2 validate required" >
                                         <option value="" disabled selected>Seleccione Moneda</option>
                                         {monedas}
-                                        <option value="{id_vendedor}">{moneda}</option>
+                                        <option value="{id_moneda}">{moneda}</option>
                                         {/monedas}
                                     </select>
                                 </div>
@@ -94,7 +94,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Precios</label>
                                 <div class="form-control-wrap">
-                                    <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
+                                    <select  name="id_precio" id="id_precio" class="form-select init-select2 validate required" >
                                         <option value="" disabled selected>Seleccione precio</option>
                                         {precios}
                                         <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
@@ -107,7 +107,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Condiciones de pago</label>
                                 <div class="form-control-wrap">
-                                    <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
+                                    <select id="id_condiciones_pago"  name="id_condiciones_pago" class="form-select init-select2 validate required" >
                                         <option value="" disabled selected>Seleccione condiciones de pago</option>
                                         {condiciones-pago}
                                         <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
@@ -120,7 +120,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Tiempo de entrega</label>
                                 <div class="form-control-wrap">
-                                    <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
+                                    <select name="id_tiempo_entrega" id="id_tiempo_entrega" class="form-select init-select2 validate required" >
                                         <option value="" disabled selected>Seleccione tiempo de entrega</option>
                                         {tiempo-entrega}
                                         <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
@@ -133,7 +133,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Lugar de entrega</label>
                                 <div class="form-control-wrap">
-                                    <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
+                                    <select  name="id_lugar_entrega" id="id_lugar_entrega" class="form-select init-select2 validate required" >
                                         <option value="" disabled selected>Seleccione lugar de entrega</option>
                                         {lentrega}
                                         <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
@@ -146,7 +146,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Vigencia</label>
                                 <div class="form-control-wrap">
-                                    <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
+                                    <select  name="id_vigencia" id="id_vigencia" class="form-select init-select2 validate required" >
                                         <option value="" disabled selected>Seleccione vigencia</option>
                                         {vigencia}
                                         <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
@@ -157,9 +157,9 @@
                         </div>
                         <div class="col-sm-12 col-md-4" >
                             <div class="form-group mb-0">
-                                <label class="form-label" for="id_vale_almacen">Tipo de producto</label>
+                                <label class="form-label" for="id_tipo_producto">Tipo de producto</label>
                                 <div class="form-control-wrap">
-                                    <select name="id_vale_almacen" class="form-select validate required">
+                                    <select name="id_tipo_producto" id="id_tipo_producto" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione tipo de producto</option>
                                         {tproducto}
                                         <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
@@ -170,13 +170,24 @@
                         </div>
                         <div class="col-sm-2 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label" for="">Notas</label>
                                 <div class="form-control-wrap">
                                     <button class="btn btn-icon btn-sm btn-success btn-add ml-2 p-1 init-tooltip" tabindex="0" aria-controls="modal-tbl-entrada-productos" type="button" title="Nuevo">
                                         <span><em class="icon ni ni-plus font-medium-2"></em></span>
                                     </button> 
                                     <div class="dt-buttons btn-group flex-wrap">
-                                        <input type="text" class="form-control validate required" id="" name="" required />
+                                        <div id="accordion" class="accordion">  
+                                            <div class="accordion-item">      
+                                                <a href="#" class="accordion-head collapsed" data-toggle="collapse" data-target="#accordion-item-1">
+                                                    <span style="color: #fff">Notas</span>
+                                                    <span class="accordion-icon"></span>      
+                                                </a>      
+                                                <div class="accordion-body collapse" id="accordion-item-1" data-parent="#accordion">          
+                                                    <div class="accordion-inner">    
+                                                        <p>Nota</p>
+                                                    </div>     
+                                                </div>  
+                                            </div>
+                                        </div>  
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +196,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Fecha de recepción</label>
                                 <div class="form-control-wrap">
-                                    <input type="date" class="form-control validate required" id="" name="" required="">
+                                    <input type="date" class="form-control validate required" id="fecha_recepcion" name="fecha_recepcion" required="">
                                 </div>
                             </div>
                         </div>
@@ -193,7 +204,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Vendedor</label>
                                 <div class="form-control-wrap">
-                                    <select  name="id_tipo_producto" class="form-select init-select2 validate required" >
+                                    <select  name="id_vendedor" id="id_vendedor" class="form-select init-select2 validate required" >
                                         <option value="" disabled selected>Seleccione Vendedor</option>
                                         {vendedores}
                                         <option value="{id_vendedor}">{vendedor}</option>
@@ -202,24 +213,21 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!--====================SEMANA?? MES?? AÑO??==========================-->
-
                         <div class="col-sm-12 col-md-4">
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">¿Quién hizo la cotización?</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="" name="" required />
+                                    <input type="text" class="form-control validate required" id="creador_cotizacion" name="creador_cotizacion" required />
                                 </div>
                             </div>
                         </div>
-                      
                     </div>
+
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card bg-light my-2">
                                 <div class="card-body px-1 py-2">
-                                    <table class="table dataTable no-footer dtr-inline" id="modal-tbl-entrada-productos" data-btn-Add="true">
+                                    <table class="table dataTable no-footer dtr-inline" id="modal-tbl-productos" data-btn-Add="true">
                                         <thead>
                                             <tr class="nk-tb-item nk-tb-head bg-dark">
                                                 <th class="nk-tb-col text-white">Tipo de producto</th>
@@ -227,8 +235,11 @@
                                                 <th class="nk-tb-col text-white">No. de parte</th>
                                                 <th class="nk-tb-col text-white" style="width:350px !important;">Descripción</th>
                                                 <th class="nk-tb-col text-white">Cantidad</th>
-                                                <th class="nk-tb-col text-white">{lang(almacenes_referencia_alfanum)}</th>
-                                                <th class="nk-tb-col text-white">{lang(almacenes_ref_entrada)}</th>
+                                                <th class="nk-tb-col text-white">Precio Uni.</th>
+                                                <th class="nk-tb-col text-white">Descuento</th>
+                                                <th class="nk-tb-col text-white">Total</th>
+                                                <th class="nk-tb-col text-white noVis all" data-visible="true">Incluye</th>
+                                                <th class="nk-tb-col text-white noVis all" data-visible="true">Comision</th>
                                                 <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
                                             </tr>
                                         </thead>
@@ -240,7 +251,7 @@
                 </form>
             </div>
             <div class="modal-footer py-2">
-                <button type="button" id="btn-save-vale-entrada" class="btn btn-dark">{lang(general_save)}</button>
+                <button type="button" id="btn-save-cotizacion" class="btn btn-dark">{lang(general_save)}</button>
                 <!-- <button type="button" id="btn-save-vale-entrada" class="btn btn-dark">Imprimir</button> -->
             </div>
         </div>

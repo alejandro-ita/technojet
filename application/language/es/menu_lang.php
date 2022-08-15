@@ -27,10 +27,11 @@ $lang['menu_ventas']			    = 'Ventas';
 $lang['menu_sistemas']			    = 'Sistemas';
 $lang['menu_requisicion_material']  = 'Requisición de material';
 $lang['menu_reporte_sistemas'] 	    = 'Reporte de sistemas';
-$lang['menu_ventasp']			    = 'Ventas';
+
 $lang['menu_cotizaciones']			= 'Cotizaciones';
 $lang['menu_vendedores']			= 'Vendedores';
 $lang['menu_clientes']			    = 'Clientes';
+$lang['menu_pedidos_internos']      = 'Pedidos internos';
 
 
 $lang['menu_ventas_cotizaciones']	= 'Cotizaciones';

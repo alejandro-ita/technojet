@@ -74,6 +74,9 @@ class Ventas extends SB_Controller {
 		
 		$this->load_view('ventas/facturacion/facturacion_view', $dataView, $includes);
 	}
+	public function get_modal_add_registro_facturacion(){
+		$this->parser_view('ventas/facturacion/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
 	#==============FIN Facturación================
 	
 
@@ -220,6 +223,25 @@ class Ventas extends SB_Controller {
 		$this->parser_view('ventas/complementos-pago/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
 	#==============FIN complementos de pago================
+
+
+		
+	#==============lista de precios================
+	public function lista_precios() {
+		$dataView['tpl-tbl-consumibles']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-consumibles');
+		$dataView['tpl-tbl-refacciones']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-refacciones');
+		$dataView['tpl-tbl-servicios']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-servicios');
+
+		$dataView['tpl-tbl-equipos']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-equipos');
+		$dataView['tpl-tbl-accesorios']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-accesorios');
+		$dataView['tpl-tbl-otros']= $this->parser_view('ventas/lista-precios/tpl/tpl-tbl-otros');
+		
+		$pathJS = get_var('path_js');
+		$includes['modulo']['js'][] = ['name'=>'lista_precios', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/lista-precios/precios_view', $dataView, $includes);
+	}
+	#==============FIN lista de precios================
 		
 
 

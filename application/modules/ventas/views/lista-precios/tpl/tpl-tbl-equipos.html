@@ -5,7 +5,7 @@
 		    <div class="toggle-wrap nk-block-tools-toggle">
 			    <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
 			    <div class="toggle-expand-content" data-content="pageMenu">
-			        <ul class="nk-block-tools g-3 tools-tbl-almacen">
+			        <ul class="nk-block-tools g-3 tools-tbl-productos-entrada">
 			            <li>
 			                <div class="form-control-wrap">
 			                    <div class="form-icon form-icon-right">
@@ -21,7 +21,7 @@
 				                    <em class="icon ni ni-list-ol"></em>
 				                </a>
 				                <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
-				                    <ul class="link-check almacen_length">
+				                    <ul class="link-check entrada_length">
 				                        <li><span>{lang(lib_mostrar)}</span></li>
 				                        <li class="active">
 				                            <a href="#" data-length="10">10 {lang(lib_registros_min)}</a>
@@ -37,8 +37,15 @@
 				                        </li>
 				                    </ul>
 				                </div>
-				            </div>
+				            </div><!-- .dropdown -->
 			            </li>
+			            {if {get_userData(crear)}==1}
+			            <!--<li>
+			            	<a class="btn btn-icon btn-success init-tooltip add-entrada" title="{lang(general_nuevo)}" data-custom-Class="nk-tb-col-tools-tooltip">
+			            		<em class="icon ni ni-plus-sm"></em>
+			            	</a>
+			            </li>-->
+						{/if}
 			        </ul>
 			    </div>
 			</div>
@@ -47,45 +54,42 @@
 </div>
 <div class="nk-block">
 	<div class="table-responsive">
-		<table class="table dataTable no-footer dtr-inline"  data-btn-col-vis="true">
+		<table class="table dataTable no-footer dtr-inline" id="" data-btn-col-vis="true" data-btn-Add="true">
 	    	<thead>
 			    <tr class="nk-tb-item nk-tb-head bg-dark">
-					<th class="nk-tb-col text-white sorting sorting_asc">Folio</th>
-					<th class="nk-tb-col text-white noVis sorting sorting_asc">Cliente</th>
-					<th data-visible="{show_price()}" class="nk-tb-col text-white sorting sorting_asc">Razón social</th>
-					<th class="nk-tb-col text-white">Fecha de elaboración</th>
-					<th class="nk-tb-col text-white">Atención</th>
-					<th class="nk-tb-col text-white">Departamento</th>
-					<th class="nk-tb-col text-white">Moneda</th>
-					<th class="nk-tb-col text-white">Precios</th>
-					<th class="nk-tb-col text-white">Condiciones de pago</th>
-					<th class="nk-tb-col text-white">Tiempo de entrega</th>
-					<th class="nk-tb-col text-white">Lugar de entrega</th>
-					<th class="nk-tb-col text-white">Vigencia</th>
-					<th class="nk-tb-col text-white">Tipo de producto</th>
-					<th class="nk-tb-col text-white">Notas</th>
-					<th class="nk-tb-col text-white">Fechas de recepción</th>
-					<th class="nk-tb-col text-white">Estatus</th>
-					<th class="nk-tb-col text-white">Vendedor o nombre en lista</th>
-					<th class="nk-tb-col text-white">Departamento nuestro</th>
-					<th class="nk-tb-col text-white">Correo</th>
-					<th class="nk-tb-col text-white">Semana</th>
-					<th class="nk-tb-col text-white">Mes</th>
-					<th class="nk-tb-col text-white">Año</th>
-					<th class="nk-tb-col text-white">Solvente</th>
-					<th class="nk-tb-col text-white">Tinta</th>
-					<th class="nk-tb-col text-white">Solución de limpieza</th>
-					<th class="nk-tb-col text-white">Cartuchos de solvente</th>
-					<th class="nk-tb-col text-white">Cartuchos de tinta</th>
-					<th class="nk-tb-col text-white">Ribbon</th>
-					<th class="nk-tb-col text-white">Kit de aditivos</th>
-					<th class="nk-tb-col text-white">Etiqueta</th>
-					<th class="nk-tb-col text-white">Equipo</th>
-					<th class="nk-tb-col text-white">Equipo en renta</th>
-					<th class="nk-tb-col text-white">Refacción</th>
-					<th class="nk-tb-col text-white">Servicio</th>
-					<th class="nk-tb-col text-white">Accesorio</th>
-					<th class="nk-tb-col text-white">Otro</th>
+					<th class="nk-tb-col text-white ">Nro° de parte</th>
+			        <th class="nk-tb-col text-white ">Nro° interno</th>
+			        <th class="nk-tb-col text-white ">Unidad de medida</th>
+			        <th class="nk-tb-col text-white ">Descripción</th>
+			        <th class="nk-tb-col text-white ">Precio cliente</th>
+			        <th class="nk-tb-col text-white ">Precio distribuidor</th>
+			        <th class="nk-tb-col text-white ">Moneda</th>
+			        <th class="nk-tb-col text-white ">Marca</th>
+			        <th class="nk-tb-col text-white ">Modelo</th>
+			        <th class="nk-tb-col text-white ">Tipo de tecnología</th>
+			        <th class="nk-tb-col text-white ">Piezas disponibles</th>
+			    </tr>
+			</thead>
+	    </table>
+	</div>
+	<br>
+	<br>
+	<hr>
+	<br>
+	<br>
+	<div class="table-responsive">
+		<table class="table dataTable no-footer dtr-inline" id="" data-btn-col-vis="true" data-btn-Add="true">
+	    	<thead>
+			    <tr class="nk-tb-item nk-tb-head bg-dark">
+					<th class="nk-tb-col text-white">Nro° de parte</th>
+			        <th class="nk-tb-col text-white">Nro° interno</th>
+			        <th class="nk-tb-col text-white">Unidad de medida</th>
+			        <th class="nk-tb-col text-white">Descripción</th>
+			        <th class="nk-tb-col text-white">Precio cliente</th>
+			        <th class="nk-tb-col text-white">Precio distribuidor</th>
+			        <th class="nk-tb-col text-white">Moneda</th>
+			        <th class="nk-tb-col text-white">Marca</th>
+			        <th class="nk-tb-col text-white">Modelo</th>
 			    </tr>
 			</thead>
 	    </table>

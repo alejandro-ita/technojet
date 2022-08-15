@@ -1,0 +1,59 @@
+<div class="modal fade" id="modal-add-producto-solicitud" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-top modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo producto | solicitud de entrega</h5>
+                <a href="#" class="close" id="close-producto-solicitud" data-dismiss-modal="modal-add-producto-solicitud" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="cantidad">Cantidad</label>
+                        <div class="form-control-wrap">
+                            <input type="number" class="form-control validate required number" id="cantidad" name="cantidad" required />
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="">No. de parte</label>
+                        <div class="form-control-wrap">
+                            <select id="" name="" class="form-select init-select2 validate required">
+                                <option value="" selected>{lang(general_select_option)}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="">Unidad</label>
+                        <div class="form-control-wrap">
+                            <select id="" name="id_tipo_producto" class="form-select init-select2 validate required">
+                                <option value="" disabled selected>{lang(general_select_option)}</option>
+                                {tipos-productos}
+                                <option value="{id_tipo_producto}">{tipo_producto}</option>
+                                {/tipos-productos}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="id_tipo_producto">Producto</label>
+                        <div class="form-control-wrap">
+                            <select name="id_tipo_producto" class="form-select init-select2 validate required">
+                                <option value="" disabled selected>{lang(general_select_option)}</option>
+                                {tipos-productos}
+                                <option value="{id_tipo_producto}">{tipo_producto}</option>
+                                {/tipos-productos}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="descripcion">Descripción</label>
+                        <div class="form-control-wrap">
+                            <textarea class="form-control no-resize" id="descripcion" name="descripcion" required readonly></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-add-producto-entrada" class="btn btn-dark">{lang(general_agregar)}</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="modal fade" id="modal-add-nota" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-top modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Nota</h5>
+                <a href="#" class="close" data-dismiss-modal="modal-add-nota" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="">Nota</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control validate required " id="nota" name="nota" required  />
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="descripcion">Descripción</label>
+                        <div class="form-control-wrap">
+                            <textarea class="form-control no-resize" id="descripcion" name="descripcion" required></textarea>
+                        </div>
+                    </div>
+                    <hr>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-add-producto-nota" class="btn btn-dark">{lang(general_agregar)}</button>
+            </div>
+        </div>
+    </div>
+</div>

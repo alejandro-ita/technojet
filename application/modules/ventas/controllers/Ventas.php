@@ -75,6 +75,11 @@ class Ventas extends SB_Controller {
 		$sqlWhere['grupo'] = 6;
 		$dataView['tproducto'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
 
+		//Departamento
+		$sqlWhere['id_categoria'] = 45;
+		$sqlWhere['grupo'] = 6;
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+
 		//Vendedores
 		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
 
@@ -111,6 +116,10 @@ class Ventas extends SB_Controller {
 	public function get_modal_add_producto_cotizacion() {
 		$dataView['tipo-producto'] = $this->db_catalogos->get_tipos_productos_min();
 		$this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-cotizacion', $dataView, FALSE);
+	}
+
+	public function get_modal_add_producto_nota(){
+		$this->parser_view('ventas/cotizaciones/tpl/modal-add-nota', FALSE, FALSE);
 	}
 
 	public function get_unidades_medida_productos() {
@@ -166,11 +175,10 @@ class Ventas extends SB_Controller {
 			]);
 			
 			$sqlData['atencion'] 	= strtoupper($this->input->post('atencion'));
-			$sqlData['departamento'] 		= strtoupper($this->input->post('departamento'));
 			$sqlData['creador_cotizacion'] = strtoupper($this->input->post('creador_cotizacion'));
 			$insert = $this->db_cotizaciones->insert_cotizacion($sqlData);
 			$insert OR set_exception();
-
+			//SAVE PRODUCTOS
 			$productos 		= $this->input->post('productos');
 			foreach ($productos as $producto) {
 				$sqlData = [
@@ -182,6 +190,7 @@ class Ventas extends SB_Controller {
 					'total' 				=> $producto['total'],
 					'incluye' 				=> $producto['incluye'],
 					'comision_vendedor' 	=> $producto['comision_vendedor'],
+					'opcional' 				=> $producto['opcional'],
 					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
 					'timestamp_insert' 	=> timestamp()
 				];
@@ -195,6 +204,27 @@ class Ventas extends SB_Controller {
 			}
 
 			$sqlData['productos'] = $sqlData;
+
+			//SAVE NOTAS
+			$notas 		= $this->input->post('notas');
+			foreach ($notas as $nota) {
+				$sqlData = [
+					'id_cotizacion' 		=> $insert,
+					'nota' 					=> $nota['nota'],
+					'descripcion' 			=> $nota['descripcion'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				$sqlNotasBatch[] = $sqlData;
+			}
+
+			if ($sqlNotasBatch) {
+				$insertBatch = $this->db_cotizaciones->insert_cotizacion_nota($sqlNotasBatch);
+				$insertBatch OR set_exception();
+			}
+
+			$sqlData['notas'] = $sqlData;
 			$actividad 		= "ha creado una cotización";
 			$data_change 	= ['insert'=>['newData'=>$sqlData]];
 			registro_bitacora_actividades($insert, 'tbl_cotizaciones', $actividad, $data_change);
@@ -263,8 +293,13 @@ class Ventas extends SB_Controller {
 		$sqlWhere 	= $this->input->post(['id_cotizacion']);
 		$productos 	= $this->db_cotizaciones->get_cotizacion_productos($sqlWhere);
 		$dataView['list-productos'] = json_encode($productos);
+
+		$sqlWhere 	= $this->input->post(['id_cotizacion']);
+		$notas 	= $this->db_cotizaciones->get_cotizacion_notas($sqlWhere);
+		$dataView['list-notas'] = json_encode($notas);
 		
 		#ELIMINACIÓN DE CONFLICTOS EN EL PARSER VIEW
+		//unset($dataView['list-productos'], $dataView['list-productos']);
 		unset($dataView['id_cliente'], $dataView['id_cliente']);
 		unset($dataView['id_tiempo_entrega'], $dataView['id_tiempo_entrega']);
 		unset($dataView['id_estatus_vigencia'], $dataView['id_estatus_vigencia']);
@@ -304,7 +339,6 @@ class Ventas extends SB_Controller {
 			]);
 
 			$sqlData['atencion'] 	= strtoupper($this->input->post('atencion'));
-			$sqlData['departamento'] 		= strtoupper($this->input->post('departamento'));
 			$sqlData['creador_cotizacion'] = strtoupper($this->input->post('creador_cotizacion'));
 			$sqlWhere = $this->input->post(['id_cotizacion']);
 			$update = $this->db_cotizaciones->update_cotizacion($sqlData, $sqlWhere);
@@ -340,6 +374,7 @@ class Ventas extends SB_Controller {
 					'total' 				=> $producto['total'],
 					'incluye' 				=> $producto['incluye'],
 					'comision_vendedor' 	=> $producto['comision_vendedor'],
+					'opcional' 				=> $producto['opcional'],
 					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
 					'timestamp_insert' 	=> timestamp()
 				];
@@ -362,6 +397,46 @@ class Ventas extends SB_Controller {
 				$insertBatch OR set_exception();
 			}
 
+			$sqlData['productos'] = $dataView['list-productos'];
+
+			#ELIMINACION DE NOTAS QUE NO LLEGAN EN LA LIST	
+			$notas = $this->input->post('notas');
+			$notasActivas = array_filter(array_column($notas, 'id_nota'));
+			$sqlWhere = $this->input->post(['id_cotizacion']);
+			$sqlWhere['activo'] = 1;
+			if($notasActivas) $sqlWhere['notIn'] = $notasActivas;
+			$update = $this->db_cotizaciones->update_cotizacion_notas(['activo'=>0], $sqlWhere);
+
+			#REGISTRO DE NUEVAS NOTAS
+			$sqlBatchNotas = [];
+			foreach ($notas as $nota) {
+				$sqlDataPro = [
+					'id_cotizacion' 		=> $this->input->post('id_cotizacion'),
+					'nota' 					=> $nota['nota'],
+					'descripcion' 			=> $nota['descripcion'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				if (!isset($nota['id_nota'])) {
+					$sqlBatchNotas[] = $sqlDataPro;
+				}
+
+				/*DATA PARA EL PDF
+				$sqlDataPro['no_parte'] 	= $producto['no_parte'];
+				$sqlDataPro['descripcion'] = $producto['descripcion'];
+				$sqlDataPro['unidad_medida'] = $producto['unidad_medida'];
+				$sqlDataPro['tipo_producto'] = $producto['tipo_producto'];*/
+				$dataView['list-notas'][] = $sqlDataPro;
+			}
+
+			if ($sqlBatchNotas) {
+				$insertBatch = $this->db_cotizaciones->insert_cotizacion_nota($sqlBatchNotas);
+				$insertBatch OR set_exception();
+			}
+
+			$sqlData['notas'] = $dataView['list-notas'];
+
 			#GENERANDO EL PDF
 			/*$this->load->library('Create_pdf');
 			$sqlWhere 	= $this->input->post(['id_requisicion']);
@@ -374,7 +449,6 @@ class Ventas extends SB_Controller {
 				,'orientation' 	=> 'landscape'
 			);*/
 
-			$sqlData['productos'] = $dataView['list-productos'];
 			$actividad 		= "ha editado una cotización";
 			$data_change 	= ['update'=>['newData'=>$sqlData]];
 			registro_bitacora_actividades($sqlWhere['id_cotizacion'], 'tbl_cotizaciones', $actividad, $data_change);

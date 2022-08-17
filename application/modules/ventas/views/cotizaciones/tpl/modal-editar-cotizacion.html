@@ -230,6 +230,7 @@
                                 <div class="card-body px-1 py-2">
                                     <script type="text/javascript">
                                         var listProductos = JSON.parse('{list-productos}');
+                                        var listNotas = JSON.parse('{list-notas}');
                                     </script>
                                     <table class="table dataTable no-footer dtr-inline" id="modal-tbl-productos" data-btn-Add="true">
                                         <thead>
@@ -252,6 +253,25 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="form-label" for=""><h6>Notas</h6></label>
+                            <div class="card bg-light my-2">
+                                <div class="card-body px-1 py-2">
+                                    <table class="table dataTable no-footer dtr-inline" id="modal-tbl-notas" data-btn-Add="true">
+                                        <thead>
+                                            <tr class="nk-tb-item nk-tb-head bg-dark">
+                                                <th class="nk-tb-col text-white">Nota</th>
+                                                <th class="nk-tb-col text-white">Descripción</th>
+                                                <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer py-2">

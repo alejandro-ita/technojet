@@ -156,6 +156,7 @@ class Cotizaciones_model extends SB_Model {
 				CTP.tipo_producto,
 				CUM.unidad_medida,				
 				TP.no_parte,
+				TRP.opcional,
 				TP.descripcion", FALSE)
 			->from("$tbl[cotizaciones_productos] AS TRP")
 			->join("$tbl[productos] AS TP", 'TP.id_producto=TRP.id_producto', 'LEFT')
@@ -206,6 +207,61 @@ class Cotizaciones_model extends SB_Model {
 		// debug($this->db->last_query());
 
 		return $all ? $request->result_array() : $request->row_array();
+	}
+
+	public function insert_cotizacion_nota(array $data, $batch=TRUE) {
+		$tbl = $this->tbl;
+
+		if (!$batch) {
+			$data['id_usuario_insert'] 	= $this->session->userdata('id_usuario');
+			$data['timestamp_insert'] 	= timestamp();
+			$this->db->insert($tbl['cotizaciones_notas'], $data);
+		} else $this->db->insert_batch($tbl['cotizaciones_notas'], $data);
+
+		$error = $this->db->error();
+		if ($error['message']) {
+			log_message('error', $error['message']);
+			return FALSE;
+		}
+
+		return ($batch ? TRUE : $this->db->insert_id());
+	}
+
+	public function get_cotizacion_notas(array $where=[], $all=TRUE) {
+		$tbl = $this->tbl;
+
+		!isset($where['notIN']) OR $this->db->where_not_in('TRP.id_cotizacion', $where['notIN']);
+		!isset($where['id_cotizacion']) OR $this->db->where('TRP.id_cotizacion', $where['id_cotizacion']);
+		$request = $this->db->select("
+				TRP.id_nota,
+				TRP.nota,
+				TRP.descripcion", FALSE)
+			->from("$tbl[cotizaciones_notas] AS TRP")
+			->where('TRP.activo', 1)
+			->get();
+
+		return $all ? $request->result_array() : $request->row_array();
+	}
+
+	public function update_cotizacion_notas(array $data, array $where, $affectedRows=TRUE) {
+		$tbl = $this->tbl;
+
+		if (isset($where['notIn'])) {
+			$this->db->where_not_in('id_nota', $where['notIn']);
+			unset($where['notIn']);
+		}
+
+		$data['id_usuario_update'] = $this->session->userdata('id_usuario');
+		$data['timestamp_update'] = timestamp();
+		$this->db->update($tbl['cotizaciones_notas'], $data, $where);
+
+		$error = $this->db->error();
+		if ($error['message']) {
+			log_message('error', $error['message']);
+			return FALSE;
+		}
+
+		return ($affectedRows ? $this->db->affected_rows() : TRUE);
 	}
 }
 

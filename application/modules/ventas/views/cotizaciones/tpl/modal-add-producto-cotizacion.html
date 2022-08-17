@@ -53,9 +53,9 @@
                         </div>
                     </div>
                     <div class="form-group mb-0">
-                        <label class="form-label" for="comision">Comisión</label>
+                        <!--<label class="form-label" for="comision">Comisión</label>-->
                         <div class="form-control-wrap">
-                            <input type="number" class="form-control validate required number" id="comision_vendedor" name="comision_vendedor" required />
+                            <input type="hidden" class="form-control validate number" id="comision_vendedor" name="comision_vendedor"/>
                         </div>
                     </div>
                     <div class="form-group mb-0">
@@ -68,6 +68,14 @@
                         <label class="form-label" for="id_tipo_producto">Incluye</label>
                         <div class="form-control-wrap">
                             <input type="text" class="form-control validate required " id="incluye" name="incluye" required  />
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="id_tipo_producto">Producto opcional</label>
+                        <div class="form-control-wrap">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" name="opcional" id="opcional"><label class="custom-control-label" for="opcional"></label>
+                            </div>
                         </div>
                     </div>
                     <hr>

@@ -8,9 +8,23 @@
             <div class="modal-body">
                 <form action="#" class="form-validate">
                     <div class="form-group mb-0">
-                        <label class="form-label" for="cantidad">Cantidad</label>
+                        <label class="form-label" for="id_tipo_producto">Tipo de producto</label>
                         <div class="form-control-wrap">
-                            <input type="text" class="form-control validate required number" id="cantidad" name="cantidad" required />
+                            <select name="id_tipo_producto" class="form-select init-select2 validate required">
+                                <option value="" disabled selected>{lang(general_select_option)}</option>
+                                {tipos-productos}
+                                <option value="{id_tipo_producto}">{tipo_producto}</option>
+                                {/tipos-productos}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label" for="">Unidad de medida</label>
+                        <div class="form-control-wrap">
+                            <select id="" name="" class="form-select init-select2 validate required">
+                                <option value="1" selected>1</option>
+                                <option value="1" >2</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group mb-0">
@@ -23,23 +37,9 @@
                         </div>
                     </div>
                     <div class="form-group mb-0">
-                        <label class="form-label" for="">Unidad</label>
+                        <label class="form-label" for="cantidad">Cantidad</label>
                         <div class="form-control-wrap">
-                            <select id="" name="" class="form-select init-select2 validate required">
-                                <option value="1" selected>1</option>
-                                <option value="1" >2</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group mb-0">
-                        <label class="form-label" for="id_tipo_producto">Tipo de producto</label>
-                        <div class="form-control-wrap">
-                            <select name="id_tipo_producto" class="form-select init-select2 validate required">
-                                <option value="" disabled selected>{lang(general_select_option)}</option>
-                                {tipos-productos}
-                                <option value="{id_tipo_producto}">{tipo_producto}</option>
-                                {/tipos-productos}
-                            </select>
+                            <input type="text" class="form-control validate required number" id="cantidad" name="cantidad" required />
                         </div>
                     </div>
                     <div class="form-group mb-0">
@@ -49,13 +49,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-0">
-                        <label class="form-label">Descuento por pieza</label>
-                        <div class="form-control-wrap">
-                            <input type="number" class="form-control validate required number" required />
-                        </div>
-                    </div>
-                    <div class="form-group mb-0">
-                        <label class="form-label">Descuento total</label>
+                        <label class="form-label">Descuento</label>
                         <div class="form-control-wrap">
                             <input type="number" readonly  value="15%" class="form-control validate required number" required />
                         </div>

@@ -32,7 +32,10 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="id_vale_estatus">Cotización</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" readonly disabled value="1200" id="" name="" required="">
+                                    <select id="" name="id_vale_estatus" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>Cotización 1</option>
+                                        <option value="2"  selected>Cotización 2</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -102,10 +105,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">O.C</label>
                                 <div class="form-control-wrap">
-                                    <select id="" name="" class="form-select init-select2 validate required">
-                                        <option value="1"  selected>1</option>
-                                        <option value="1"  >2</option>
-                                    </select>
+                                    <input type="TEXT" class="form-control validate required" id="" name="" required="">
                                 </div>
                             </div>
                         </div>
@@ -116,17 +116,6 @@
                                     <select id="" name="" class="form-select init-select2 validate required">
                                         <option value="1"  selected>envío1</option>
                                         <option value="1"  >envío2</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-2">
-                            <div class="form-group mb-0">
-                                <label class="form-label" for="">Incluír iva</label>
-                                <div class="form-control-wrap">
-                                    <select id="" name="" class="form-select init-select2 validate required">
-                                        <option value="1"  selected>SI</option>
-                                        <option value="1"  >NO</option>
                                     </select>
                                 </div>
                             </div>
@@ -153,7 +142,7 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Notas remision</label>
+                                <label class="form-label">Notas de facturación</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control validate required" id="" name=""  required />
                                 </div>

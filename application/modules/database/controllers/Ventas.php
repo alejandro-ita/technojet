@@ -300,9 +300,15 @@ class Ventas extends SB_Controller {
 		$pathJS = get_var('path_js');
         $includes['modulo']['js'][] = ['name'=>'template_helper', 'dirname'=>"$pathJS/helpers", 'fulldir'=>TRUE];
         $includes['modulo']['js'][] = ['name'=>'pedidos-internos', 'dirname'=>"$pathJS/database/ventas", 'fulldir'=>TRUE];
+		$includes['modulo']['js'][] = ['name'=>'facturas', 'dirname'=>"$pathJS/database/ventas", 'fulldir'=>TRUE];
 
         $dataTools['categorias']= $this->db_catalogos->get_categorias(['grupo'=>7]);
-        $dataView['tpl-tools'] = $this->parser_view('database/ventas/pedidos-internos/tpl/tpl-tools', $dataTools);
+		$dataView['tpl-tools'] = $this->parser_view('database/ventas/pedidos-internos/tpl/tpl-tools', $dataTools);
+        $dataView['tpl-tbl-mostrador'] = $this->parser_view('database/ventas/pedidos-internos/tpl/tab-pedidos-internos', $dataView);
+
+        $dataTools['categorias-factura']= $this->db_catalogos->get_categorias(['grupo'=>8]);
+		$dataView['tpl-tools-factura'] = $this->parser_view('database/ventas/pedidos-internos/tpl/tpl-tools-factura', $dataTools);
+        $dataView['tpl-tbl-facturas'] = $this->parser_view('database/ventas/pedidos-internos/tpl/tab-facturas', $dataView);
 
 		$this->load_view('database/ventas/pedidos-internos/pedidos_internos_view', $dataView, $includes);
 	}
@@ -310,6 +316,20 @@ class Ventas extends SB_Controller {
 	public function get_catalog_pedidos_internos() {
 		$sqlWhere = $this->input->post('id_categoria') ? $this->input->post(['id_categoria']) : [];
 		$sqlWhere['grupo']=7;
+		$pedidos_internos = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		$pedidos_internos = $pedidos_internos ? $pedidos_internos : [];
+
+		$tplAcciones = $this->parser_view('database/ventas/cotizaciones/tpl/tpl-acciones');
+		foreach ($pedidos_internos as &$rec) {
+			$rec['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($pedidos_internos, JSON_NUMERIC_CHECK);
+	}
+
+	public function get_catalog_pedidos_internos_factura() {
+		$sqlWhere = $this->input->post('id_categoria') ? $this->input->post(['id_categoria']) : [];
+		$sqlWhere['grupo']=8;
 		$pedidos_internos = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
 		$pedidos_internos = $pedidos_internos ? $pedidos_internos : [];
 

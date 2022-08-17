@@ -15,6 +15,7 @@ class Ventas extends SB_Controller {
 		$this->load->model('technojet/Vendedores_model', 'db_vendedor');
 		$this->load->model('technojet/Catalogos_model', 'db_catalog');
 		$this->load->model('technojet/Clientes_model', 'db_cliente');
+		$this->load->model('ventas/Pedidos_internos', 'db_pi');
 	}
 
 	public function cotizaciones() {
@@ -437,6 +438,7 @@ class Ventas extends SB_Controller {
 		
 		$this->load_view('ventas/facturacion/facturacion_view', $dataView, $includes);
 	}
+
 	public function get_modal_add_registro_facturacion(){
 		$this->parser_view('ventas/facturacion/tpl/modal-nuevo-entrada', FALSE, FALSE);
 	}
@@ -449,38 +451,693 @@ class Ventas extends SB_Controller {
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-detallado');
 		
+		$includes 	= get_includes_vendor(['dataTables', 'jQValidate']);
 		$pathJS = get_var('path_js');
     	$includes['modulo']['js'][] = ['name'=>'mostrador', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 		
 		$this->load_view('ventas/pedidos-internos/mostrador/mostrador_view', $dataView, $includes);
 	}
+
+	public function get_pi_mostrador(){	
+		$response = $this->db_pi->get_pi_mostrador_main();
+
+		$tplAcciones = $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-acciones');
+		foreach ($response as &$cotizacion) {
+			$cotizacion['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($response);
+	}
 	
 	public function get_modal_add_mostrador(){
-		$this->parser_view('ventas/pedidos-internos/mostrador/tpl/modal-nuevo-entrada', FALSE, FALSE);
+		//Estatus PI
+		$sqlWhere['id_categoria'] = 31;
+		$sqlWhere['grupo'] = 7;
+		$dataView['estatus-pi'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//DEPARTAMENTO
+		$sqlWhere['id_categoria'] = 32;
+		$sqlWhere['grupo'] = 7;
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//MEDIO
+		$sqlWhere['id_categoria'] = 33;
+		$sqlWhere['grupo'] = 7;
+		$dataView['medio'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//OC
+		$sqlWhere['id_categoria'] = 34;
+		$sqlWhere['grupo'] = 7;
+		$dataView['oc'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//FORMA ENVIO
+		$sqlWhere['id_categoria'] = 35;
+		$sqlWhere['grupo'] = 7;
+		$dataView['forma-envio'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//CONDICIONES
+		$sqlWhere['id_categoria'] = 36;
+		$sqlWhere['grupo'] = 7;
+		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//VENDEDORES
+		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
+		//MONEDAS
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min();
+		//CLIENTES
+		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
+		//COTIZACIONES
+		$dataView['cotizaciones'] = $this->db_cotizaciones->get_all_id_cotizaciones();
+
+		#OBTENEMOS EL CONSECUTIVO DEL COTIZACION
+		$folio = $this->db_pi->get_ultimo_pi_mostrador();
+		$dataView = array_merge($dataView, $folio);
+
+		$this->parser_view('ventas/pedidos-internos/mostrador/tpl/modal-nuevo-pi-mostrador', $dataView, FALSE);
 	}
 
 	public function get_modal_add_mostrador_product(){
-		$this->parser_view('ventas/pedidos-internos/mostrador/tpl/modal-add-producto-entrada', FALSE, FALSE);
+		$dataView['tipo-producto'] = $this->db_catalogos->get_tipos_productos_min();
+		$this->parser_view('ventas/pedidos-internos/mostrador/tpl/modal-add-producto-entrada', $dataView, FALSE);
+	}
+
+	public function process_save_pi_mostrador() {
+		try {
+			$this->db->trans_begin();
+			#GUARDAMOS PI
+			$sqlData = $this->input->post([
+				'id_estatus_pi',
+				'id_cotizacion',
+				'id_cliente',
+				'contacto',
+				'id_departamento',
+				'fecha_pi',
+				'id_medio',
+				'id_vendedor',
+				'id_oc',
+				'id_forma_envio',
+				'incluir_iva',
+				'id_moneda',
+				'notas_internas',
+				'notas_remision',
+				'tipo_cambio',
+				'id_condiciones'
+			]);
+			
+			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
+			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
+			$sqlData['notas_remision'] = strtoupper($this->input->post('notas_remision'));
+			$insert = $this->db_pi->insert_pi_mostrador($sqlData);
+			$insert OR set_exception();
+
+			$productos 		= $this->input->post('productos');
+			foreach ($productos as $producto) {
+				$sqlData = [
+					'id_pi_mostrador' 		=> $insert,
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'precio_unitario' 		=> $producto['precio_unitario'],
+					'descuento_pieza' 		=> $producto['descuento_pieza'],
+					'descuento_total' 		=> $producto['descuento_total'],
+					'total' 				=> $producto['total'],
+					'comision_vendedor' 	=> $producto['comision_vendedor'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				$sqlDataBatch[] = $sqlData;
+			}
+
+			if ($sqlDataBatch) {
+				$insertBatch = $this->db_pi->insert_pi_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			$sqlData['productos'] = $sqlData;
+			$actividad 		= "ha creado un pedido interno mostrador";
+			$data_change 	= ['insert'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($insert, 'tbl_pi_mostrador', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_edit_pi() {
+		$dataView = $this->input->post();
+		$dataEncription = json_encode($this->input->post(['id_pi_mostrador']));
+		$dataView['dataEncription'] = $this->encryption->encrypt($dataEncription);
+
+		#CATALOGOS & SELECTS
+		$sqlWhere['selected'] = $this->input->post('id_cliente');
+		$dataView['clientes'] = $this->db_cliente->get_cliente_selected($sqlWhere);
+		//Estatus PI
+		$sqlWhere['id_categoria'] = 31;
+		$sqlWhere['selected'] = $this->input->post('id_estatus_pi');
+		$dataView['estatus-pi'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//COTIZACIONES
+		$sqlWhere['selected'] = $this->input->post('id_cotizacion');
+		$dataView['cotizaciones'] = $this->db_cotizaciones->get_cotizacion_select($sqlWhere);
+		//DEPARTAMENTO
+		$sqlWhere['id_categoria'] = 32;
+		$sqlWhere['selected'] = $this->input->post('id_departamento');
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//MEDIO
+		$sqlWhere['id_categoria'] = 33;
+		$sqlWhere['selected'] = $this->input->post('id_medio');
+		$dataView['medio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//VENDEDOR
+		$sqlWhere['selected'] = $this->input->post('id_vendedor');
+		$dataView['vendedores'] = $this->db_vendedor->get_vendedor_select($sqlWhere);
+		//OC
+		$sqlWhere['id_categoria'] = 34;
+		$sqlWhere['selected'] = $this->input->post('id_oc');
+		$dataView['oc'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//FORMA ENVIO
+		$sqlWhere['id_categoria'] = 35;
+		$sqlWhere['selected'] = $this->input->post('id_forma_envio');
+		$dataView['forma-envio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//MONEDA
+		$sqlWhere['selected'] = $this->input->post('id_moneda');
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min($sqlWhere);
+		//CONDICIONES
+		$sqlWhere['id_categoria'] = 36;
+		$sqlWhere['selected'] = $this->input->post('id_condiciones');
+		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+
+		$sqlWhere 	= $this->input->post(['id_pi_mostrador']);
+		$productos 	= $this->db_pi->get_pi_productos($sqlWhere);
+		$dataView['list-productos'] = json_encode($productos);
+		
+		#ELIMINACIÓN DE CONFLICTOS EN EL PARSER VIEW
+		unset($dataView['id_cotizacion'], $dataView['id_cotizacion']);
+		unset($dataView['folio'], $dataView['folio']);
+		unset($dataView['id_cliente'], $dataView['id_cliente']);
+		unset($dataView['id_estatus_pi'], $dataView['id_estatus_pi']);
+		unset($dataView['id_departamento'], $dataView['id_departamento']);
+		unset($dataView['id_departamento'], $dataView['id_departamento']);
+		unset($dataView['id_medio'], $dataView['id_medio']);
+		unset($dataView['id_oc'], $dataView['id_oc']);
+		unset($dataView['id_forma_envio'], $dataView['id_forma_envio']);
+		unset($dataView['id_moneda'], $dataView['id_moneda']);
+		unset($dataView['moneda'], $dataView['moneda']);
+		unset($dataView['id_vendedor'], $dataView['id_vendedor']);
+		unset($dataView['vendedor'], $dataView['vendedor']);
+		unset($dataView['id_condiciones'], $dataView['id_condiciones']);
+		
+
+		$this->parser_view('ventas/pedidos-internos/mostrador/tpl/modal-editar-pi', $dataView, FALSE);
+	}
+
+	public function process_update_pi() {
+		try {
+			$this->db->trans_begin();
+			$sqlData = $this->input->post([
+				'id_estatus_pi',
+				'id_cotizacion',
+				'id_cliente',
+				'contacto',
+				'id_departamento',
+				'fecha_pi',
+				'id_medio',
+				'id_vendedor',
+				'id_oc',
+				'id_forma_envio',
+				'incluir_iva',
+				'id_moneda',
+				'notas_internas',
+				'notas_remision',
+				'tipo_cambio',
+				'id_condiciones'
+			]);
+
+			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
+			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
+			$sqlData['notas_remision'] = strtoupper($this->input->post('notas_remision'));
+			$sqlWhere = $this->input->post(['id_pi_mostrador']);
+			$update = $this->db_pi->update_pi($sqlData, $sqlWhere);
+			$update OR set_exception();
+
+			/*DATA PARA EL PDF
+			$dataView = $sqlData;
+			$dataView['id_requisicion'] 				= $this->input->post('id_requisicion');
+			$dataView['tipo_requisicion'] 				= $this->input->post('tipo_requisicion');
+			$dataView['vale_entrada'] 					= $this->input->post('vale_entrada');
+			$dataView['departamento_solicitante'] 		= $this->input->post('departamento_solicitante');
+			$dataView['almacen_solicitante'] 			= $this->input->post('almacen_solicitante');
+			$dataView['departamento_encargado_surtir'] 	= $this->input->post('departamento_encargado_surtir');*/
+
+			$productos = $this->input->post('productos');
+			#ELIMINACION DE PRODUCTOS QUE NO LLEGAN EN LA LIST
+			$productosActivos = array_filter(array_column($productos, 'id_pi_mostrador_producto'));
+			$sqlWhere = $this->input->post(['id_pi_mostrador']);
+			$sqlWhere['activo'] = 1;
+			if($productosActivos) $sqlWhere['notIn'] = $productosActivos;
+			$update = $this->db_pi->update_pin_productos(['activo'=>0], $sqlWhere);
+			#$update OR set_exception();
+
+			#REGISTRO DE NUEVOS PRODUCTOS
+			$sqlDataBatch = [];
+			foreach ($productos as $producto) {
+				$sqlDataPro = [
+					'id_pi_mostrador' 		=> $this->input->post('id_pi_mostrador'),
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'precio_unitario' 		=> $producto['precio_unitario'],
+					'descuento_pieza' 		=> $producto['descuento_pieza'],
+					'descuento_total' 		=> $producto['descuento_total'],
+					'total' 				=> $producto['total'],
+					'comision_vendedor' 	=> $producto['comision_vendedor'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				if (!isset($producto['id_pi_mostrador_producto'])) {
+					$sqlDataBatch[] = $sqlDataPro;
+				}
+
+				/*DATA PARA EL PDF
+				$sqlDataPro['no_parte'] 	= $producto['no_parte'];
+				$sqlDataPro['descripcion'] = $producto['descripcion'];
+				$sqlDataPro['unidad_medida'] = $producto['unidad_medida'];
+				$sqlDataPro['tipo_producto'] = $producto['tipo_producto'];*/
+				$dataView['list-productos'][] = $sqlDataPro;
+			}
+
+			if ($sqlDataBatch) {
+				//$insertBatch = $this->db_ar->insert_requisiciones_productos($sqlDataBatch);
+				$insertBatch = $this->db_pi->insert_pi_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			#GENERANDO EL PDF
+			/*$this->load->library('Create_pdf');
+			$sqlWhere 	= $this->input->post(['id_requisicion']);
+			$estatusRQ 	= $this->db_ar->get_estatus_requisicion($sqlWhere);
+			$dataView 	= array_merge($dataView, $estatusRQ);
+			$settings = array(
+				 'file_name' 	=> 'Vale_requisicion_'.date('YmdHis')
+				,'content_file' => $this->parser_view('almacen/requisicion-material/tpl/tpl-pdf-vale-requisicion-material', $dataView)
+				,'load_file' 	=> FALSE
+				,'orientation' 	=> 'landscape'
+			);*/
+
+			$sqlData['productos'] = $dataView['list-productos'];
+			$actividad 		= "ha editado un PI Mostrador";
+			$data_change 	= ['update'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($sqlWhere['id_pi_mostrador'], 'tbl_pi_mostrador', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+				//'file_path' => $this->create_pdf->create_file($settings)
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function process_remove_pi() {
+		try {
+			$this->db->trans_begin();
+
+			$sqlWhere 	= $this->input->post(['id_pi_mostrador']);
+			#ELIMIANCIÓN DE COTIZACION
+			$update = $this->db_pi->update_pi(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			#ELIMIANCIÓN DE LOS PRODUCTOS DEL VALE DE ENTRADA
+			$update = $this->db_pi->update_pin_productos(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			$actividad 		= "ha eliminado un PI";
+			$data_change 	= ['delete'=>['oldData'=>$_POST]];
+			registro_bitacora_actividades($sqlWhere['id_pi_mostrador'], 'tbl_pi_mostrador', $actividad, $data_change);
+			
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_rm_success'),
+				'icon' 		=> 'success'
+			];
+
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
 	}
 	
 	public function factura() {
 		$dataView['tpl-tbl-factura']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-factura');
+		$dataView['tpl-tbl-factura-consecutivo']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-factura-consecutivo');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-reporte-detallado');
 		
+		$includes 	= get_includes_vendor(['dataTables', 'jQValidate']);
 		$pathJS = get_var('path_js');
     	$includes['modulo']['js'][] = ['name'=>'factura', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 		
 		$this->load_view('ventas/pedidos-internos/factura/factura_view', $dataView, $includes);
 	}
+
+	public function get_pi_facturas(){	
+		$response = $this->db_pi->get_pi_factura_main();
+
+		$tplAcciones = $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-acciones');
+		foreach ($response as &$cotizacion) {
+			$cotizacion['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($response);
+	}
 	
 	public function get_modal_add_factura(){
-		$this->parser_view('ventas/pedidos-internos/factura/tpl/modal-nuevo-entrada', FALSE, FALSE);
+		//Estatus PI
+		$sqlWhere['id_categoria'] = 37;
+		$sqlWhere['grupo'] = 8;
+		$dataView['estatus-pi'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//DEPARTAMENTO
+		$sqlWhere['id_categoria'] = 38;
+		$sqlWhere['grupo'] = 8;
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//MEDIO
+		$sqlWhere['id_categoria'] = 39;
+		$sqlWhere['grupo'] = 8;
+		$dataView['medio'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//FORMA ENVIO
+		$sqlWhere['id_categoria'] = 40;
+		$sqlWhere['grupo'] = 8;
+		$dataView['forma-envio'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//CONDICIONES
+		$sqlWhere['id_categoria'] = 41;
+		$sqlWhere['grupo'] = 8;
+		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//USO CFDI
+		$sqlWhere['id_categoria'] = 42;
+		$sqlWhere['grupo'] = 8;
+		$dataView['uso-cfdi'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//FORMA DE PAGO
+		$sqlWhere['id_categoria'] = 43;
+		$sqlWhere['grupo'] = 8;
+		$dataView['forma-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//METODO PAGO
+		$sqlWhere['id_categoria'] = 44;
+		$sqlWhere['grupo'] = 8;
+		$dataView['metodo-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//VENDEDORES
+		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
+		//MONEDAS
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min();
+		//CLIENTES
+		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
+		//COTIZACIONES
+		$dataView['cotizaciones'] = $this->db_cotizaciones->get_all_id_cotizaciones();
+
+		#OBTENEMOS EL CONSECUTIVO DE FACTURAS
+		$folio = $this->db_pi->get_ultimo_pi_factura();
+		$dataView = array_merge($dataView, $folio);
+		$this->parser_view('ventas/pedidos-internos/factura/tpl/modal-nuevo-pi-factura', $dataView, FALSE);
 	}
 
 	public function get_modal_add_factura_product(){
 		$this->parser_view('ventas/pedidos-internos/factura/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
+
+	public function process_save_pi_factura() {
+		try {
+			$this->db->trans_begin();
+			#GUARDAMOS PI
+			$sqlData = $this->input->post([
+				'id_estatus_pi',
+				'id_cotizacion',
+				'id_cliente',
+				'contacto',
+				'id_departamento',
+				'fecha_pi',
+				'id_medio',
+				'id_vendedor',
+				'oc',
+				'id_forma_envio',
+				'id_moneda',
+				'notas_internas',
+				'notas_facturacion',
+				'tipo_cambio',
+				'id_condiciones',
+				'id_uso_cfdi',
+				'id_forma_pago',
+				'id_metodo_pago',
+				'email_factura'
+			]);
+			
+			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
+			$sqlData['oc'] = strtoupper($this->input->post('oc'));
+			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
+			$sqlData['notas_facturacion'] = strtoupper($this->input->post('notas_facturacion'));
+			$insert = $this->db_pi->insert_pi_factura($sqlData);
+			$insert OR set_exception();
+
+			$productos 		= $this->input->post('productos');
+			foreach ($productos as $producto) {
+				$sqlData = [
+					'id_pi_factura' 		=> $insert,
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'precio_unitario' 		=> $producto['precio_unitario'],
+					'descuento_pieza' 		=> $producto['descuento_pieza'],
+					'descuento_total' 		=> $producto['descuento_total'],
+					'total' 				=> $producto['total'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				$sqlDataBatch[] = $sqlData;
+			}
+
+			if ($sqlDataBatch) {
+				$insertBatch = $this->db_pi->insert_pi_producto_factura($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			$sqlData['productos'] = $sqlData;
+			$actividad 		= "ha creado un pedido interno factura";
+			$data_change 	= ['insert'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($insert, 'tbl_pi_factura', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_edit_pi_factura() {
+		$dataView = $this->input->post();
+		$dataEncription = json_encode($this->input->post(['id_pi_factura']));
+		$dataView['dataEncription'] = $this->encryption->encrypt($dataEncription);
+
+		#CATALOGOS & SELECTS
+		$sqlWhere['selected'] = $this->input->post('id_cliente');
+		$dataView['clientes'] = $this->db_cliente->get_cliente_selected($sqlWhere);
+		//Estatus PI
+		$sqlWhere['id_categoria'] = 37;
+		$sqlWhere['selected'] = $this->input->post('id_estatus_pi');
+		$dataView['estatus-pi'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//COTIZACIONES
+		$sqlWhere['selected'] = $this->input->post('id_cotizacion');
+		$dataView['cotizaciones'] = $this->db_cotizaciones->get_cotizacion_select($sqlWhere);
+		//DEPARTAMENTO
+		$sqlWhere['id_categoria'] = 38;
+		$sqlWhere['selected'] = $this->input->post('id_departamento');
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//MEDIO
+		$sqlWhere['id_categoria'] = 39;
+		$sqlWhere['selected'] = $this->input->post('id_medio');
+		$dataView['medio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//VENDEDOR
+		$sqlWhere['selected'] = $this->input->post('id_vendedor');
+		$dataView['vendedores'] = $this->db_vendedor->get_vendedor_select($sqlWhere);
+		//FORMA ENVIO
+		$sqlWhere['id_categoria'] = 40;
+		$sqlWhere['selected'] = $this->input->post('id_forma_envio');
+		$dataView['forma-envio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//MONEDA
+		$sqlWhere['selected'] = $this->input->post('id_moneda');
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min($sqlWhere);
+		//CONDICIONES
+		$sqlWhere['id_categoria'] = 41;
+		$sqlWhere['selected'] = $this->input->post('id_condiciones');
+		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//USO CFDI
+		$sqlWhere['id_categoria'] = 42;
+		$sqlWhere['selected'] = $this->input->post('id_uso_cfdi');
+		$dataView['uso-cfdi'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//FORMA DE PAGO
+		$sqlWhere['id_categoria'] = 43;
+		$sqlWhere['selected'] = $this->input->post('id_forma_pago');
+		$dataView['forma-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//METODO PAGO
+		$sqlWhere['id_categoria'] = 44;
+		$sqlWhere['selected'] = $this->input->post('id_metodo_pago');
+		$dataView['metodo-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+
+		$sqlWhere 	= $this->input->post(['id_pi_factura']);
+		$productos 	= $this->db_pi->get_pi_factura_productos($sqlWhere);
+		$dataView['list-productos'] = json_encode($productos);
+		
+		#ELIMINACIÓN DE CONFLICTOS EN EL PARSER VIEW
+		//unset($dataView['id_pi_factura'], $dataView['id_pi_factura']);
+		unset($dataView['id_cotizacion'], $dataView['id_cotizacion']);
+		unset($dataView['folio'], $dataView['folio']);
+		unset($dataView['id_cliente'], $dataView['id_cliente']);
+		unset($dataView['id_estatus_pi'], $dataView['id_estatus_pi']);
+		unset($dataView['id_departamento'], $dataView['id_departamento']);
+		unset($dataView['id_departamento'], $dataView['id_departamento']);
+		unset($dataView['id_medio'], $dataView['id_medio']);
+		unset($dataView['id_oc'], $dataView['id_oc']);
+		unset($dataView['id_forma_envio'], $dataView['id_forma_envio']);
+		unset($dataView['id_moneda'], $dataView['id_moneda']);
+		unset($dataView['moneda'], $dataView['moneda']);
+		unset($dataView['id_vendedor'], $dataView['id_vendedor']);
+		unset($dataView['vendedor'], $dataView['vendedor']);
+		unset($dataView['id_condiciones'], $dataView['id_condiciones']);
+		
+
+		$this->parser_view('ventas/pedidos-internos/factura/tpl/modal-editar-pi', $dataView, FALSE);
+	}
+
+	public function process_update_pi_factura() {
+		try {
+			$this->db->trans_begin();
+			$sqlData = $this->input->post([
+				'id_estatus_pi',
+				'id_cotizacion',
+				'id_cliente',
+				'contacto',
+				'id_departamento',
+				'fecha_pi',
+				'id_medio',
+				'id_vendedor',
+				'oc',
+				'id_forma_envio',
+				'id_moneda',
+				'notas_internas',
+				'notas_facturacion',
+				'tipo_cambio',
+				'id_condiciones',
+				'id_uso_cfdi',
+				'id_forma_pago',
+				'id_metodo_pago',
+				'email_factura'
+			]);
+			
+			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
+			$sqlData['oc'] = strtoupper($this->input->post('oc'));
+			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
+			$sqlData['notas_facturacion'] = strtoupper($this->input->post('notas_facturacion'));
+			$sqlWhere = $this->input->post(['id_pi_factura']);
+			$update = $this->db_pi->update_pi_factura($sqlData, $sqlWhere);
+			$update OR set_exception();
+
+			/*DATA PARA EL PDF
+			$dataView = $sqlData;
+			$dataView['id_requisicion'] 				= $this->input->post('id_requisicion');
+			$dataView['tipo_requisicion'] 				= $this->input->post('tipo_requisicion');
+			$dataView['vale_entrada'] 					= $this->input->post('vale_entrada');
+			$dataView['departamento_solicitante'] 		= $this->input->post('departamento_solicitante');
+			$dataView['almacen_solicitante'] 			= $this->input->post('almacen_solicitante');
+			$dataView['departamento_encargado_surtir'] 	= $this->input->post('departamento_encargado_surtir');*/
+
+			$productos = $this->input->post('productos');
+			#ELIMINACION DE PRODUCTOS QUE NO LLEGAN EN LA LIST
+			$productosActivos = array_filter(array_column($productos, 'id_pi_factura_producto'));
+			$sqlWhere = $this->input->post(['id_pi_factura']);
+			$sqlWhere['activo'] = 1;
+			if($productosActivos) $sqlWhere['notIn'] = $productosActivos;
+			$update = $this->db_pi->update_pi_factura_productos(['activo'=>0], $sqlWhere);
+			#$update OR set_exception();
+
+			#REGISTRO DE NUEVOS PRODUCTOS
+			$sqlDataBatch = [];
+			foreach ($productos as $producto) {
+				$sqlDataPro = [
+					'id_pi_factura' 		=> $this->input->post('id_pi_factura'),
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'precio_unitario' 		=> $producto['precio_unitario'],
+					'descuento_pieza' 		=> $producto['descuento_pieza'],
+					'descuento_total' 		=> $producto['descuento_total'],
+					'total' 				=> $producto['total'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				if (!isset($producto['id_pi_factura_producto'])) {
+					$sqlDataBatch[] = $sqlDataPro;
+				}
+
+				/*DATA PARA EL PDF
+				$sqlDataPro['no_parte'] 	= $producto['no_parte'];
+				$sqlDataPro['descripcion'] = $producto['descripcion'];
+				$sqlDataPro['unidad_medida'] = $producto['unidad_medida'];
+				$sqlDataPro['tipo_producto'] = $producto['tipo_producto'];*/
+				$dataView['list-productos'][] = $sqlDataPro;
+			}
+
+			if ($sqlDataBatch) {
+				//$insertBatch = $this->db_ar->insert_requisiciones_productos($sqlDataBatch);
+				$insertBatch = $this->db_pi->insert_pi_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			#GENERANDO EL PDF
+			/*$this->load->library('Create_pdf');
+			$sqlWhere 	= $this->input->post(['id_requisicion']);
+			$estatusRQ 	= $this->db_ar->get_estatus_requisicion($sqlWhere);
+			$dataView 	= array_merge($dataView, $estatusRQ);
+			$settings = array(
+				 'file_name' 	=> 'Vale_requisicion_'.date('YmdHis')
+				,'content_file' => $this->parser_view('almacen/requisicion-material/tpl/tpl-pdf-vale-requisicion-material', $dataView)
+				,'load_file' 	=> FALSE
+				,'orientation' 	=> 'landscape'
+			);*/
+
+			$sqlData['productos'] = $dataView['list-productos'];
+			$actividad 		= "ha editado un PI Factura";
+			$data_change 	= ['update'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($sqlWhere['id_pi_factura'], 'tbl_pi_factura', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+				//'file_path' => $this->create_pdf->create_file($settings)
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
 	#==============fin Mostrador y factura | pedidos internos================
 	
 	#==============Mostrador y factura | notas de crédito================
@@ -534,9 +1191,11 @@ class Ventas extends SB_Controller {
 		
 		$this->load_view('ventas/solicitud-entrega/solicitud_view', $dataView, $includes);
 	}
+
 	public function get_modal_add_solicitud(){
 		$this->parser_view('ventas/solicitud-entrega/tpl/modal-nuevo-entrada', FALSE, FALSE);
 	}
+
 	public function get_modal_add_solicitud_product(){
 		$this->parser_view('ventas/solicitud-entrega/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
@@ -554,9 +1213,11 @@ class Ventas extends SB_Controller {
 		
 		$this->load_view('ventas/solicitud-recoleccion/solicitud_recoleccion_view', $dataView, $includes);
 	}
+
 	public function get_modal_add_solicitud_recoleccion(){
 		$this->parser_view('ventas/solicitud-recoleccion/tpl/modal-nuevo-entrada', FALSE, FALSE);
 	}
+
 	public function get_modal_add_recoleccion_product(){
 		$this->parser_view('ventas/solicitud-recoleccion/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
@@ -574,9 +1235,11 @@ class Ventas extends SB_Controller {
 		
 		$this->load_view('ventas/complementos-pago/complementos_pago_view', $dataView, $includes);
 	}
+
 	public function get_modal_add_complementos_pago(){
 		$this->parser_view('ventas/complementos-pago/tpl/modal-nuevo-entrada', FALSE, FALSE);
 	}
+
 	public function get_modal_add_complemento_product(){
 		$this->parser_view('ventas/complementos-pago/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}

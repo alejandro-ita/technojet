@@ -167,7 +167,46 @@ class Cotizaciones_model extends SB_Model {
 		return $all ? $request->result_array() : $request->row_array();
 	}
 
+	public function get_all_id_cotizaciones($all=TRUE){
+		$tbl = $this->tbl;
 
+		!isset($where['notIN']) OR $this->db->where_not_in('CT.id_cotizacion', $where['notIN']);
+		!isset($where['id_cotizacion']) OR $this->db->where('CT.id_cotizacion', $where['id_cotizacion']);
+		
+		$request = $this->db->select("
+			CT.id_cotizacion,
+			CONCAT('CT-', CT.id_cotizacion) AS folio",
+			FALSE)
+			->from("$tbl[cotizaciones] AS CT")
+			->where('CT.activo', 1)
+			->get();
+
+		/*$request = $this->db->select("CT.*", FALSE)
+			->from("$tbl[cotizaciones] AS CT")
+			->where('CT.activo', 1)
+			->get();*/
+		// debug($this->db->last_query());
+
+		return $all ? $request->result_array() : $request->row_array();
+	}
+
+	public function get_cotizacion_select(array $where=[], $all=TRUE) {
+		$tbl = $this->tbl;
+		$selected = isset($where['selected'])?$where['selected']:0;
+
+		!isset($where['id_cotizacion']) OR $this->db->where('id_cotizacion', $where['id_cotizacion']);
+
+		$request = $this->db->select("
+				CT.id_cotizacion,
+				CONCAT('CT-', CT.id_cotizacion) AS folio,
+				IF(id_cotizacion='$selected', 1, 0) AS selected /*PARA EL SELECT2*/", FALSE)
+			->from("$tbl[cotizaciones] AS CT")
+			->where('activo', 1)
+			->get();
+		// debug($this->db->last_query());
+
+		return $all ? $request->result_array() : $request->row_array();
+	}
 }
 
 /* End of file vales_productos_model.php */

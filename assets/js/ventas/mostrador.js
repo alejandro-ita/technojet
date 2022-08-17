@@ -1,62 +1,62 @@
 jQuery(function($) {
 
-	initDataTable('#tbl-cotizaciones', {
+	initDataTable('#tbl-pi-mostrador', {
 		
 		ajax: {
-			url: base_url('ventas/ventas/get_cotizaciones')
-			,data: function(dataFilter) {
+			url: base_url('ventas/ventas/get_pi_mostrador'),
+			data: function(dataFilter) {
 				
-	    		dataFilter.id_uso = $('select#id_uso').val();
-	    		dataFilter.id_categoria = $('select#id_categoria').val();
+	    		//dataFilter.id_uso = $('select#id_uso').val();
+	    		//dataFilter.id_categoria = $('select#id_categoria').val();
 	    	}
-		}
-		,createdRow: function(row, data, index) {
+		},
+		createdRow: function(row, data, index) {
 			data.acciones = undefined;
 			$(row).addClass('nk-tb-item').data(data);
-		}
-		,columns: [
+		},
+		columns: [
 			{data: {
-				_: 'folio', sort: 'id_cotizacion'
+				_: 'folio', sort: 'id_pi_mostrador'
 		   	}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'estatus_vigencia', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'estatus_entrega', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'fecha_elaboracion', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'atencion', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estatus_pi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'medio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'condiciones_pago', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vendedor', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'oc', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'acciones', defaultContent: '', className: 'nk-tb-col nk-tb-col-tools text-right'},
 		]
 	});
 
 	$('body')
 
-	.on('keyup', '.tools-tbl-cotizaciones #buscar', function(e) {
-		IS.init.dataTable['tbl-cotizaciones'].search(this.value).draw();
+	.on('keyup', '.tools-tbl-pi #buscar', function(e) {
+		IS.init.dataTable['tbl-pi-mostrador'].search(this.value).draw();
 	})
 
-	.on('click', '.tools-tbl-cotizaciones .cotizaciones_length a', function(e) {
+	.on('click', '.tools-tbl-pi .pi_length a', function(e) {
 		$(this).closest('ul').find('li').removeClass('active');
 		$(this).parent('li').addClass('active');
 
-		IS.init.dataTable['tbl-cotizaciones'].page.len($(this).data('length')).draw();
+		IS.init.dataTable['tbl-pi-mostrador'].page.len($(this).data('length')).draw();
 
 		e.preventDefault();
 	})
 
-	.on('click' , '.tools-tbl-cotizaciones .add-cotizacion', function(e) {
+	.on('click' , '.tools-tbl-pi .add-cotizacion', function(e) {
 		$(this).tooltip('hide');
 		$('#form-filtro').formAjaxSend({
 			url: base_url('ventas/ventas/get_modal_add_mostrador'),
 			dataType: 'html',
 			success: function(modal) {
 				$('#content-modals').html(modal);
-				initModal('#modal-nueva-cotizacion', {
+				initModal('#modal-nuevo-pi-mostrador', {
 					onOpenEnd: function() {
 						initSelect2('.modal select');
-						$('#modal-nueva-cotizacion form').validate();
+						$('#modal-nuevo-pi-mostrador form').validate();
 						init_table_productos_add();
 					}
 				});
@@ -67,7 +67,7 @@ jQuery(function($) {
 
 	.on('click', '#modal-tbl-productos_filter .btn-add', function(e) {
 		$.formAjaxSend({
-			url: base_url('ventas/ventas/get_modal_add_producto_cotizacion'),
+			url: base_url('ventas/ventas/get_modal_add_mostrador_product'),
 			dataType: 'html',
 			success: function(modal) {
 				$('#content-modals').append(modal);
@@ -138,19 +138,19 @@ jQuery(function($) {
 		$('#modal-add-producto form #descripcion').attr('title', productoData.descripcion);
 	})
 
-	.on('click', '#btn-add-producto-cotizacion', function(e) {
+	.on('click', '#btn-add-producto-pi', function(e) {
 		if ($('#modal-add-producto form').valid()) {
 			var productoData = $('#modal-add-producto form #id_producto option:selected').data();
 			var data = $.extend({}, productoData, {
-				id_tipo_producto: $('#modal-add-producto form #id_tipo_producto option:selected').val(),
-				tipo_producto: $('#modal-add-producto form #id_tipo_producto option:selected').text(),
+				id_tipo_producto: $('#modal-add-producto form #id_tipo_prod option:selected').val(),
+				tipo_producto: $('#modal-add-producto form #id_tipo_prod option:selected').text(),
 				id_unidad_medida: $('#modal-add-producto form #id_unidad_medida option:selected').val(),
 				unidad_medida: $('#modal-add-producto form #id_unidad_medida option:selected').text(),
 			 	cantidad: $('#modal-add-producto form #cantidad').val(),
 				precio_unitario: $('#modal-add-producto form #precio_unitario').val(),
-				descuento: $('#modal-add-producto form #descuento').val(),
+				descuento_pieza: $('#modal-add-producto form #descuento_pieza').val(),
+				descuento_total: $('#modal-add-producto form #descuento_total').val(),
 				total: $('#modal-add-producto form #total').val(),
-				incluye: $('#modal-add-producto form #incluye').val(),
 				comision_vendedor: $('#modal-add-producto form #comision_vendedor').val()
 			});
 
@@ -161,8 +161,8 @@ jQuery(function($) {
 		e.preventDefault();
 	})
 
-	.on('click', '#btn-save-cotizacion', function(e) {
-		if ($('#modal-nueva-cotizacion form').valid()) {
+	.on('click', '#btn-save-pi-mostrador', function(e) {
+		if ($('#modal-nuevo-pi-mostrador form').valid()) {
 			var table = IS.init.dataTable['modal-tbl-productos']
 			var rows = table.rows().data();
 			if(rows.length) {
@@ -170,10 +170,10 @@ jQuery(function($) {
 				table.$('tr').each(function(key, tr) {
 					productos.push($(tr).data());
 				});
-				console.log(productos);
+				//console.log(productos);
 
-				$('#modal-nueva-cotizacion form').formAjaxSend({
-					url: base_url('ventas/ventas/process_save_cotizacion'),
+				$('#modal-nuevo-pi-mostrador form').formAjaxSend({
+					url: base_url('ventas/ventas/process_save_pi_mostrador'),
 					data: {
 						/*tipo_requisicion: $("#id_tipo_requisicion option:selected").text(),
 						vale_entrada: $("#id_vale_entrada option:selected").text(),
@@ -187,8 +187,8 @@ jQuery(function($) {
 							$('.modal.show').modal('hide');
 							//gotoLink(base_url(response.file_path));
 							ISToast.fire({icon: response.icon, title: response.msg, customClass: response.icon});
-							IS.init.dataTable['tbl-cotizaciones'].ajax.reload(function(jsonData) {
-							    IS.init.dataTable['tbl-cotizaciones'].columns.adjust().draw();
+							IS.init.dataTable['tbl-pi-mostrador'].ajax.reload(function(jsonData) {
+							    IS.init.dataTable['tbl-pi-mostrador'].columns.adjust().draw();
 							});
 
 						} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
@@ -199,19 +199,19 @@ jQuery(function($) {
 		}
 	})
 
-	.on('click', '#tbl-cotizaciones button#open-modal-update', function(e) {
+	.on('click', '#tbl-pi-mostrador button#open-modal-update', function(e) {
 		$(this).tooltip('hide');
 		var tr = $(this).closest('tr');
 		$.formAjaxSend({
-			url: base_url('ventas/ventas/get_modal_edit_cotizacion'),
+			url: base_url('ventas/ventas/get_modal_edit_pi'),
 			data: tr.data(),
 			dataType: 'html',
 			success: function(modal) {
 				$('#content-modals').html(modal);
-				initModal('#modal-editar-cotizacion', {
+				initModal('#modal-editar-pi-mostrador', {
 					onOpenEnd: function() {
 						initSelect2('.modal select');
-						$('#modal-editar-cotizacion form').validate();
+						$('#modal-editar-pi-mostrador form').validate();
 						init_table_productos_add(listProductos);
 					}
 				});
@@ -220,8 +220,8 @@ jQuery(function($) {
 		e.preventDefault();
 	})
 
-	.on('click', '#btn-update-cotizacion', function(e) {
-		if ($('#modal-editar-cotizacion form').valid()) {
+	.on('click', '#btn-update-pi-mostrador', function(e) {
+		if ($('#modal-editar-pi-mostrador form').valid()) {
 			var table = IS.init.dataTable['modal-tbl-productos']
 			var rows = table.rows().data();
 			if(rows.length) {
@@ -230,8 +230,8 @@ jQuery(function($) {
 					productos.push($(tr).data());
 				});
 
-				$('#modal-editar-cotizacion form').formAjaxSend({
-					url: base_url('ventas/ventas/process_update_cotizacion'),
+				$('#modal-editar-pi-mostrador form').formAjaxSend({
+					url: base_url('ventas/ventas/process_update_pi'),
 					data: {
 						/*tipo_requisicion: $("#id_tipo_requisicion option:selected").text(),
 						vale_entrada: $("#id_vale_entrada option:selected").text(),
@@ -245,8 +245,8 @@ jQuery(function($) {
 							$('.modal.show').modal('hide');
 							//gotoLink(base_url(response.file_path));
 							ISToast.fire({icon: response.icon, title: response.msg, customClass: response.icon});
-							IS.init.dataTable['tbl-cotizaciones'].ajax.reload(function(jsonData) {
-							    IS.init.dataTable['tbl-cotizaciones'].columns.adjust().draw();
+							IS.init.dataTable['tbl-pi-mostrador'].ajax.reload(function(jsonData) {
+							    IS.init.dataTable['tbl-pi-mostrador'].columns.adjust().draw();
 							});
 
 						} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
@@ -257,12 +257,12 @@ jQuery(function($) {
 		}
 	})
 
-	.on('click', '#modal-nueva-cotizacion #modal-tbl-productos .btn-remove, #modal-editar-cotizacion #modal-tbl-productos .btn-remove', function(e) {
+	.on('click', '#modal-nuevo-pi-mostrador #modal-tbl-productos .btn-remove, #modal-editar-pi-mostrador #modal-tbl-productos .btn-remove', function(e) {
 		var tr = $(this).closest('tr');
 		IS.init.dataTable['modal-tbl-productos'].row(tr).remove().draw();
 	})
 
-	.on('click', '#tbl-cotizaciones button#remove', function(e) {
+	.on('click', '#tbl-pi-mostrador button#remove', function(e) {
 		$(this).tooltip('hide');
 		var tr = $(this).closest('tr');
 		ISswal.fire({
@@ -276,12 +276,12 @@ jQuery(function($) {
 		    	var data = tr.data();
 		    	//data.id_uso = $('#id_uso').val();
 		    	$.formAjaxSend({
-		    		url: base_url('ventas/ventas/process_remove_cotizacion'),
+		    		url: base_url('ventas/ventas/process_remove_pi'),
 		    		data: data,
 		    		success: function(response) {
 		    			if(response.success) {
 							ISToast.fire({icon: response.icon, title: response.msg, customClass: response.icon});
-							IS.init.dataTable['tbl-cotizaciones'].ajax.reload();
+							IS.init.dataTable['tbl-pi-mostrador'].ajax.reload();
 
 						} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
 		    		}
@@ -291,21 +291,18 @@ jQuery(function($) {
 	})
 
 	.on('change', '#cantidad', function(e){
-		console.log('change');
-		if($("#precio_unitario").val() != '' && $("#descuento").val() != '' ){
+		if($("#precio_unitario").val() != '' && $("#descuento_pieza").val() != '' ){
 			calculaTotal();
 		}
 	})
 
 	.on('change', '#precio_unitario', function(e){
-		console.log('change');
-		if($("#cantidad").val() != '' && $("#descuento").val() != '' ){
+		if($("#cantidad").val() != '' && $("#descuento_pieza").val() != '' ){
 			calculaTotal();
 		}
 	})
 
-	.on('change', '#descuento', function(e){
-		console.log('change');
+	.on('change', '#descuento_pieza', function(e){
 		if($("#cantidad").val() != '' && $("#precio_unitario").val() != '' ){
 			calculaTotal();
 		}
@@ -316,10 +313,11 @@ jQuery(function($) {
 	})
 
 	function calculaTotal(){
+		descuento_total = (($("#precio_unitario").val() * $("#descuento_pieza").val()) / 100) * $("#cantidad").val();
 		subtotal = $("#cantidad").val() * $("#precio_unitario").val();
-		descuento = subtotal * $("#descuento").val() / 100;
-		total = subtotal - descuento;
-		$("#total").val(total);
+		total = subtotal - descuento_total;
+		$("#descuento_total").val(descuento_total.toFixed(2));
+		$("#total").val(total.toFixed(2));
 		//console.log("sub: " + subtotal + " desc: " + descuento);
 	}
 
@@ -340,9 +338,9 @@ jQuery(function($) {
 				{data: 'descripcion', defaultContent: '', className: 'nk-tb-col'},
 				{data: 'cantidad', defaultContent: '', className: 'nk-tb-col'},
 				{data: 'precio_unitario', defaultContent: '', className: 'nk-tb-col'},
-				{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
+				{data: 'descuento_pieza', defaultContent: '', className: 'nk-tb-col'},
+				{data: 'descuento_total', defaultContent: '', className: 'nk-tb-col'},
 				{data: 'total', defaultContent: '', className: 'nk-tb-col'},
-				{data: 'incluye', defaultContent: '', className: 'nk-tb-col'},
 				{data: 'comision_vendedor', defaultContent: '', className: 'nk-tb-col'},
 				{data: function() {
 					return `<button class="btn btn-dim btn-sm text-danger btn-remove py-0 px-1" title="${lang('general_quitar')}">

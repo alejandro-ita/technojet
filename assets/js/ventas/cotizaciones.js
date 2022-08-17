@@ -142,8 +142,8 @@ jQuery(function($) {
 		if ($('#modal-add-producto form').valid()) {
 			var productoData = $('#modal-add-producto form #id_producto option:selected').data();
 			var data = $.extend({}, productoData, {
-				id_tipo_producto: $('#modal-add-producto form #id_tipo_producto option:selected').val(),
-				tipo_producto: $('#modal-add-producto form #id_tipo_producto option:selected').text(),
+				id_tipo_producto: $('#modal-add-producto form #id_tipo_prod option:selected').val(),
+				tipo_producto: $('#modal-add-producto form #id_tipo_prod option:selected').text(),
 				id_unidad_medida: $('#modal-add-producto form #id_unidad_medida option:selected').val(),
 				unidad_medida: $('#modal-add-producto form #id_unidad_medida option:selected').text(),
 			 	cantidad: $('#modal-add-producto form #cantidad').val(),

@@ -1,93 +1,85 @@
-<div class="nk-block-head nk-block-head-sm bg-white px-2 pb-1">
-    <div class="nk-block-between g-3">
-        <div class="nk-block-head-content"></div>
-        <div class="nk-block-head-content">
-		    <div class="toggle-wrap nk-block-tools-toggle">
-			    <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
-			    <div class="toggle-expand-content" data-content="pageMenu">
-			        <ul class="nk-block-tools g-3 tools-tbl-almacen">
-			            <li>
-			                <div class="form-control-wrap">
-			                    <div class="form-icon form-icon-right">
-			                    	<em class="icon ni ni-search"></em>
-			                    </div>
-			                    <input type="text" id="buscar" class="form-control form-control-outlined" autocomplete="off" />
-							        <label class="form-label-outlined" for="buscar">{lang(lib_sSearchPlaceholder)}</label>
-			                </div>
-			            </li>
-			            <li>
-			            	<div class="dropdown">
-				                <a href="#" class="btn btn-outline-light btn-icon dropdown-toggle bg-transparent text-soft" data-toggle="dropdown" title="{lang(lib_total_rows)}">
-				                    <em class="icon ni ni-list-ol"></em>
-				                </a>
-				                <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
-				                    <ul class="link-check almacen_length">
-				                        <li><span>{lang(lib_mostrar)}</span></li>
-				                        <li class="active">
-				                            <a href="#" data-length="10">10 {lang(lib_registros_min)}</a>
-				                        </li>
-				                        <li>
-				                            <a href="#" data-length="25">25 {lang(lib_registros_min)}</a>
-				                        </li>
-				                        <li>
-				                            <a href="#" data-length="50">50 {lang(lib_registros_min)}</a>
-				                        </li>
-				                        <li>
-				                            <a href="#" data-length="-1">{lang(general_todos)}</a>
-				                        </li>
-				                    </ul>
-				                </div>
-				            </div>
-			            </li>
-			        </ul>
-			    </div>
+<div class="nk-block">
+	<div class="card">
+		<div class="card-inner pt-0">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="nk-block-head nk-block-head-sm bg-white px-2 pb-1">
+					    <div class="nk-block-between g-3">
+					        <div class="nk-block-head-content"></div>
+					        <div class="nk-block-head-content">
+							    <div class="toggle-wrap nk-block-tools-toggle">
+								    <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+								    <div class="toggle-expand-content" data-content="pageMenu">
+								        <ul class="nk-block-tools g-3 tools-tbl-pi">
+								            <li>
+								                <div class="form-control-wrap">
+								                    <div class="form-icon form-icon-right">
+								                    	<em class="icon ni ni-search"></em>
+								                    </div>
+								                    <input type="text" id="buscar" class="form-control form-control-outlined" autocomplete="off" />
+												        <label class="form-label-outlined" for="buscar">{lang(lib_sSearchPlaceholder)}</label>
+								                </div>
+								            </li>
+								            <li>
+								            	<div class="dropdown">
+									                <a href="#" class="btn btn-outline-light btn-icon dropdown-toggle bg-transparent text-soft" data-toggle="dropdown" title="{lang(lib_total_rows)}">
+									                    <em class="icon ni ni-list-ol"></em>
+									                </a>
+									                <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
+									                    <ul class="link-check pi_length">
+									                        <li><span>{lang(lib_mostrar)}</span></li>
+									                        <li class="active">
+									                            <a href="#" data-length="10">10 {lang(lib_registros_min)}</a>
+									                        </li>
+									                        <li>
+									                            <a href="#" data-length="25">25 {lang(lib_registros_min)}</a>
+									                        </li>
+									                        <li>
+									                            <a href="#" data-length="50">50 {lang(lib_registros_min)}</a>
+									                        </li>
+									                        <li>
+									                            <a href="#" data-length="-1">{lang(general_todos)}</a>
+									                        </li>
+									                    </ul>
+									                </div>
+									            </div><!-- .dropdown -->
+								            </li>
+								            {if {get_userData(crear)}==1}
+								            <li>
+								            	<a href="#" class="btn btn-icon btn-success init-tooltip add-pi-factura" title="{lang(general_nuevo)}" data-custom-Class="nk-tb-col-tools-tooltip">
+								            		<em class="icon ni ni-plus-sm"></em>
+								            	</a>
+								            </li>
+											{/if}
+								        </ul>
+								    </div>
+								</div>
+							</div>
+					    </div>
+					</div>
+					<div class="nk-block">
+						<div class="table-responsive">
+							<table class="table dataTable no-footer dtr-inline" id="tbl-pi-mostrador" data-btn-col-vis="true" data-btn-Add="true">
+						    	<thead>
+								    <tr class="nk-tb-item nk-tb-head bg-dark">
+								        <th class="nk-tb-col text-white noVis all">Factura</th>
+										<th class="nk-tb-col text-white noVis all">Cliente</th>
+								        <th class="nk-tb-col text-white noVis all">Estatus P.I.</th>
+								        <th class="nk-tb-col text-white noVis all">Contacto</th>
+								        <th class="nk-tb-col text-white noVis all">Fecha P.I.</th>
+								        <th class="nk-tb-col text-white noVis all">Medio</th>
+										<th class="nk-tb-col text-white noVis all">Departamento</th>
+								        <th class="nk-tb-col text-white noVis all">Vendedor</th>
+                                        <th class="nk-tb-col text-white noVis all">O.C.</th>
+                                        <th class="nk-tb-col text-white noVis all">Moneda</th>
+								        <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
+								    </tr>
+								</thead>
+						    </table>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-    </div>
-</div>
-<div class="nk-block">
-	<div class="table-responsive">
-		<table class="table dataTable no-footer dtr-inline"  data-btn-col-vis="true">
-	    	<thead>
-			    <tr class="nk-tb-item nk-tb-head bg-dark">
-					<th class="nk-tb-col text-white">Folio</th>
-					<th class="nk-tb-col text-white noVis">Cliente</th>
-					<th data-visible="{show_price()}" class="nk-tb-col text-white">Razón social</th>
-					<th class="nk-tb-col text-white">Fecha de elaboración</th>
-					<th class="nk-tb-col text-white">Atención</th>
-					<th class="nk-tb-col text-white">Departamento</th>
-					<th class="nk-tb-col text-white">Moneda</th>
-					<th class="nk-tb-col text-white">Precios</th>
-					<th class="nk-tb-col text-white">Condiciones de pago</th>
-					<th class="nk-tb-col text-white">Tiempo de entrega</th>
-					<th class="nk-tb-col text-white">Lugar de entrega</th>
-					<th class="nk-tb-col text-white">Vigencia</th>
-					<th class="nk-tb-col text-white">Tipo de producto</th>
-					<th class="nk-tb-col text-white">Notas</th>
-					<th class="nk-tb-col text-white">Fechas de recepción</th>
-					<th class="nk-tb-col text-white">Estatus</th>
-					<th class="nk-tb-col text-white">Vendedor o nombre en lista</th>
-					<th class="nk-tb-col text-white">Departamento nuestro</th>
-					<th class="nk-tb-col text-white">Correo</th>
-					<th class="nk-tb-col text-white">Semana</th>
-					<th class="nk-tb-col text-white">Mes</th>
-					<th class="nk-tb-col text-white">Año</th>
-					<th class="nk-tb-col text-white">Solvente</th>
-					<th class="nk-tb-col text-white">Tinta</th>
-					<th class="nk-tb-col text-white">Solución de limpieza</th>
-					<th class="nk-tb-col text-white">Cartuchos de solvente</th>
-					<th class="nk-tb-col text-white">Cartuchos de tinta</th>
-					<th class="nk-tb-col text-white">Ribbon</th>
-					<th class="nk-tb-col text-white">Kit de aditivos</th>
-					<th class="nk-tb-col text-white">Etiqueta</th>
-					<th class="nk-tb-col text-white">Equipo</th>
-					<th class="nk-tb-col text-white">Equipo en renta</th>
-					<th class="nk-tb-col text-white">Refacción</th>
-					<th class="nk-tb-col text-white">Servicio</th>
-					<th class="nk-tb-col text-white">Accesorio</th>
-					<th class="nk-tb-col text-white">Otro</th>
-			    </tr>
-			</thead>
-	    </table>
 	</div>
 </div>

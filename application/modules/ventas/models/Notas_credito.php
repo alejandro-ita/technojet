@@ -1,16 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Pedidos_internos extends SB_Model {
+class Notas_credito extends SB_Model {
 
 	//Mostrador
 	public function get_ultimo_pi_mostrador(array $where=[], $all=FALSE) {
 		$tbl = $this->tbl;
 
 		$request = $this->db->select("
-				 MAX(id_pi_mostrador) AS ulitmo_id
-				,(IFNULL(MAX(id_pi_mostrador), 0)+1) AS proximo_id", FALSE)
-			->from($tbl['pi_mostrador'])
+				 MAX(id_nc_mostrador) AS ulitmo_id
+				,(IFNULL(MAX(id_nc_mostrador), 0)+1) AS proximo_id", FALSE)
+			->from($tbl['nc_mostrador'])
 			->get();
 		// debug($this->db->last_query());
 
@@ -20,12 +20,12 @@ class Pedidos_internos extends SB_Model {
 	public function get_pi_mostrador_main(array $where = [], $all=TRUE) {
 		$tbl = $this->tbl;
 
-		!isset($where['notIN']) OR $this->db->where_not_in('CT.id_pi_mostrador', $where['notIN']);
-		!isset($where['id_pi_mostrador']) OR $this->db->where('CT.id_pi_mostrador', $where['id_pi_mostrador']);
+		!isset($where['notIN']) OR $this->db->where_not_in('CT.id_nc_mostrador', $where['notIN']);
+		!isset($where['id_nc_mostrador']) OR $this->db->where('CT.id_nc_mostrador', $where['id_nc_mostrador']);
 		
 		$request = $this->db->select("
-			CT.id_pi_mostrador,
-			CONCAT('PI-', CT.id_pi_mostrador) AS folio,
+			CT.id_nc_mostrador,
+			CONCAT('NCM-', CT.id_nc_mostrador) AS folio,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_estatus_pi) as estatus_pi,
 			CT.id_estatus_pi,
             CT.id_cotizacion,
@@ -39,8 +39,7 @@ class Pedidos_internos extends SB_Model {
 			CT.id_medio,
 			CT.id_vendedor,
 			VE.vendedor,
-			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_oc) as oc,
-			CT.id_oc,
+			CT.id_oc as oc,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_forma_envio) as id_forma_envio,
 			CT.id_forma_envio,
 			CT.incluir_iva,
@@ -51,7 +50,7 @@ class Pedidos_internos extends SB_Model {
 			CT.tipo_cambio,
 			CT.id_condiciones", 
 			FALSE)
-			->from("$tbl[pi_mostrador] AS CT")
+			->from("$tbl[nc_mostrador] AS CT")
 			->join("$tbl[clientes] AS CL", 'CL.id_cliente = CT.id_cliente', 'INNER')
 			->join("$tbl[monedas] AS MN", 'CT.id_moneda = MN.id_moneda', 'INNER')
 			->join("$tbl[vendedores] AS VE", 'CT.id_vendedor = VE.id_vendedor', 'INNER')
@@ -73,8 +72,8 @@ class Pedidos_internos extends SB_Model {
 		if (!$batch) {
 			$data['id_usuario_insert'] 	= $this->session->userdata('id_usuario');
 			$data['timestamp_insert'] 	= timestamp();
-			$this->db->insert($tbl['pi_mostrador'], $data);
-		} else $this->db->insert_batch($tbl['pi_mostrador'], $data);
+			$this->db->insert($tbl['nc_mostrador'], $data);
+		} else $this->db->insert_batch($tbl['nc_mostrador'], $data);
 
 		$error = $this->db->error();
 		if ($error['message']) {
@@ -90,7 +89,7 @@ class Pedidos_internos extends SB_Model {
 
 		$data['id_usuario_update'] = $this->session->userdata('id_usuario');
 		$data['timestamp_update'] = timestamp();
-		$this->db->update($tbl['pi_mostrador'], $data, $where);
+		$this->db->update($tbl['nc_mostrador'], $data, $where);
 
 		$error = $this->db->error();
 		if ($error['message']) {
@@ -107,8 +106,8 @@ class Pedidos_internos extends SB_Model {
 		if (!$batch) {
 			$data['id_usuario_insert'] 	= $this->session->userdata('id_usuario');
 			$data['timestamp_insert'] 	= timestamp();
-			$this->db->insert($tbl['pi_mostrador_productos'], $data);
-		} else $this->db->insert_batch($tbl['pi_mostrador_productos'], $data);
+			$this->db->insert($tbl['nc_mostrador_productos'], $data);
+		} else $this->db->insert_batch($tbl['nc_mostrador_productos'], $data);
 
 		$error = $this->db->error();
 		if ($error['message']) {
@@ -123,13 +122,13 @@ class Pedidos_internos extends SB_Model {
 		$tbl = $this->tbl;
 
 		if (isset($where['notIn'])) {
-			$this->db->where_not_in('id_pi_mostrador_producto', $where['notIn']);
+			$this->db->where_not_in('id_nc_mostrador_producto', $where['notIn']);
 			unset($where['notIn']);
 		}
 
 		$data['id_usuario_update'] = $this->session->userdata('id_usuario');
 		$data['timestamp_update'] = timestamp();
-		$this->db->update($tbl['pi_mostrador_productos'], $data, $where);
+		$this->db->update($tbl['nc_mostrador_productos'], $data, $where);
 
 		$error = $this->db->error();
 		if ($error['message']) {
@@ -143,11 +142,11 @@ class Pedidos_internos extends SB_Model {
 	public function get_pi_productos(array $where=[], $all=TRUE) {
 		$tbl = $this->tbl;
 
-		!isset($where['notIN']) OR $this->db->where_not_in('TRP.id_pi_mostrador', $where['notIN']);
-		!isset($where['id_pi_mostrador']) OR $this->db->where('TRP.id_pi_mostrador', $where['id_pi_mostrador']);
+		!isset($where['notIN']) OR $this->db->where_not_in('TRP.id_nc_mostrador', $where['notIN']);
+		!isset($where['id_nc_mostrador']) OR $this->db->where('TRP.id_nc_mostrador', $where['id_nc_mostrador']);
 		$request = $this->db->select("
-				TRP.id_pi_mostrador_producto,
-				TRP.id_pi_mostrador,
+				TRP.id_nc_mostrador_producto,
+				TRP.id_nc_mostrador,
 				TRP.id_producto,
 				TRP.cantidad,
 				TRP.precio_unitario,
@@ -159,7 +158,7 @@ class Pedidos_internos extends SB_Model {
 				CUM.unidad_medida,				
 				TP.no_parte,
 				TP.descripcion", FALSE)
-			->from("$tbl[pi_mostrador_productos] AS TRP")
+			->from("$tbl[nc_mostrador_productos] AS TRP")
 			->join("$tbl[productos] AS TP", 'TP.id_producto=TRP.id_producto', 'LEFT')
 			->join("$tbl[tipos_productos] AS CTP", 'CTP.id_tipo_producto=TP.id_tipo_producto', 'LEFT')
 			->join("$tbl[unidades_medida] AS CUM", 'CUM.id_unidad_medida=TP.id_unidad_medida', 'LEFT')
@@ -174,9 +173,9 @@ class Pedidos_internos extends SB_Model {
 		$tbl = $this->tbl;
 
 		$request = $this->db->select("
-				 MAX(id_pi_factura) AS ulitmo_id
-				,(IFNULL(MAX(id_pi_factura), 0)+1) AS proximo_id", FALSE)
-			->from($tbl['pi_factura'])
+				 MAX(id_nc_factura) AS ulitmo_id
+				,(IFNULL(MAX(id_nc_factura), 0)+1) AS proximo_id", FALSE)
+			->from($tbl['nc_factura'])
 			->get();
 		// debug($this->db->last_query());
 
@@ -186,12 +185,12 @@ class Pedidos_internos extends SB_Model {
 	public function get_pi_factura_main(array $where = [], $all=TRUE) {
 		$tbl = $this->tbl;
 
-		!isset($where['notIN']) OR $this->db->where_not_in('CT.id_pi_factura', $where['notIN']);
-		!isset($where['id_pi_factura']) OR $this->db->where('CT.id_pi_factura', $where['id_pi_factura']);
+		!isset($where['notIN']) OR $this->db->where_not_in('CT.id_nc_factura', $where['notIN']);
+		!isset($where['id_nc_factura']) OR $this->db->where('CT.id_nc_factura', $where['id_nc_factura']);
 		
 		$request = $this->db->select("
-			CT.id_pi_factura,
-			CONCAT('PIF-', CT.id_pi_factura) AS folio,
+			CT.id_nc_factura,
+			CONCAT('NCF-', CT.id_nc_factura) AS folio,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_estatus_pi) as estatus_pi,
 			CT.id_estatus_pi,
             CT.id_cotizacion,
@@ -219,7 +218,7 @@ class Pedidos_internos extends SB_Model {
 			CT.id_metodo_pago,
 			CT.email_factura", 
 			FALSE)
-			->from("$tbl[pi_factura] AS CT")
+			->from("$tbl[nc_factura] AS CT")
 			->join("$tbl[clientes] AS CL", 'CL.id_cliente = CT.id_cliente', 'INNER')
 			->join("$tbl[monedas] AS MN", 'CT.id_moneda = MN.id_moneda', 'INNER')
 			->join("$tbl[vendedores] AS VE", 'CT.id_vendedor = VE.id_vendedor', 'INNER')
@@ -241,8 +240,8 @@ class Pedidos_internos extends SB_Model {
 		if (!$batch) {
 			$data['id_usuario_insert'] 	= $this->session->userdata('id_usuario');
 			$data['timestamp_insert'] 	= timestamp();
-			$this->db->insert($tbl['pi_factura'], $data);
-		} else $this->db->insert_batch($tbl['pi_factura'], $data);
+			$this->db->insert($tbl['nc_factura'], $data);
+		} else $this->db->insert_batch($tbl['nc_factura'], $data);
 
 		$error = $this->db->error();
 		if ($error['message']) {
@@ -259,8 +258,8 @@ class Pedidos_internos extends SB_Model {
 		if (!$batch) {
 			$data['id_usuario_insert'] 	= $this->session->userdata('id_usuario');
 			$data['timestamp_insert'] 	= timestamp();
-			$this->db->insert($tbl['pi_factura_productos'], $data);
-		} else $this->db->insert_batch($tbl['pi_factura_productos'], $data);
+			$this->db->insert($tbl['nc_factura_productos'], $data);
+		} else $this->db->insert_batch($tbl['nc_factura_productos'], $data);
 
 		$error = $this->db->error();
 		if ($error['message']) {
@@ -274,11 +273,11 @@ class Pedidos_internos extends SB_Model {
 	public function get_pi_factura_productos(array $where=[], $all=TRUE) {
 		$tbl = $this->tbl;
 
-		!isset($where['notIN']) OR $this->db->where_not_in('TRP.id_pi_factura', $where['notIN']);
-		!isset($where['id_pi_factura']) OR $this->db->where('TRP.id_pi_factura', $where['id_pi_factura']);
+		!isset($where['notIN']) OR $this->db->where_not_in('TRP.id_nc_factura', $where['notIN']);
+		!isset($where['id_nc_factura']) OR $this->db->where('TRP.id_nc_factura', $where['id_nc_factura']);
 		$request = $this->db->select("
-				TRP.id_pi_factura_producto,
-				TRP.id_pi_factura,
+				TRP.id_nc_factura_producto,
+				TRP.id_nc_factura,
 				TRP.id_producto,
 				TRP.cantidad,
 				TRP.precio_unitario,
@@ -289,7 +288,7 @@ class Pedidos_internos extends SB_Model {
 				CUM.unidad_medida,				
 				TP.no_parte,
 				TP.descripcion", FALSE)
-			->from("$tbl[pi_factura_productos] AS TRP")
+			->from("$tbl[nc_factura_productos] AS TRP")
 			->join("$tbl[productos] AS TP", 'TP.id_producto=TRP.id_producto', 'LEFT')
 			->join("$tbl[tipos_productos] AS CTP", 'CTP.id_tipo_producto=TP.id_tipo_producto', 'LEFT')
 			->join("$tbl[unidades_medida] AS CUM", 'CUM.id_unidad_medida=TP.id_unidad_medida', 'LEFT')
@@ -304,7 +303,7 @@ class Pedidos_internos extends SB_Model {
 
 		$data['id_usuario_update'] = $this->session->userdata('id_usuario');
 		$data['timestamp_update'] = timestamp();
-		$this->db->update($tbl['pi_factura'], $data, $where);
+		$this->db->update($tbl['nc_factura'], $data, $where);
 
 		$error = $this->db->error();
 		if ($error['message']) {
@@ -319,13 +318,13 @@ class Pedidos_internos extends SB_Model {
 		$tbl = $this->tbl;
 
 		if (isset($where['notIn'])) {
-			$this->db->where_not_in('id_pi_factura_producto', $where['notIn']);
+			$this->db->where_not_in('id_nc_factura_producto', $where['notIn']);
 			unset($where['notIn']);
 		}
 
 		$data['id_usuario_update'] = $this->session->userdata('id_usuario');
 		$data['timestamp_update'] = timestamp();
-		$this->db->update($tbl['pi_factura_productos'], $data, $where);
+		$this->db->update($tbl['nc_factura_productos'], $data, $where);
 
 		$error = $this->db->error();
 		if ($error['message']) {

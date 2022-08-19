@@ -276,7 +276,7 @@ jQuery(function($) {
 		    	var data = tr.data();
 		    	//data.id_uso = $('#id_uso').val();
 		    	$.formAjaxSend({
-		    		url: base_url('ventas/ventas/process_remove_pi'),
+		    		url: base_url('ventas/ventas/process_remove_pi_factura'),
 		    		data: data,
 		    		success: function(response) {
 		    			if(response.success) {

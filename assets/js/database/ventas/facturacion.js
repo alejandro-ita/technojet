@@ -1,9 +1,9 @@
 jQuery(function($) {
-	initDataTable('#tbl-ventas-pi-facturas', {
+	initDataTable('#tbl-ventas-cotizaciones', {
 		ajax: {
-		 	url: base_url('database/ventas/get_catalog_pedidos_internos_factura'),
+		 	url: base_url('database/ventas/get_catalog_facturas'),
 		 	data: function(dataFilter) {
-	    		dataFilter.id_categoria = $('select#id_categoria_factura').val();
+	    		dataFilter.id_categoria = $('select#id_categoria').val();
 	    	}
 		},
 		createdRow: function(row, data, index) {
@@ -20,35 +20,35 @@ jQuery(function($) {
 
 	$('body')
 
-	.on('keyup', '.tools-tbl-pedidos-internos-factura #buscar', function(e) {
-		IS.init.dataTable['tbl-ventas-pi-facturas'].search(this.value).draw();
+	.on('keyup', '.tools-tbl-cotizaciones #buscar', function(e) {
+		IS.init.dataTable['tbl-almacen-requisiciones'].search(this.value).draw();
 	})
 
-	.on('change', '.tools-tbl-pedidos-internos-factura select#id_categoria_factura', function() {
-		IS.init.dataTable['tbl-ventas-pi-facturas'].ajax.reload();
+	.on('change', '.tools-tbl-cotizaciones select#id_categoria', function() {
+		IS.init.dataTable['tbl-ventas-cotizaciones'].ajax.reload();
 		(parseInt($(this).val())>0)
-			? $('.tools-tbl-pedidos-internos-factura .add-c-factura').elEnable()
-			: $('.tools-tbl-pedidos-internos-factura .add-c-factura').elDisable();
+			? $('.tools-tbl-cotizaciones .add-c-cotizacion').elEnable()
+			: $('.tools-tbl-cotizaciones .add-c-cotizacion').elDisable();
 	})
 
-	.on('click', '.tools-tbl-pedidos-internos-factura .pedidos_internos_length a', function(e) {
+	.on('click', '.tools-tbl-cotizaciones .cotizaciones_length a', function(e) {
 		$(this).closest('ul').find('li').removeClass('active');
 		$(this).parent('li').addClass('active');
 
-		IS.init.dataTable['tbl-ventas-pi-facturas'].page.len($(this).data('length')).draw();
+		IS.init.dataTable['tbl-almacen-requisiciones'].page.len($(this).data('length')).draw();
 
 		e.preventDefault();
 	})
 
-	.on('click', '.tools-tbl-pedidos-internos-factura .add-c-factura', function(e) {
+	.on('click', '.tools-tbl-cotizaciones .add-c-cotizacion', function(e) {
 		$.formAjaxSend({
-			 url: base_url('database/ventas/get_modal_new_pi')
+			 url: base_url('database/ventas/get_modal_new_c_cotizacion')
 			,dataType: 'html'
 			,success: function(modal) {
 				$('#content-modals').html(modal);
 				initModal('.modal', {
 					onOpenEnd: function() {
-						$('.modal#new-pi form').validate();
+						$('.modal#new-cotizacion form').validate();
 					}
 				});
 			}
@@ -56,14 +56,14 @@ jQuery(function($) {
 		e.preventDefault();
 	})
 
-	.on('click', '#tbl-ventas-pi-facturas #open-modal-update', function(e) {
+	.on('click', '#tbl-ventas-cotizaciones #open-modal-update', function(e) {
 		var tr = $(this).closest('tr');
 		var btn= $(this);
 		
 		btn.tooltip('hide');
 		tr.addClass('selected');
 		$.formAjaxSend({
-			url: base_url('database/ventas/get_modal_update_pi'),
+			url: base_url('database/ventas/get_modal_update_c_cotizacion'),
 			data: tr.data(),
 			dataType: 'html',
 			success: function(modal) {
@@ -81,19 +81,19 @@ jQuery(function($) {
 		e.preventDefault();
 	})
 
-	.on('click', '#content-modals #btn-save-pi', function(e) {
-		if ($('.modal#new-pi form').valid()) {
-			$('.modal#new-pi form').formAjaxSend({
+	.on('click', '#content-modals #btn-save-cotizacion', function(e) {
+		if ($('.modal#new-cotizacion form').valid()) {
+			$('.modal#new-cotizacion form').formAjaxSend({
 				url: base_url('database/ventas/process_save_c_cotizacion'),
 				data: {
-					id_categoria: $('select#id_categoria_factura').val(),
-					categoria: $('select#id_categoria_factura option:selected').text()
+					id_categoria: $('select#id_categoria').val(),
+					categoria: $('select#id_categoria option:selected').text()
 				},
 				success: function(response) {
 					if(response.success) {
 						$('.modal.show').modal('hide');
 						ISToast.fire({icon: response.icon, title: response.msg, customClass: response.icon});
-						IS.init.dataTable['tbl-ventas-pi-facturas'].ajax.reload();
+						IS.init.dataTable['tbl-ventas-cotizaciones'].ajax.reload();
 
 					} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
 				}
@@ -101,10 +101,10 @@ jQuery(function($) {
 		}
 	})
 
-	.on('click', '#content-modals #btn-update-pi', function(e) {
-		if ($('.modal#update-pi form').valid()) {
-			var tr = IS.init.dataTable['tbl-ventas-pi-facturas'].$('tr.selected');
-			$('.modal#update-pi form').formAjaxSend({
+	.on('click', '#content-modals #btn-update-cotizacion', function(e) {
+		if ($('.modal#update-cotizacion form').valid()) {
+			var tr = IS.init.dataTable['tbl-ventas-cotizaciones'].$('tr.selected');
+			$('.modal#update-cotizacion form').formAjaxSend({
 				 url: base_url('database/ventas/process_update_c_cotizacion')
 				,data: {
 					id_ventas_cotizacion: tr.data('id_ventas_cotizacion'),
@@ -115,7 +115,7 @@ jQuery(function($) {
 					if(response.success) {
 						$('.modal.show').modal('hide');
 						ISToast.fire({icon: response.icon, title: response.msg, customClass: response.icon});
-						IS.init.dataTable['tbl-ventas-pi-facturas'].ajax.reload();
+						IS.init.dataTable['tbl-ventas-cotizaciones'].ajax.reload();
 
 					} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
 				}
@@ -123,7 +123,7 @@ jQuery(function($) {
 		}
 	})
 
-	.on('click', '#tbl-ventas-pi-facturas #remove', function(e) {
+	.on('click', '#tbl-ventas-cotizaciones #remove', function(e) {
 		var tr = $(this).closest('tr');
 		var btn= $(this);
 		
@@ -144,7 +144,7 @@ jQuery(function($) {
 		    		success: function(response) {
 		    			if(response.success) {
 							ISToast.fire({icon: response.icon, title: response.msg, customClass: response.icon});
-							IS.init.dataTable['tbl-ventas-pedidos-internos'].row(tr).remove().draw();
+							IS.init.dataTable['tbl-ventas-cotizaciones'].row(tr).remove().draw();
 
 						} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
 		    		}

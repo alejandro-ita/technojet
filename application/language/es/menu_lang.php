@@ -27,6 +27,8 @@ $lang['menu_ventas']			    = 'Ventas';
 $lang['menu_sistemas']			    = 'Sistemas';
 $lang['menu_requisicion_material']  = 'Requisición de material';
 $lang['menu_reporte_sistemas'] 	    = 'Reporte de sistemas';
+$lang['menu_facturacion']   	    = 'Facturacion';
+$lang['menu_notas_credito']   	    = 'Notas de crédito';
 
 $lang['menu_cotizaciones']			= 'Cotizaciones';
 $lang['menu_vendedores']			= 'Vendedores';

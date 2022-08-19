@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-fs" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Editar pedido</h5>
+                <h5 class="modal-title">Factura | Editar pedido</h5>
                 <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
             </div>
             <div class="modal-body">
@@ -11,9 +11,9 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Folio pedido interno</label>
+                                <label class="form-label">No. Factura</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="id_pi_mostrador" name="id_pi_mostrador" readonly  value="PI-{id_pi_mostrador}"  required />
+                                    <input type="text" class="form-control validate required" id="id_nc_factura" name="id_nc_factura" value="NCF-{id_nc_factura}" readonly required />
                                 </div>
                             </div>
                         </div>
@@ -32,12 +32,12 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label" for="">Cotización</label>
+                                <label class="form-label" for="id_vale_estatus">Cotización</label>
                                 <div class="form-control-wrap">
-                                    <select id="id_cot" name="id_cotizacion" class="form-select validate required">
+                                    <select id="id_cotizacion" name="id_cotizacion" class="form-select validate required">
                                         <option value="" disabled selected>Seleccione cotizacion</option>
                                         {cotizaciones}
-                                        <option value="{id_cotizacion}" {if {selected}==1}selected{/if} >{folio}</option>
+                                        <option value="{id_cotizacion}" {if {selected}==1}selected{/if}>{folio}</option>
                                         {/cotizaciones}
                                     </select>
                                 </div>
@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-sm-12 col-md-4" >
                             <div class="form-group mb-0">
-                                <label class="form-label" for="">Cliente</label>
+                                <label class="form-label" for="id_vale_almacen">Cliente</label>
                                 <div class="form-control-wrap">
                                     <select id="id_cliente" name="id_cliente" class="form-select validate required">
                                         <option value="" disabled selected>Seleccione cliente</option>
@@ -115,13 +115,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">O.C</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="id_oc" name="id_oc" value="{oc}"  required />
-                                    <!--<select id="id_oc" name="id_oc" class="form-select init-select2 validate required">
-                                        <option value="" disabled selected>Seleccione O.C.</option>
-                                        {oc}
-                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
-                                        {/oc}
-                                    </select>-->
+                                    <input type="text" class="form-control validate required" id="oc" name="oc" value="{oc}" required />
                                 </div>
                             </div>
                         </div>
@@ -134,18 +128,6 @@
                                         {forma-envio}
                                         <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
                                         {/forma-envio}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-2">
-                            <div class="form-group mb-0">
-                                <label class="form-label" for="">Incluír iva</label>
-                                <div class="form-control-wrap">
-                                    <select id="incluir_iva" name="incluir_iva" class="form-select init-select2 validate required">
-                                        <option value="" disabled selected>Seleccione una opción</option>
-                                        <option value="SI" {if {incluir_iva}==SI}selected{/if} >SI</option>
-                                        <option value="NO" {if {incluir_iva}==NO}selected{/if} >NO</option>
                                     </select>
                                 </div>
                             </div>
@@ -167,15 +149,15 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Notas internas</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="notas_internas" name="notas_internas" value="{notas_internas}"  required />
+                                    <input type="text" class="form-control validate required" id="notas_internas" name="notas_internas" value="{notas_internas}" required />
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
-                                <label class="form-label">Notas remision</label>
+                                <label class="form-label">Notas facturación</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="notas_remision" name="notas_remision" value="{notas_remision}" required />
+                                    <input type="text" class="form-control validate required" id="notas_facturacion" name="notas_facturacion" value="{notas_facturacion}" required />
                                 </div>
                             </div>
                         </div>
@@ -200,8 +182,47 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label">Uso del CFDI</label>
+                                <select id="id_uso_cfdi" name="id_uso_cfdi" class="form-select init-select2 validate required">
+                                    <option value="" disabled selected>Seleccione opción</option>
+                                    {uso-cfdi}
+                                    <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                    {/uso-cfdi}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label">Forma de pago</label>
+                                <select id="id_forma_pago" name="id_forma_pago" class="form-select init-select2 validate required">
+                                    <option value="" disabled selected>Seleccione opción</option>
+                                    {forma-pago}
+                                    <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                    {/forma-pago}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label">Método de pago</label>
+                                <select id="id_metodo_pago" name="id_metodo_pago" class="form-select init-select2 validate required">
+                                    <option value="" disabled selected>Seleccione condiciones</option>
+                                    {metodo-pago}
+                                    <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                    {/metodo-pago}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Email para factura</label>
+                                <div class="form-control-wrap">
+                                    <input type="email" class="form-control validate required" id="email_factura" name="email_factura" value="{email_factura}" required />
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-12">
                             <div class="card bg-light my-2">
                                 <div class="card-body px-1 py-2">
@@ -220,7 +241,7 @@
                                                 <th class="nk-tb-col text-white">Descuento por pieza</th>
                                                 <th class="nk-tb-col text-white">Descuento Total</th>
                                                 <th class="nk-tb-col text-white">Total</th>
-                                                <th class="nk-tb-col text-white">Comisión vendedor</th>
+                                                <!--<th class="nk-tb-col text-white">Comisión vendedor</th>-->
                                                 <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
                                             </tr>
                                         </thead>
@@ -228,7 +249,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer py-2">

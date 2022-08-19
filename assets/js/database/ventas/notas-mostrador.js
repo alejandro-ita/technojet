@@ -1,9 +1,9 @@
 jQuery(function($) {
-	initDataTable('#tbl-ventas-pi-facturas', {
+	initDataTable('#tbl-ventas-pedidos-internos', {
 		ajax: {
-		 	url: base_url('database/ventas/get_catalog_pedidos_internos_factura'),
+		 	url: base_url('database/ventas/get_catalog_notas_mostrador'),
 		 	data: function(dataFilter) {
-	    		dataFilter.id_categoria = $('select#id_categoria_factura').val();
+	    		dataFilter.id_categoria = $('select#id_categoria').val();
 	    	}
 		},
 		createdRow: function(row, data, index) {
@@ -20,27 +20,27 @@ jQuery(function($) {
 
 	$('body')
 
-	.on('keyup', '.tools-tbl-pedidos-internos-factura #buscar', function(e) {
-		IS.init.dataTable['tbl-ventas-pi-facturas'].search(this.value).draw();
+	.on('keyup', '.tools-tbl-pedidos-internos #buscar', function(e) {
+		IS.init.dataTable['tbl-ventas-pedidos-internos'].search(this.value).draw();
 	})
 
-	.on('change', '.tools-tbl-pedidos-internos-factura select#id_categoria_factura', function() {
-		IS.init.dataTable['tbl-ventas-pi-facturas'].ajax.reload();
+	.on('change', '.tools-tbl-pedidos-internos select#id_categoria', function() {
+		IS.init.dataTable['tbl-ventas-pedidos-internos'].ajax.reload();
 		(parseInt($(this).val())>0)
-			? $('.tools-tbl-pedidos-internos-factura .add-c-factura').elEnable()
-			: $('.tools-tbl-pedidos-internos-factura .add-c-factura').elDisable();
+			? $('.tools-tbl-pedidos-internos .add-c-pedidos-internos').elEnable()
+			: $('.tools-tbl-pedidos-internos .add-c-pedidos-internos').elDisable();
 	})
 
-	.on('click', '.tools-tbl-pedidos-internos-factura .pedidos_internos_length a', function(e) {
+	.on('click', '.tools-tbl-pedidos-internos .pedidos_internos_length a', function(e) {
 		$(this).closest('ul').find('li').removeClass('active');
 		$(this).parent('li').addClass('active');
 
-		IS.init.dataTable['tbl-ventas-pi-facturas'].page.len($(this).data('length')).draw();
+		IS.init.dataTable['tbl-ventas-pedidos-internos'].page.len($(this).data('length')).draw();
 
 		e.preventDefault();
 	})
 
-	.on('click', '.tools-tbl-pedidos-internos-factura .add-c-factura', function(e) {
+	.on('click', '.tools-tbl-pedidos-internos .add-c-pedidos-internos', function(e) {
 		$.formAjaxSend({
 			 url: base_url('database/ventas/get_modal_new_pi')
 			,dataType: 'html'
@@ -56,7 +56,7 @@ jQuery(function($) {
 		e.preventDefault();
 	})
 
-	.on('click', '#tbl-ventas-pi-facturas #open-modal-update', function(e) {
+	.on('click', '#tbl-ventas-pedidos-internos #open-modal-update', function(e) {
 		var tr = $(this).closest('tr');
 		var btn= $(this);
 		
@@ -86,14 +86,14 @@ jQuery(function($) {
 			$('.modal#new-pi form').formAjaxSend({
 				url: base_url('database/ventas/process_save_c_cotizacion'),
 				data: {
-					id_categoria: $('select#id_categoria_factura').val(),
-					categoria: $('select#id_categoria_factura option:selected').text()
+					id_categoria: $('select#id_categoria').val(),
+					categoria: $('select#id_categoria option:selected').text()
 				},
 				success: function(response) {
 					if(response.success) {
 						$('.modal.show').modal('hide');
 						ISToast.fire({icon: response.icon, title: response.msg, customClass: response.icon});
-						IS.init.dataTable['tbl-ventas-pi-facturas'].ajax.reload();
+						IS.init.dataTable['tbl-ventas-pedidos-internos'].ajax.reload();
 
 					} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
 				}
@@ -103,7 +103,7 @@ jQuery(function($) {
 
 	.on('click', '#content-modals #btn-update-pi', function(e) {
 		if ($('.modal#update-pi form').valid()) {
-			var tr = IS.init.dataTable['tbl-ventas-pi-facturas'].$('tr.selected');
+			var tr = IS.init.dataTable['tbl-ventas-pedidos-internos'].$('tr.selected');
 			$('.modal#update-pi form').formAjaxSend({
 				 url: base_url('database/ventas/process_update_c_cotizacion')
 				,data: {
@@ -115,7 +115,7 @@ jQuery(function($) {
 					if(response.success) {
 						$('.modal.show').modal('hide');
 						ISToast.fire({icon: response.icon, title: response.msg, customClass: response.icon});
-						IS.init.dataTable['tbl-ventas-pi-facturas'].ajax.reload();
+						IS.init.dataTable['tbl-ventas-pedidos-internos'].ajax.reload();
 
 					} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
 				}
@@ -123,7 +123,7 @@ jQuery(function($) {
 		}
 	})
 
-	.on('click', '#tbl-ventas-pi-facturas #remove', function(e) {
+	.on('click', '#tbl-ventas-pedidos-internos #remove', function(e) {
 		var tr = $(this).closest('tr');
 		var btn= $(this);
 		

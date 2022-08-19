@@ -1,19 +1,18 @@
-<div class="modal fade" id="modal-editar-pi-mostrador" aria-modal="true" role="dialog" style="overflow-y: auto;">
+<div class="modal fade" id="modal-nuevo-pi-mostrador" aria-modal="true" role="dialog" style="overflow-y: auto;">
     <div class="modal-dialog modal-fs" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Editar pedido</h5>
+                <h5 class="modal-title">Nuevo pedido</h5>
                 <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
             </div>
             <div class="modal-body">
                 <form action="#" class="form-validate">
-                    <input type="hidden" name="dataEncription" value="{dataEncription}">
                     <div class="row">
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
                                 <label class="form-label">Folio pedido interno</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="id_pi_mostrador" name="id_pi_mostrador" readonly  value="PI-{id_pi_mostrador}"  required />
+                                    <input type="text" class="form-control validate required" id="id_pi_mostrador" name="id_pi_mostrador" readonly  value="NCM-{proximo_id}"  required />
                                 </div>
                             </div>
                         </div>
@@ -24,7 +23,7 @@
                                     <select id="id_estatus_pi" name="id_estatus_pi" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione estatus</option>
                                         {estatus-pi}
-                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if} >{c_cotizacion}</option>
+                                        <option value="{id_ventas_cotizacion}" >{c_cotizacion}</option>
                                         {/estatus-pi}
                                     </select>
                                 </div>
@@ -34,10 +33,10 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Cotización</label>
                                 <div class="form-control-wrap">
-                                    <select id="id_cot" name="id_cotizacion" class="form-select validate required">
+                                    <select id="id_cotizacion" name="id_cotizacion" class="form-select validate required">
                                         <option value="" disabled selected>Seleccione cotizacion</option>
                                         {cotizaciones}
-                                        <option value="{id_cotizacion}" {if {selected}==1}selected{/if} >{folio}</option>
+                                        <option value="{id_cotizacion}">{folio}</option>
                                         {/cotizaciones}
                                     </select>
                                 </div>
@@ -50,7 +49,7 @@
                                     <select id="id_cliente" name="id_cliente" class="form-select validate required">
                                         <option value="" disabled selected>Seleccione cliente</option>
                                         {clientes}
-                                        <option value="{id_cliente}" {if {selected}==1}selected{/if}>{cliente}</option>
+                                        <option value="{id_cliente}">{cliente}</option>
                                         {/clientes}
                                     </select>
                                 </div>
@@ -60,7 +59,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" >Contacto</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="contacto" name="contacto" value="{contacto}" required>
+                                    <input type="text" class="form-control validate required" id="contacto" name="contacto" required>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +70,7 @@
                                     <select id="id_departamento" name="id_departamento" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione departamento</option>
                                         {departamento}
-                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        <option value="{id_ventas_cotizacion}" >{c_cotizacion}</option>
                                         {/departamento}
                                     </select>
                                 </div>
@@ -81,7 +80,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" >Fecha P.I</label>
                                 <div class="form-control-wrap">
-                                    <input type="date" class="form-control validate required" id="fecha_pi" name="fecha_pi" value="{fecha_pi}" required>
+                                    <input type="date" class="form-control validate required" id="fecha_pi" name="fecha_pi" required>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +91,7 @@
                                     <select id="id_medio" name="id_medio" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione medio</option>
                                         {medio}
-                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
                                         {/medio}
                                     </select>
                                 </div>
@@ -105,7 +104,7 @@
                                     <select id="id_vendedor" name="id_vendedor" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione Vendedor</option>
                                         {vendedores}
-                                        <option value="{id_vendedor}" {if {selected}==1}selected{/if}>{vendedor}</option>
+                                        <option value="{id_vendedor}">{vendedor}</option>
                                         {/vendedores}
                                     </select>
                                 </div>
@@ -115,11 +114,11 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">O.C</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="id_oc" name="id_oc" value="{oc}"  required />
+                                    <input type="text" class="form-control validate required" id="id_oc" name="id_oc" required />
                                     <!--<select id="id_oc" name="id_oc" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione O.C.</option>
                                         {oc}
-                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
                                         {/oc}
                                     </select>-->
                                 </div>
@@ -132,7 +131,7 @@
                                     <select id="id_forma_envio" name="id_forma_envio" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione forma envio</option>
                                         {forma-envio}
-                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
                                         {/forma-envio}
                                     </select>
                                 </div>
@@ -144,8 +143,8 @@
                                 <div class="form-control-wrap">
                                     <select id="incluir_iva" name="incluir_iva" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione una opción</option>
-                                        <option value="SI" {if {incluir_iva}==SI}selected{/if} >SI</option>
-                                        <option value="NO" {if {incluir_iva}==NO}selected{/if} >NO</option>
+                                        <option value="SI" >SI</option>
+                                        <option value="NO"  >NO</option>
                                     </select>
                                 </div>
                             </div>
@@ -157,7 +156,7 @@
                                     <select id="id_moneda" name="id_moneda" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione Moneda</option>
                                         {monedas}
-                                        <option value="{id_moneda}" {if {selected}==1}selected{/if}>{moneda}</option>
+                                        <option value="{id_moneda}">{moneda}</option>
                                         {/monedas}
                                     </select>
                                 </div>
@@ -167,7 +166,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Notas internas</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="notas_internas" name="notas_internas" value="{notas_internas}"  required />
+                                    <input type="text" class="form-control validate required" id="notas_internas" name="notas_internas"  required />
                                 </div>
                             </div>
                         </div>
@@ -175,7 +174,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Notas remision</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="notas_remision" name="notas_remision" value="{notas_remision}" required />
+                                    <input type="text" class="form-control validate required" id="notas_remision" name="notas_remision"  required />
                                 </div>
                             </div>
                         </div>
@@ -183,7 +182,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Tipo de cambio</label>
                                 <div class="form-control-wrap">
-                                    <input type="number" class="form-control validate required" id="tipo_cambio" name="tipo_cambio" value="{tipo_cambio}" required />
+                                    <input type="number" class="form-control validate required" id="tipo_cambio" name="tipo_cambio"  required />
                                 </div>
                             </div>
                         </div>
@@ -194,7 +193,7 @@
                                     <select id="id_condiciones" name="id_condiciones" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione condiciones</option>
                                         {condiciones}
-                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
                                         {/condiciones}
                                     </select>
                                 </div>
@@ -205,9 +204,6 @@
                         <div class="col-sm-12">
                             <div class="card bg-light my-2">
                                 <div class="card-body px-1 py-2">
-                                    <script type="text/javascript">
-                                        var listProductos = JSON.parse('{list-productos}');
-                                    </script>
                                     <table class="table dataTable no-footer dtr-inline" id="modal-tbl-productos" data-btn-Add="true">
                                         <thead>
                                             <tr class="nk-tb-item nk-tb-head bg-dark">
@@ -232,7 +228,7 @@
                 </form>
             </div>
             <div class="modal-footer py-2">
-                <button type="button" id="btn-update-pi-mostrador" class="btn btn-dark">{lang(general_save)}</button>
+                <button type="button" id="btn-save-pi-mostrador" class="btn btn-dark">{lang(general_save)}</button>
             </div>
         </div>
     </div>

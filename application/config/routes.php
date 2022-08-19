@@ -73,6 +73,9 @@ $route['database/ventas/cotizaciones'] 		    = 'database/ventas/cotizaciones';
 $route['database/ventas/vendedores'] 		    = 'database/vendedores/catalogo';
 $route['database/ventas/clientes'] 		        = 'database/clientes/catalogo';
 $route['database/ventas/pedidos-internos']      = 'database/ventas/pedidos_internos';
+$route['database/ventas/facturacion']           = 'database/ventas/facturacion';
+$route['database/ventas/notas-credito']         = 'database/ventas/notas_credito';
+
 
 #ALMACEN
 $route['almacen/requisicion-material'] 			= 'almacen/requisicion_material';

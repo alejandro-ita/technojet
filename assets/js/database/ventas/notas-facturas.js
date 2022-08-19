@@ -1,7 +1,7 @@
 jQuery(function($) {
 	initDataTable('#tbl-ventas-pi-facturas', {
 		ajax: {
-		 	url: base_url('database/ventas/get_catalog_pedidos_internos_factura'),
+		 	url: base_url('database/ventas/get_catalog_notas_facturas'),
 		 	data: function(dataFilter) {
 	    		dataFilter.id_categoria = $('select#id_categoria_factura').val();
 	    	}

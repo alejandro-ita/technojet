@@ -1,0 +1,158 @@
+<div class="modal fade" id="modal-editar-factura" aria-modal="true" role="dialog" style="overflow-y: auto;">
+    <div class="modal-dialog modal-fs" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Factura</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    <input type="hidden" name="dataEncription" value="{dataEncription}">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="no-folio">No. Factura</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="id_factura" name="id_factura" value="F-{id_factura}" required readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_vale_estatus">Estatus factura</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_estatus_factura" name="id_estatus_factura" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione estatus factura</option>
+                                        {estatus-factura}
+                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        {/estatus-factura}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Fecha de elaboración</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="fecha_elaboracion" name="fecha_elaboracion" value="{fecha_elaboracion}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Uso de CFDI</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_uso_cfdi" name="id_uso_cfdi" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione estatus vigencia</option>
+                                        {uso-cfdi}
+                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        {/uso-cfdi}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">No P.I</label>
+                                <div class="form-control-wrap">
+                                    <select id="no_pi" name="no_pi" class="form-select init-select2 validate required">
+                                        <option value="1"  selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Cliente</label>
+                                <div class="form-control-wrap">
+                                    <select name="id_cliente" id="id_cliente" class="form-select init-select2 validate required" >
+                                        <option value="" disabled selected>Seleccione Moneda</option>
+                                        {clientes}
+                                        <option value="{id_cliente}" {if {selected}==1}selected{/if}>{cliente}</option>
+                                        {/clientes}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2" >
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Subtotal</label>
+                                <div class="form-control-wrap">
+                                    <input type="number" class="form-control validate required" id="subtotal" name="subtotal" value="{subtotal}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2" >
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Descuento</label>
+                                <div class="form-control-wrap">
+                                    <input type="numbre"  class="form-control validate required" id="descuento" name="descuento" value="{descuento}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2" >
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Iva</label>
+                                <div class="form-control-wrap">
+                                    <input type="number" class="form-control validate required" id="iva" name="iva" value="{iva}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Moneda</label>
+                                <div class="form-control-wrap">
+                                    <select name="id_moneda" id="id_moneda" class="form-select init-select2 validate required" >
+                                        <option value="" disabled selected>Seleccione Moneda</option>
+                                        {monedas}
+                                        <option value="{id_moneda}" {if {selected}==1}selected{/if}>{moneda}</option>
+                                        {/monedas}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Concepto</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="concepto" name="concepto" value="{concepto}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Método de pago</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_metodo_pago" name="id_metodo_pago" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione estatus vigencia</option>
+                                        {metodo-pago}
+                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        {/metodo-pago}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_vale_estatus">Estatus entrega</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_estatus_entrega" name="id_estatus_entrega" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione estatus vigencia</option>
+                                        {estatus-entrega}
+                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        {/estatus-entrega}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-update-factura" class="btn btn-dark">{lang(general_save)}</button>
+            </div>
+        </div>
+    </div>
+</div>

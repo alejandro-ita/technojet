@@ -57,6 +57,12 @@ class SB_Model extends CI_Model {
 		$this->tbl['pi_mostrador_productos'] = "$technojet.tbl_pi_mostrador_productos";
 		$this->tbl['pi_factura'] = "$technojet.tbl_pi_factura";
 		$this->tbl['pi_factura_productos'] = "$technojet.tbl_pi_factura_productos";
+		$this->tbl['facturacion'] = "$technojet.tbl_facturacion";
+		$this->tbl['nc_mostrador'] = "$technojet.tbl_nc_mostrador";
+		$this->tbl['nc_mostrador_productos'] = "$technojet.tbl_nc_mostrador_productos";
+		$this->tbl['nc_factura'] = "$technojet.tbl_nc_factura";
+		$this->tbl['nc_factura_productos'] = "$technojet.tbl_nc_factura_productos";
+
 
 		$this->tbl['tarea_estatus'] 		= "$technojet.cat_tarea_estatus";
 		$this->tbl['tarea_prioridad'] 		= "$technojet.cat_tarea_prioridad";

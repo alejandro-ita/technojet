@@ -16,6 +16,8 @@ class Ventas extends SB_Controller {
 		$this->load->model('technojet/Catalogos_model', 'db_catalog');
 		$this->load->model('technojet/Clientes_model', 'db_cliente');
 		$this->load->model('ventas/Pedidos_internos', 'db_pi');
+		$this->load->model('ventas/Facturacion_model', 'db_fac');
+		$this->load->model('ventas/Notas_credito', 'db_nc');
 	}
 
 	public function cotizaciones() {
@@ -502,20 +504,226 @@ class Ventas extends SB_Controller {
 
 	#==============Facturación================
 	public function facturacion() {
-		// $dataView['tpl-tbl-facturacion']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-reporte-detallado');
 		$dataView['tpl-tbl-registros']= $this->parser_view('ventas/facturacion/tpl/tpl-tbl-registros');
-		
+		$includes 	= get_includes_vendor(['dataTables', 'jQValidate']);
 		$pathJS = get_var('path_js');
     	$includes['modulo']['js'][] = ['name'=>'facturacion', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 		
 		$this->load_view('ventas/facturacion/facturacion_view', $dataView, $includes);
 	}
 
-	public function get_modal_add_registro_facturacion(){
-		$this->parser_view('ventas/facturacion/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	public function get_facturas(){
+		$response = $this->db_fac->get_facturas_main();
+
+		$tplAcciones = $this->parser_view('ventas/cotizaciones/tpl/tpl-acciones');
+		foreach ($response as &$cotizacion) {
+			$cotizacion['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($response);
 	}
+
+	public function get_modal_add_registro_facturacion(){
+		//ESTATUS FACTURACION
+		$sqlWhere['id_categoria'] = 46;
+		$sqlWhere['grupo'] = 9;
+		$dataView['estatus-factura'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//USO CFDI
+		$sqlWhere['id_categoria'] = 47;
+		$sqlWhere['grupo'] = 9;
+		$dataView['uso-cfdi'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//METODO DE PAGO
+		$sqlWhere['id_categoria'] = 48;
+		$sqlWhere['grupo'] = 9;
+		$dataView['metodo-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//ESTATUS ENTREGA
+		$sqlWhere['id_categoria'] = 49;
+		$sqlWhere['grupo'] = 9;
+		$dataView['estatus-entrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Monedas
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min();
+		//Clientes
+		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
+		#OBTENEMOS EL CONSECUTIVO DEL COTIZACION
+		$folio = $this->db_fac->get_ultima_factura();
+		$dataView = array_merge($dataView, $folio);
+
+		$this->parser_view('ventas/facturacion/tpl/modal-nueva-factura', $dataView, FALSE);
+	}
+
+	public function process_save_factura() {
+		try {
+			$this->db->trans_begin();
+			#GUARDAMOS FACTURA
+			$sqlData = $this->input->post([
+				'id_estatus_factura',
+				'fecha_elaboracion',
+				'id_uso_cfdi',
+				'no_pi',
+				'id_cliente',
+				'subtotal',
+				'descuento',
+				'iva',
+				'id_moneda',
+				'concepto',
+				'id_metodo_pago',
+				'id_estatus_entrega',
+			]);
+			
+			$sqlData['concepto'] 	= strtoupper($this->input->post('concepto'));
+
+			$insert = $this->db_fac->insert_factura($sqlData);
+			$insert OR set_exception();
+
+			$actividad 		= "ha creado una factura";
+			$data_change 	= ['insert'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($insert, 'tbl_facturacion', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_edit_factura() {
+		$dataView = $this->input->post();
+		$dataEncription = json_encode($this->input->post(['id_factura']));
+		$dataView['dataEncription'] = $this->encryption->encrypt($dataEncription);
+
+		#CATALOGOS & SELECTS
+		$sqlWhere['selected'] = $this->input->post('id_cliente');
+		$dataView['clientes'] = $this->db_cliente->get_cliente_selected($sqlWhere);
+		//Estatus factura
+		$sqlWhere['id_categoria'] = 46;
+		$sqlWhere['selected'] = $this->input->post('id_estatus_factura');
+		$dataView['estatus-factura'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Uso CFDI
+		$sqlWhere['id_categoria'] = 47;
+		$sqlWhere['selected'] = $this->input->post('id_uso_cfdi');
+		$dataView['uso-cfdi'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Metodo de pago
+		$sqlWhere['id_categoria'] = 48;
+		$sqlWhere['selected'] = $this->input->post('id_metodo_pago');
+		$dataView['metodo-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Estatus entrega
+		$sqlWhere['id_categoria'] = 49;
+		$sqlWhere['selected'] = $this->input->post('id_estatus_entrega');
+		$dataView['estatus-entrega'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Monedas
+		$sqlWhere['selected'] = $this->input->post('id_moneda');
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min($sqlWhere);
+		
+		#ELIMINACIÓN DE CONFLICTOS EN EL PARSER VIEW
+		unset($dataView['id_cliente'], $dataView['id_cliente']);
+		unset($dataView['id_estatus_entrega'], $dataView['id_estatus_entrega']);
+		unset($dataView['id_moneda'], $dataView['id_moneda']);
+		unset($dataView['moneda'], $dataView['moneda']);
+
+		$this->parser_view('ventas/facturacion/tpl/modal-editar-factura', $dataView, FALSE);
+	}
+
+	public function process_update_factura() {
+		try {
+			$this->db->trans_begin();
+			$sqlData = $this->input->post([
+				'id_estatus_factura',
+				'fecha_elaboracion',
+				'id_uso_cfdi',
+				'no_pi',
+				'id_cliente',
+				'subtotal',
+				'descuento',
+				'iva',
+				'id_moneda',
+				'concepto',
+				'id_metodo_pago',
+				'id_estatus_entrega',
+			]);
+
+			$sqlData['concepto'] 	= strtoupper($this->input->post('concepto'));
+
+			$sqlWhere = $this->input->post(['id_factura']);
+			$update = $this->db_fac->update_factura($sqlData, $sqlWhere);
+			$update OR set_exception();
+
+			/*DATA PARA EL PDF
+			$dataView = $sqlData;
+			$dataView['id_requisicion'] 				= $this->input->post('id_requisicion');
+			$dataView['tipo_requisicion'] 				= $this->input->post('tipo_requisicion');
+			$dataView['vale_entrada'] 					= $this->input->post('vale_entrada');
+			$dataView['departamento_solicitante'] 		= $this->input->post('departamento_solicitante');
+			$dataView['almacen_solicitante'] 			= $this->input->post('almacen_solicitante');
+			$dataView['departamento_encargado_surtir'] 	= $this->input->post('departamento_encargado_surtir');*/
+
+			#GENERANDO EL PDF
+			/*$this->load->library('Create_pdf');
+			$sqlWhere 	= $this->input->post(['id_requisicion']);
+			$estatusRQ 	= $this->db_ar->get_estatus_requisicion($sqlWhere);
+			$dataView 	= array_merge($dataView, $estatusRQ);
+			$settings = array(
+				 'file_name' 	=> 'Vale_requisicion_'.date('YmdHis')
+				,'content_file' => $this->parser_view('almacen/requisicion-material/tpl/tpl-pdf-vale-requisicion-material', $dataView)
+				,'load_file' 	=> FALSE
+				,'orientation' 	=> 'landscape'
+			);*/
+
+			$actividad 		= "ha editado una factura";
+			$data_change 	= ['update'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($sqlWhere['id_factura'], 'tbl_facturacion', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+				//'file_path' => $this->create_pdf->create_file($settings)
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function process_remove_factura() {
+		try {
+			$this->db->trans_begin();
+
+			$sqlWhere 	= $this->input->post(['id_factura']);
+			#ELIMIANCIÓN DE FACTURA
+			$update = $this->db_fac->update_factura(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			$actividad 		= "ha eliminado una factura";
+			$data_change 	= ['delete'=>['oldData'=>$_POST]];
+			registro_bitacora_actividades($sqlWhere['id_factura'], 'tbl_facturas', $actividad, $data_change);
+			
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_rm_success'),
+				'icon' 		=> 'success'
+			];
+
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
 	#==============FIN Facturación================
 	
 	#==============Mostrador y factura | pedidos internos================	
@@ -1212,22 +1420,108 @@ class Ventas extends SB_Controller {
 		echo json_encode($response);
 	}
 
+	public function process_remove_pi_factura() {
+		try {
+			$this->db->trans_begin();
+
+			$sqlWhere 	= $this->input->post(['id_pi_factura']);
+			#ELIMIANCIÓN DE PI FACT
+			$update = $this->db_pi->update_pi_factura(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			#ELIMIANCIÓN DE LOS PRODUCTOS
+			$update = $this->db_pi->update_pi_factura_productos(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			$actividad 		= "ha eliminado un PI factura";
+			$data_change 	= ['delete'=>['oldData'=>$_POST]];
+			registro_bitacora_actividades($sqlWhere['id_pi_factura'], 'tbl_pi_factura', $actividad, $data_change);
+			
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_rm_success'),
+				'icon' 		=> 'success'
+			];
+
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
 	#==============fin Mostrador y factura | pedidos internos================
 	
 	#==============Mostrador y factura | notas de crédito================
 	public function mostrador_notas() {
-		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-mostrador');
+		/*$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-mostrador');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-reporte-detallado');
 		
 		$pathJS = get_var('path_js');
     	$includes['modulo']['js'][] = ['name'=>'mostrador_notas', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 
+		$this->load_view('ventas/notas-credito/mostrador/mostrador_view', $dataView, $includes);*/
+		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador');
+		$dataView['tpl-tbl-mostrador-consecutivo']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador-consecutivo');
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-detallado');
+		
+		$includes 	= get_includes_vendor(['dataTables', 'jQValidate']);
+		$pathJS = get_var('path_js');
+    	$includes['modulo']['js'][] = ['name'=>'mostrador_notas', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
 		$this->load_view('ventas/notas-credito/mostrador/mostrador_view', $dataView, $includes);
 	}
 
+	public function get_nc_mostrador(){	
+		$response = $this->db_nc->get_pi_mostrador_main();
+
+		$tplAcciones = $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-acciones');
+		foreach ($response as &$cotizacion) {
+			$cotizacion['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($response);
+	}
+
 	public function get_modal_add_mostrador_notas(){
-		$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-nuevo-entrada', FALSE, FALSE);
+		//Estatus PI
+		$sqlWhere['id_categoria'] = 50;
+		$sqlWhere['grupo'] = 10;
+		$dataView['estatus-pi'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//DEPARTAMENTO
+		$sqlWhere['id_categoria'] = 51;
+		$sqlWhere['grupo'] = 10;
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//MEDIO
+		$sqlWhere['id_categoria'] = 52;
+		$sqlWhere['grupo'] = 10;
+		$dataView['medio'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//FORMA ENVIO
+		$sqlWhere['id_categoria'] = 53;
+		$sqlWhere['grupo'] = 10;
+		$dataView['forma-envio'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//CONDICIONES
+		$sqlWhere['id_categoria'] = 54;
+		$sqlWhere['grupo'] = 10;
+		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//VENDEDORES
+		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
+		//MONEDAS
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min();
+		//CLIENTES
+		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
+		//COTIZACIONES
+		$dataView['cotizaciones'] = $this->db_cotizaciones->get_all_id_cotizaciones();
+
+		#OBTENEMOS EL CONSECUTIVO DEL COTIZACION
+		$folio = $this->db_nc->get_ultimo_pi_mostrador();
+		$dataView = array_merge($dataView, $folio);
+
+		$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-nuevo-nc-mostrador', $dataView, FALSE);
 	}
 
 	public function get_modal_add_mostrador_notas_product(){
@@ -1235,23 +1529,660 @@ class Ventas extends SB_Controller {
 	}
 
 	public function factura_notas() {
-		$dataView['tpl-tbl-factura']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-factura');
+		$dataView['tpl-tbl-factura']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-factura');
+		$dataView['tpl-tbl-factura-consecutivo']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-factura-consecutivo');
+		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-reporte-mensual');
+		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-reporte-detallado');
+		
+		$includes 	= get_includes_vendor(['dataTables', 'jQValidate']);
+		$pathJS = get_var('path_js');
+    	$includes['modulo']['js'][] = ['name'=>'factura_notas', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
+		
+		$this->load_view('ventas/notas-credito/factura/factura_view', $dataView, $includes);
+		/*$dataView['tpl-tbl-factura']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-factura');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-reporte-detallado');
 
 		$pathJS = get_var('path_js');
     	$includes['modulo']['js'][] = ['name'=>'factura_notas', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 
-		$this->load_view('ventas/notas-credito/factura/factura_view', $dataView, $includes);
+		$this->load_view('ventas/notas-credito/factura/factura_view', $dataView, $includes);*/
 	}
 
-	public function get_modal_add_factura_notas(){
-		$this->parser_view('ventas/notas-credito/factura/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	public function get_nc_facturas(){	
+		$response = $this->db_nc->get_pi_factura_main();
+
+		$tplAcciones = $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-acciones');
+		foreach ($response as &$cotizacion) {
+			$cotizacion['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_add_nota_factura(){
+		//Estatus PI
+		$sqlWhere['id_categoria'] = 55;
+		$sqlWhere['grupo'] = 11;
+		$dataView['estatus-pi'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//DEPARTAMENTO
+		$sqlWhere['id_categoria'] = 56;
+		$sqlWhere['grupo'] = 11;
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//MEDIO
+		$sqlWhere['id_categoria'] = 57;
+		$sqlWhere['grupo'] = 11;
+		$dataView['medio'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//FORMA ENVIO
+		$sqlWhere['id_categoria'] = 58;
+		$sqlWhere['grupo'] = 11;
+		$dataView['forma-envio'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//CONDICIONES
+		$sqlWhere['id_categoria'] = 59;
+		$sqlWhere['grupo'] = 11;
+		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//USO CFDI
+		$sqlWhere['id_categoria'] = 60;
+		$sqlWhere['grupo'] = 11;
+		$dataView['uso-cfdi'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//FORMA DE PAGO
+		$sqlWhere['id_categoria'] = 61;
+		$sqlWhere['grupo'] = 11;
+		$dataView['forma-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//METODO PAGO
+		$sqlWhere['id_categoria'] = 62;
+		$sqlWhere['grupo'] = 11;
+		$dataView['metodo-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//VENDEDORES
+		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
+		//MONEDAS
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min();
+		//CLIENTES
+		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
+		//COTIZACIONES
+		$dataView['cotizaciones'] = $this->db_cotizaciones->get_all_id_cotizaciones();
+
+		#OBTENEMOS EL CONSECUTIVO DE FACTURAS
+		$folio = $this->db_nc->get_ultimo_pi_factura();
+		$dataView = array_merge($dataView, $folio);
+		$this->parser_view('ventas/notas-credito/factura/tpl/modal-nuevo-pi-factura', $dataView, FALSE);
+		//$this->parser_view('ventas/notas-credito/factura/tpl/modal-nuevo-entrada', FALSE, FALSE);
+	}
+
+	public function process_save_nc_factura() {
+		try {
+			$this->db->trans_begin();
+			#GUARDAMOS NC
+			$sqlData = $this->input->post([
+				'id_estatus_pi',
+				'id_cotizacion',
+				'id_cliente',
+				'contacto',
+				'id_departamento',
+				'fecha_pi',
+				'id_medio',
+				'id_vendedor',
+				'oc',
+				'id_forma_envio',
+				'id_moneda',
+				'notas_internas',
+				'notas_facturacion',
+				'tipo_cambio',
+				'id_condiciones',
+				'id_uso_cfdi',
+				'id_forma_pago',
+				'id_metodo_pago',
+				'email_factura'
+			]);
+			
+			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
+			$sqlData['oc'] = strtoupper($this->input->post('oc'));
+			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
+			$sqlData['notas_facturacion'] = strtoupper($this->input->post('notas_facturacion'));
+			$insert = $this->db_nc->insert_pi_factura($sqlData);
+			$insert OR set_exception();
+
+			$productos 		= $this->input->post('productos');
+			foreach ($productos as $producto) {
+				$sqlData = [
+					'id_nc_factura' 		=> $insert,
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'precio_unitario' 		=> $producto['precio_unitario'],
+					'descuento_pieza' 		=> $producto['descuento_pieza'],
+					'descuento_total' 		=> $producto['descuento_total'],
+					'total' 				=> $producto['total'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				$sqlDataBatch[] = $sqlData;
+			}
+
+			if ($sqlDataBatch) {
+				$insertBatch = $this->db_nc->insert_pi_producto_factura($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			$sqlData['productos'] = $sqlData;
+			$actividad 		= "ha creado una cota de crédito factura";
+			$data_change 	= ['insert'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($insert, 'tbl_nc_factura', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_edit_nc_factura() {
+		$dataView = $this->input->post();
+		$dataEncription = json_encode($this->input->post(['id_nc_factura']));
+		$dataView['dataEncription'] = $this->encryption->encrypt($dataEncription);
+
+		#CATALOGOS & SELECTS
+		$sqlWhere['selected'] = $this->input->post('id_cliente');
+		$dataView['clientes'] = $this->db_cliente->get_cliente_selected($sqlWhere);
+		//Estatus PI
+		$sqlWhere['id_categoria'] = 55;
+		$sqlWhere['selected'] = $this->input->post('id_estatus_pi');
+		$dataView['estatus-pi'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//COTIZACIONES
+		$sqlWhere['selected'] = $this->input->post('id_cotizacion');
+		$dataView['cotizaciones'] = $this->db_cotizaciones->get_cotizacion_select($sqlWhere);
+		//DEPARTAMENTO
+		$sqlWhere['id_categoria'] = 56;
+		$sqlWhere['selected'] = $this->input->post('id_departamento');
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//MEDIO
+		$sqlWhere['id_categoria'] = 57;
+		$sqlWhere['selected'] = $this->input->post('id_medio');
+		$dataView['medio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//VENDEDOR
+		$sqlWhere['selected'] = $this->input->post('id_vendedor');
+		$dataView['vendedores'] = $this->db_vendedor->get_vendedor_select($sqlWhere);
+		//FORMA ENVIO
+		$sqlWhere['id_categoria'] = 58;
+		$sqlWhere['selected'] = $this->input->post('id_forma_envio');
+		$dataView['forma-envio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//MONEDA
+		$sqlWhere['selected'] = $this->input->post('id_moneda');
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min($sqlWhere);
+		//CONDICIONES
+		$sqlWhere['id_categoria'] = 59;
+		$sqlWhere['selected'] = $this->input->post('id_condiciones');
+		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//USO CFDI
+		$sqlWhere['id_categoria'] = 60;
+		$sqlWhere['selected'] = $this->input->post('id_uso_cfdi');
+		$dataView['uso-cfdi'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//FORMA DE PAGO
+		$sqlWhere['id_categoria'] = 61;
+		$sqlWhere['selected'] = $this->input->post('id_forma_pago');
+		$dataView['forma-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//METODO PAGO
+		$sqlWhere['id_categoria'] = 62;
+		$sqlWhere['selected'] = $this->input->post('id_metodo_pago');
+		$dataView['metodo-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+
+		$sqlWhere 	= $this->input->post(['id_nc_factura']);
+		$productos 	= $this->db_nc->get_pi_factura_productos($sqlWhere);
+		$dataView['list-productos'] = json_encode($productos);
+		
+		#ELIMINACIÓN DE CONFLICTOS EN EL PARSER VIEW
+		//unset($dataView['id_pi_factura'], $dataView['id_pi_factura']);
+		unset($dataView['id_cotizacion'], $dataView['id_cotizacion']);
+		unset($dataView['folio'], $dataView['folio']);
+		unset($dataView['id_cliente'], $dataView['id_cliente']);
+		unset($dataView['id_estatus_pi'], $dataView['id_estatus_pi']);
+		unset($dataView['id_departamento'], $dataView['id_departamento']);
+		unset($dataView['id_medio'], $dataView['id_medio']);
+		unset($dataView['id_forma_envio'], $dataView['id_forma_envio']);
+		unset($dataView['id_moneda'], $dataView['id_moneda']);
+		unset($dataView['moneda'], $dataView['moneda']);
+		unset($dataView['id_vendedor'], $dataView['id_vendedor']);
+		unset($dataView['vendedor'], $dataView['vendedor']);
+		unset($dataView['id_condiciones'], $dataView['id_condiciones']);
+		
+
+		$this->parser_view('ventas/notas-credito/factura/tpl/modal-editar-pi', $dataView, FALSE);
+	}
+
+	public function process_update_nc_factura() {
+		try {
+			$this->db->trans_begin();
+			$sqlData = $this->input->post([
+				'id_estatus_pi',
+				'id_cotizacion',
+				'id_cliente',
+				'contacto',
+				'id_departamento',
+				'fecha_pi',
+				'id_medio',
+				'id_vendedor',
+				'oc',
+				'id_forma_envio',
+				'id_moneda',
+				'notas_internas',
+				'notas_facturacion',
+				'tipo_cambio',
+				'id_condiciones',
+				'id_uso_cfdi',
+				'id_forma_pago',
+				'id_metodo_pago',
+				'email_factura'
+			]);
+			
+			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
+			$sqlData['oc'] = strtoupper($this->input->post('oc'));
+			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
+			$sqlData['notas_facturacion'] = strtoupper($this->input->post('notas_facturacion'));
+			$sqlWhere = $this->input->post(['id_nc_factura']);
+			$update = $this->db_nc->update_pi_factura($sqlData, $sqlWhere);
+			$update OR set_exception();
+
+			/*DATA PARA EL PDF
+			$dataView = $sqlData;
+			$dataView['id_requisicion'] 				= $this->input->post('id_requisicion');
+			$dataView['tipo_requisicion'] 				= $this->input->post('tipo_requisicion');
+			$dataView['vale_entrada'] 					= $this->input->post('vale_entrada');
+			$dataView['departamento_solicitante'] 		= $this->input->post('departamento_solicitante');
+			$dataView['almacen_solicitante'] 			= $this->input->post('almacen_solicitante');
+			$dataView['departamento_encargado_surtir'] 	= $this->input->post('departamento_encargado_surtir');*/
+
+			$productos = $this->input->post('productos');
+			#ELIMINACION DE PRODUCTOS QUE NO LLEGAN EN LA LIST
+			$productosActivos = array_filter(array_column($productos, 'id_nc_factura_producto'));
+			$sqlWhere = $this->input->post(['id_nc_factura']);
+			$sqlWhere['activo'] = 1;
+			if($productosActivos) $sqlWhere['notIn'] = $productosActivos;
+			$update = $this->db_nc->update_pi_factura_productos(['activo'=>0], $sqlWhere);
+			#$update OR set_exception();
+
+			#REGISTRO DE NUEVOS PRODUCTOS
+			$sqlDataBatch = [];
+			foreach ($productos as $producto) {
+				$sqlDataPro = [
+					'id_nc_factura' 		=> $this->input->post('id_nc_factura'),
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'precio_unitario' 		=> $producto['precio_unitario'],
+					'descuento_pieza' 		=> $producto['descuento_pieza'],
+					'descuento_total' 		=> $producto['descuento_total'],
+					'total' 				=> $producto['total'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				if (!isset($producto['id_nc_factura_producto'])) {
+					$sqlDataBatch[] = $sqlDataPro;
+				}
+
+				/*DATA PARA EL PDF
+				$sqlDataPro['no_parte'] 	= $producto['no_parte'];
+				$sqlDataPro['descripcion'] = $producto['descripcion'];
+				$sqlDataPro['unidad_medida'] = $producto['unidad_medida'];
+				$sqlDataPro['tipo_producto'] = $producto['tipo_producto'];*/
+				$dataView['list-productos'][] = $sqlDataPro;
+			}
+
+			if ($sqlDataBatch) {
+				//$insertBatch = $this->db_ar->insert_requisiciones_productos($sqlDataBatch);
+				$insertBatch = $this->db_nc->insert_pi_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			#GENERANDO EL PDF
+			/*$this->load->library('Create_pdf');
+			$sqlWhere 	= $this->input->post(['id_requisicion']);
+			$estatusRQ 	= $this->db_ar->get_estatus_requisicion($sqlWhere);
+			$dataView 	= array_merge($dataView, $estatusRQ);
+			$settings = array(
+				 'file_name' 	=> 'Vale_requisicion_'.date('YmdHis')
+				,'content_file' => $this->parser_view('almacen/requisicion-material/tpl/tpl-pdf-vale-requisicion-material', $dataView)
+				,'load_file' 	=> FALSE
+				,'orientation' 	=> 'landscape'
+			);*/
+
+			$sqlData['productos'] = $dataView['list-productos'];
+			$actividad 		= "ha editado un Nota de crédito Factura";
+			$data_change 	= ['update'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($sqlWhere['id_nc_factura'], 'tbl_nc_factura', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+				//'file_path' => $this->create_pdf->create_file($settings)
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
 	}
 
 	public function get_modal_add_factura_notas_product(){
 		$this->parser_view('ventas/notas-credito/factura/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
+
+	public function process_save_nc_mostrador() {
+		try {
+			$this->db->trans_begin();
+			#GUARDAMOS PI
+			$sqlData = $this->input->post([
+				'id_estatus_pi',
+				'id_cotizacion',
+				'id_cliente',
+				'contacto',
+				'id_departamento',
+				'fecha_pi',
+				'id_medio',
+				'id_vendedor',
+				'id_oc',
+				'id_forma_envio',
+				'incluir_iva',
+				'id_moneda',
+				'notas_internas',
+				'notas_remision',
+				'tipo_cambio',
+				'id_condiciones'
+			]);
+			
+			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
+			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
+			$sqlData['notas_remision'] = strtoupper($this->input->post('notas_remision'));
+			$insert = $this->db_nc->insert_pi_mostrador($sqlData);
+			$insert OR set_exception();
+
+			$productos 		= $this->input->post('productos');
+			foreach ($productos as $producto) {
+				$sqlData = [
+					'id_nc_mostrador' 		=> $insert,
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'precio_unitario' 		=> $producto['precio_unitario'],
+					'descuento_pieza' 		=> $producto['descuento_pieza'],
+					'descuento_total' 		=> $producto['descuento_total'],
+					'total' 				=> $producto['total'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				$sqlDataBatch[] = $sqlData;
+			}
+
+			if ($sqlDataBatch) {
+				$insertBatch = $this->db_nc->insert_pi_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			$sqlData['productos'] = $sqlData;
+			$actividad 		= "ha creado una nota de crédito mostrador";
+			$data_change 	= ['insert'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($insert, 'tbl_pi_mostrador', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_edit_nc() {
+		$dataView = $this->input->post();
+		$dataEncription = json_encode($this->input->post(['id_nc_mostrador']));
+		$dataView['dataEncription'] = $this->encryption->encrypt($dataEncription);
+
+		#CATALOGOS & SELECTS
+		$sqlWhere['selected'] = $this->input->post('id_cliente');
+		$dataView['clientes'] = $this->db_cliente->get_cliente_selected($sqlWhere);
+		//Estatus PI
+		$sqlWhere['id_categoria'] = 50;
+		$sqlWhere['selected'] = $this->input->post('id_estatus_pi');
+		$dataView['estatus-pi'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//COTIZACIONES
+		$sqlWhere['selected'] = $this->input->post('id_cotizacion');
+		$dataView['cotizaciones'] = $this->db_cotizaciones->get_cotizacion_select($sqlWhere);
+		//DEPARTAMENTO
+		$sqlWhere['id_categoria'] = 51;
+		$sqlWhere['selected'] = $this->input->post('id_departamento');
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//MEDIO
+		$sqlWhere['id_categoria'] = 52;
+		$sqlWhere['selected'] = $this->input->post('id_medio');
+		$dataView['medio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//VENDEDOR
+		$sqlWhere['selected'] = $this->input->post('id_vendedor');
+		$dataView['vendedores'] = $this->db_vendedor->get_vendedor_select($sqlWhere);
+		//FORMA ENVIO
+		$sqlWhere['id_categoria'] = 53;
+		$sqlWhere['selected'] = $this->input->post('id_forma_envio');
+		$dataView['forma-envio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//MONEDA
+		$sqlWhere['selected'] = $this->input->post('id_moneda');
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min($sqlWhere);
+		//CONDICIONES
+		$sqlWhere['id_categoria'] = 54;
+		$sqlWhere['selected'] = $this->input->post('id_condiciones');
+		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+
+		$sqlWhere 	= $this->input->post(['id_nc_mostrador']);
+		$productos 	= $this->db_nc->get_pi_productos($sqlWhere);
+		$dataView['list-productos'] = json_encode($productos);
+		
+		#ELIMINACIÓN DE CONFLICTOS EN EL PARSER VIEW
+		unset($dataView['id_cotizacion'], $dataView['id_cotizacion']);
+		unset($dataView['folio'], $dataView['folio']);
+		unset($dataView['id_cliente'], $dataView['id_cliente']);
+		unset($dataView['id_estatus_pi'], $dataView['id_estatus_pi']);
+		unset($dataView['id_departamento'], $dataView['id_departamento']);
+		unset($dataView['id_medio'], $dataView['id_medio']);
+		unset($dataView['id_oc'], $dataView['id_oc']);
+		unset($dataView['id_forma_envio'], $dataView['id_forma_envio']);
+		unset($dataView['id_moneda'], $dataView['id_moneda']);
+		unset($dataView['moneda'], $dataView['moneda']);
+		unset($dataView['id_vendedor'], $dataView['id_vendedor']);
+		unset($dataView['vendedor'], $dataView['vendedor']);
+		unset($dataView['id_condiciones'], $dataView['id_condiciones']);
+		
+
+		$this->parser_view('ventas/notas-credito/mostrador/tpl/modal-editar-pi', $dataView, FALSE);
+	}
+
+	public function process_update_nc() {
+		try {
+			$this->db->trans_begin();
+			$sqlData = $this->input->post([
+				'id_estatus_pi',
+				'id_cotizacion',
+				'id_cliente',
+				'contacto',
+				'id_departamento',
+				'fecha_pi',
+				'id_medio',
+				'id_vendedor',
+				'id_oc',
+				'id_forma_envio',
+				'incluir_iva',
+				'id_moneda',
+				'notas_internas',
+				'notas_remision',
+				'tipo_cambio',
+				'id_condiciones'
+			]);
+
+			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
+			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
+			$sqlData['notas_remision'] = strtoupper($this->input->post('notas_remision'));
+			$sqlWhere = $this->input->post(['id_nc_mostrador']);
+			$update = $this->db_nc->update_pi($sqlData, $sqlWhere);
+			$update OR set_exception();
+
+			/*DATA PARA EL PDF
+			$dataView = $sqlData;
+			$dataView['id_requisicion'] 				= $this->input->post('id_requisicion');
+			$dataView['tipo_requisicion'] 				= $this->input->post('tipo_requisicion');
+			$dataView['vale_entrada'] 					= $this->input->post('vale_entrada');
+			$dataView['departamento_solicitante'] 		= $this->input->post('departamento_solicitante');
+			$dataView['almacen_solicitante'] 			= $this->input->post('almacen_solicitante');
+			$dataView['departamento_encargado_surtir'] 	= $this->input->post('departamento_encargado_surtir');*/
+
+			$productos = $this->input->post('productos');
+			#ELIMINACION DE PRODUCTOS QUE NO LLEGAN EN LA LIST
+			$productosActivos = array_filter(array_column($productos, 'id_nc_mostrador_producto'));
+			$sqlWhere = $this->input->post(['id_nc_mostrador']);
+			$sqlWhere['activo'] = 1;
+			if($productosActivos) $sqlWhere['notIn'] = $productosActivos;
+			$update = $this->db_nc->update_pin_productos(['activo'=>0], $sqlWhere);
+			#$update OR set_exception();
+
+			#REGISTRO DE NUEVOS PRODUCTOS
+			$sqlDataBatch = [];
+			foreach ($productos as $producto) {
+				$sqlDataPro = [
+					'id_nc_mostrador' 		=> $this->input->post('id_nc_mostrador'),
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'precio_unitario' 		=> $producto['precio_unitario'],
+					'descuento_pieza' 		=> $producto['descuento_pieza'],
+					'descuento_total' 		=> $producto['descuento_total'],
+					'total' 				=> $producto['total'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				if (!isset($producto['id_nc_mostrador_producto'])) {
+					$sqlDataBatch[] = $sqlDataPro;
+				}
+
+				/*DATA PARA EL PDF
+				$sqlDataPro['no_parte'] 	= $producto['no_parte'];
+				$sqlDataPro['descripcion'] = $producto['descripcion'];
+				$sqlDataPro['unidad_medida'] = $producto['unidad_medida'];
+				$sqlDataPro['tipo_producto'] = $producto['tipo_producto'];*/
+				$dataView['list-productos'][] = $sqlDataPro;
+			}
+
+			if ($sqlDataBatch) {
+				//$insertBatch = $this->db_ar->insert_requisiciones_productos($sqlDataBatch);
+				$insertBatch = $this->db_nc->insert_pi_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			#GENERANDO EL PDF
+			/*$this->load->library('Create_pdf');
+			$sqlWhere 	= $this->input->post(['id_requisicion']);
+			$estatusRQ 	= $this->db_ar->get_estatus_requisicion($sqlWhere);
+			$dataView 	= array_merge($dataView, $estatusRQ);
+			$settings = array(
+				 'file_name' 	=> 'Vale_requisicion_'.date('YmdHis')
+				,'content_file' => $this->parser_view('almacen/requisicion-material/tpl/tpl-pdf-vale-requisicion-material', $dataView)
+				,'load_file' 	=> FALSE
+				,'orientation' 	=> 'landscape'
+			);*/
+
+			$sqlData['productos'] = $dataView['list-productos'];
+			$actividad 		= "ha editado una Nota de credito Mostrador";
+			$data_change 	= ['update'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($sqlWhere['id_nc_mostrador'], 'tbl_nc_mostrador', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+				//'file_path' => $this->create_pdf->create_file($settings)
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}	
+
+	public function process_remove_nc() {
+		try {
+			$this->db->trans_begin();
+
+			$sqlWhere 	= $this->input->post(['id_nc_mostrador']);
+			#ELIMIANCIÓN DE NC
+			$update = $this->db_nc->update_pi(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			#ELIMIANCIÓN DE LOS PRODUCTOS DEL NC
+			$update = $this->db_nc->update_pin_productos(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			$actividad 		= "ha eliminado una nota de crédito";
+			$data_change 	= ['delete'=>['oldData'=>$_POST]];
+			registro_bitacora_actividades($sqlWhere['id_nc_mostrador'], 'tbl_nc_mostrador', $actividad, $data_change);
+			
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_rm_success'),
+				'icon' 		=> 'success'
+			];
+
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function process_remove_nc_factura() {
+		try {
+			$this->db->trans_begin();
+
+			$sqlWhere 	= $this->input->post(['id_nc_factura']);
+			#ELIMIANCIÓN DE NCF
+			$update = $this->db_nc->update_pi_factura(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			#ELIMIANCIÓN DE LOS PRODUCTOS 
+			$update = $this->db_nc->update_pi_factura_productos(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			$actividad 		= "ha eliminado una nota de crédito Factura";
+			$data_change 	= ['delete'=>['oldData'=>$_POST]];
+			registro_bitacora_actividades($sqlWhere['id_nc_factura'], 'tbl_nc_mostrador', $actividad, $data_change);
+			
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_rm_success'),
+				'icon' 		=> 'success'
+			];
+
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
 	#==============FIN Mostrador y factura | notas de crédito================
 
 	#==============solicitud de entrega================

@@ -425,6 +425,87 @@ class Ventas extends SB_Controller {
 
 		echo json_encode($cotizaciones, JSON_NUMERIC_CHECK);
 	}
+
+	############################# SOLICITUD DE ENTREGA
+	public function solicitud_entrega(){
+		$includes = get_includes_vendor(['dataTables', 'jQValidate']);
+		$pathJS = get_var('path_js');
+        $includes['modulo']['js'][] = ['name'=>'template_helper', 'dirname'=>"$pathJS/helpers", 'fulldir'=>TRUE];
+        $includes['modulo']['js'][] = ['name'=>'solicitud-entrega', 'dirname'=>"$pathJS/database/ventas", 'fulldir'=>TRUE];
+
+        $dataTools['categorias']= $this->db_catalogos->get_categorias(['grupo'=>12]);
+        $dataView['tpl-tools'] = $this->parser_view('database/ventas/cotizaciones/tpl/tpl-tools', $dataTools);
+
+		$this->load_view('database/ventas/solicitud-entrega/solicitud_entrega_view', $dataView, $includes);
+	}
+
+	public function get_catalog_solicitud_entrega() {
+		$sqlWhere = $this->input->post('id_categoria') ? $this->input->post(['id_categoria']) : [];
+		$sqlWhere['grupo']=12;
+		$cotizaciones = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		$cotizaciones = $cotizaciones ? $cotizaciones : [];
+
+		$tplAcciones = $this->parser_view('database/ventas/cotizaciones/tpl/tpl-acciones');
+		foreach ($cotizaciones as &$rec) {
+			$rec['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($cotizaciones, JSON_NUMERIC_CHECK);
+	}
+
+	############################ SOLICITUD DE RECOLECCION
+	public function solicitud_recoleccion(){
+		$includes = get_includes_vendor(['dataTables', 'jQValidate']);
+		$pathJS = get_var('path_js');
+        $includes['modulo']['js'][] = ['name'=>'template_helper', 'dirname'=>"$pathJS/helpers", 'fulldir'=>TRUE];
+        $includes['modulo']['js'][] = ['name'=>'solicitud-recoleccion', 'dirname'=>"$pathJS/database/ventas", 'fulldir'=>TRUE];
+
+        $dataTools['categorias']= $this->db_catalogos->get_categorias(['grupo'=>13]);
+        $dataView['tpl-tools'] = $this->parser_view('database/ventas/cotizaciones/tpl/tpl-tools', $dataTools);
+
+		$this->load_view('database/ventas/solicitud-recoleccion/solicitud_recoleccion_view', $dataView, $includes);
+	}
+
+	public function get_catalog_solicitud_recoleccion() {
+		$sqlWhere = $this->input->post('id_categoria') ? $this->input->post(['id_categoria']) : [];
+		$sqlWhere['grupo']=13;
+		$cotizaciones = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		$cotizaciones = $cotizaciones ? $cotizaciones : [];
+
+		$tplAcciones = $this->parser_view('database/ventas/cotizaciones/tpl/tpl-acciones');
+		foreach ($cotizaciones as &$rec) {
+			$rec['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($cotizaciones, JSON_NUMERIC_CHECK);
+	}
+
+	############################ COMPLEMENTOS PAGO
+	public function complementos_pago(){
+		$includes = get_includes_vendor(['dataTables', 'jQValidate']);
+		$pathJS = get_var('path_js');
+        $includes['modulo']['js'][] = ['name'=>'template_helper', 'dirname'=>"$pathJS/helpers", 'fulldir'=>TRUE];
+        $includes['modulo']['js'][] = ['name'=>'complementos-pago', 'dirname'=>"$pathJS/database/ventas", 'fulldir'=>TRUE];
+
+        $dataTools['categorias']= $this->db_catalogos->get_categorias(['grupo'=>14]);
+        $dataView['tpl-tools'] = $this->parser_view('database/ventas/cotizaciones/tpl/tpl-tools', $dataTools);
+
+		$this->load_view('database/ventas/complementos-pago/complementos_pago_view', $dataView, $includes);
+	}
+
+	public function get_catalog_complementos_pago() {
+		$sqlWhere = $this->input->post('id_categoria') ? $this->input->post(['id_categoria']) : [];
+		$sqlWhere['grupo']=14;
+		$cotizaciones = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		$cotizaciones = $cotizaciones ? $cotizaciones : [];
+
+		$tplAcciones = $this->parser_view('database/ventas/cotizaciones/tpl/tpl-acciones');
+		foreach ($cotizaciones as &$rec) {
+			$rec['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($cotizaciones, JSON_NUMERIC_CHECK);
+	}
 }
 
 /* End of file Ventas.php */

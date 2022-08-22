@@ -75,7 +75,9 @@ $route['database/ventas/clientes'] 		        = 'database/clientes/catalogo';
 $route['database/ventas/pedidos-internos']      = 'database/ventas/pedidos_internos';
 $route['database/ventas/facturacion']           = 'database/ventas/facturacion';
 $route['database/ventas/notas-credito']         = 'database/ventas/notas_credito';
-
+$route['database/ventas/solicitud-entrega']     = 'database/ventas/solicitud_entrega';
+$route['database/ventas/solicitud-recoleccion'] = 'database/ventas/solicitud_recoleccion';
+$route['database/ventas/complementos-pago']     = 'database/ventas/complementos_pago';
 
 #ALMACEN
 $route['almacen/requisicion-material'] 			= 'almacen/requisicion_material';

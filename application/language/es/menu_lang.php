@@ -29,6 +29,9 @@ $lang['menu_requisicion_material']  = 'Requisición de material';
 $lang['menu_reporte_sistemas'] 	    = 'Reporte de sistemas';
 $lang['menu_facturacion']   	    = 'Facturacion';
 $lang['menu_notas_credito']   	    = 'Notas de crédito';
+$lang['menu_solicitud_entrega']   	= 'Solicitud entrega';
+$lang['menu_solicitud_recoleccion'] = 'Solicitud recolección';
+$lang['menu_complementos_pago']     = 'Complementos pago';
 
 $lang['menu_cotizaciones']			= 'Cotizaciones';
 $lang['menu_vendedores']			= 'Vendedores';

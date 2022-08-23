@@ -3,18 +3,18 @@ jQuery(function($) {
 	initDataTable('#tbl-cotizaciones', {
 		
 		ajax: {
-			url: base_url('ventas/ventas/get_cotizaciones')
-			,data: function(dataFilter) {
+			url: base_url('ventas/ventas/get_cotizaciones'),
+			data: function(dataFilter) {
 				
 	    		dataFilter.id_uso = $('select#id_uso').val();
 	    		dataFilter.id_categoria = $('select#id_categoria').val();
 	    	}
-		}
-		,createdRow: function(row, data, index) {
+		},
+		createdRow: function(row, data, index) {
 			data.acciones = undefined;
 			$(row).addClass('nk-tb-item').data(data);
-		}
-		,columns: [
+		},
+		columns: [
 			{data: {
 				_: 'folio', sort: 'id_cotizacion'
 		   	}, defaultContent: '', className: 'nk-tb-col'},
@@ -25,9 +25,71 @@ jQuery(function($) {
 			{data: 'atencion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'precio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'condiciones_pago', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tiempo_entrega', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'lugar_entrega', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'vigencia', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_recepcion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vendedor', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'creador_cotizacion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'acciones', defaultContent: '', className: 'nk-tb-col nk-tb-col-tools text-right'},
+		]
+	});
+
+	initDataTable('#tbl-cotizaciones-consecutivo', {
+		
+		ajax: {
+			url: base_url('ventas/ventas/get_consecutivo'),
+			data: function(dataFilter) {
+				//FILTROS
+	    		//dataFilter.id_categoria = $('select#id_categoria').val();
+	    	}
+		},
+		createdRow: function(row, data, index) {
+			data.acciones = undefined;
+			$(row).addClass('nk-tb-item').data(data);
+		},
+		columns: [
+			{data: {
+				_: 'folio', sort: 'id_cotizacion'
+		   	}, defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cliente', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_elaboracion', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'atencion', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'precio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'condiciones_pago', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tiempo_entrega', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'lugar_entrega', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'vigencia', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'notas', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_recepcion', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estatus_vigencia', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'vendedor', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'depto_nuestro', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'correo', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'semana', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'mes', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'anio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'solvente', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tinta', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'solucion_limpieza', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cartucho_solvente', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cartucho_tinta', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'ribbon', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'kit_aditivos', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'etiqueta', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'equipo', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'equipo_renta', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'refaccion', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'servicio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'accesorio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'otro', defaultContent: '', className: 'nk-tb-col'},
 		]
 	});
 

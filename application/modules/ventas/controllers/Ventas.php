@@ -115,6 +115,17 @@ class Ventas extends SB_Controller {
 		echo json_encode($response);
 	}
 
+	public function get_consecutivo(){
+		$response = $this->db_cotizaciones->get_cotizaciones_consecutivo();
+
+		/*$tplAcciones = $this->parser_view('ventas/cotizaciones/tpl/tpl-acciones');
+		foreach ($response as &$cotizacion) {
+			$cotizacion['acciones'] = $tplAcciones;
+		}*/
+
+		echo json_encode($response);
+	}
+
 	public function get_modal_add_producto_cotizacion() {
 		$dataView['tipo-producto'] = $this->db_catalogos->get_tipos_productos_min();
 		$this->parser_view('ventas/cotizaciones/tpl/modal-add-producto-cotizacion', $dataView, FALSE);

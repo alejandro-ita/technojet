@@ -34,18 +34,76 @@ class Cotizaciones_model extends SB_Model {
 			CT.departamento,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_condiciones_pago) as condiciones_pago,
 			CT.id_condiciones_pago,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_tiempo_entrega) as tiempo_entrega,
+			CT.id_tiempo_entrega,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_lugar_entrega) as lugar_entrega,
+			CT.id_lugar_entrega,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_vigencia) as vigencia,
+			CT.id_vigencia,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_tipo_producto) as tipo_producto,
+			CT.id_tipo_producto,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_precio) as precio,
+			CT.id_precio,
 			CT.id_cliente,
 			CL.razon_social,
 			CT.id_moneda,
 			MN.moneda,
 			CT.id_vendedor,
 			VE.vendedor,
-			CT.id_precio,
+			CT.creador_cotizacion,
+			DATE(CT.fecha_recepcion) as fecha_recepcion,", 
+			FALSE)
+			->from("$tbl[cotizaciones] AS CT")
+			->join("$tbl[clientes] AS CL", 'CL.id_cliente = CT.id_cliente', 'INNER')
+			->join("$tbl[monedas] AS MN", 'CT.id_moneda = MN.id_moneda', 'INNER')
+			->join("$tbl[vendedores] AS VE", 'CT.id_vendedor = VE.id_vendedor', 'INNER')
+			->where('CT.activo', 1)
+			->get();
+
+		/*$request = $this->db->select("CT.*", FALSE)
+			->from("$tbl[cotizaciones] AS CT")
+			->where('CT.activo', 1)
+			->get();*/
+		// debug($this->db->last_query());
+
+		return $all ? $request->result_array() : $request->row_array();
+	}
+
+	public function get_cotizaciones_consecutivo(array $where = [], $all=TRUE) {
+		$tbl = $this->tbl;
+
+		!isset($where['notIN']) OR $this->db->where_not_in('CT.id_cotizacion', $where['notIN']);
+		!isset($where['id_cotizacion']) OR $this->db->where('CT.id_cotizacion', $where['id_cotizacion']);
+		
+		$request = $this->db->select("
+			CT.id_cotizacion,
+			CONCAT('CT-', CT.id_cotizacion) AS folio,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_estatus_vigencia) as estatus_vigencia,
+			CT.id_estatus_vigencia,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_estatus_entrega) as estatus_entrega,
+			CT.id_estatus_entrega,
+			DATE(CT.fecha_elaboracion) as fecha_elaboracion,
+			CT.atencion,
+			CT.departamento,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_condiciones_pago) as condiciones_pago,
 			CT.id_condiciones_pago,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_tiempo_entrega) as tiempo_entrega,
 			CT.id_tiempo_entrega,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_lugar_entrega) as lugar_entrega,
 			CT.id_lugar_entrega,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_vigencia) as vigencia,
 			CT.id_vigencia,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_tipo_producto) as tipo_producto,
 			CT.id_tipo_producto,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_precio) as precio,
+			CT.id_precio,
+			CT.id_cliente,
+			CL.razon_social,
+			CL.cliente,
+			CT.id_moneda,
+			MN.moneda,
+			CT.id_vendedor,
+			VE.vendedor,
 			CT.creador_cotizacion,
 			DATE(CT.fecha_recepcion) as fecha_recepcion,", 
 			FALSE)

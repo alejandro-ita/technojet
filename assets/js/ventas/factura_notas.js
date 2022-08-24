@@ -18,18 +18,103 @@ jQuery(function($) {
 			{data: {
 				_: 'folio', sort: 'id_nc_factura'
 		   	}, defaultContent: '', className: 'nk-tb-col'},
-			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'estatus_pi', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'medio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estatus_pi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'vendedor', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'uso_cfdi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'forma_pago', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'metodo_pago', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fact_remision', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'medio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'oc', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_entrega', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'forma_envio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'motivo_credito', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'condiciones', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'notas_internas', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'notas_facturacion', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_cambio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'email_factura', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'acciones', defaultContent: '', className: 'nk-tb-col nk-tb-col-tools text-right'},
 		]
 	});
+
+	initDataTable('#tbl-nc-factura-consecutivo', {
+		
+		ajax: {
+			url: base_url('ventas/ventas/get_nc_facturas'),
+			data: function(dataFilter) {
+				
+	    		//dataFilter.id_uso = $('select#id_uso').val();
+	    		//dataFilter.id_categoria = $('select#id_categoria').val();
+	    	}
+		},
+		createdRow: function(row, data, index) {
+			data.acciones = undefined;
+			$(row).addClass('nk-tb-item').data(data);
+		},
+		columns: [
+			{data: {
+				_: 'folio', sort: 'id_nc_factura'
+		   	}, defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estatus_pi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'nota_credito_cfdi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estatus_nc_cfdi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_nc_cfdi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'uso_cfdi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'forma_pago', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'metodo_pago', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cliente', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'localidad', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fact_remision', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'medio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_servicio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'num_poliza', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'oc', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_entrega', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_entrega', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'forma_envio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_envio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'guia', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'req', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'vale_salida', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'sub', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'desc', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tot', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'motivo_credito', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'notas_internas', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'notas_facturacion', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_cambio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'remision', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'condiciones', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'email_factura', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'semana', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'mes', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'anio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'solvente', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tinta', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'solucion_limpieza', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cartucho', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'refacciones', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'servicio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'poliza', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'paqueteria', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'viaticos', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'kit', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'otros', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'equipo', defaultContent: '', className: 'nk-tb-col'},
+		]
+	});
+
 
 	$('body')
 

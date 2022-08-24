@@ -31,6 +31,8 @@ class Facturacion_model extends SB_Model {
 			CT.id_uso_cfdi,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_uso_cfdi) as uso_cfdi,
 			CT.no_pi,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_forma_pago) as forma_pago,
+			CT.id_forma_pago,
 			CT.id_cliente,
 			CL.razon_social,
 			CT.subtotal,
@@ -41,10 +43,12 @@ class Facturacion_model extends SB_Model {
 			CT.concepto,
 			CT.id_metodo_pago,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_metodo_pago) as metodo_pago,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_estatus_entrega) as estatus_entrega,
 			CT.id_estatus_entrega,
 			CT.semana,
 			CT.mes,
-			CT.anio", 
+			CT.anio,
+			CT.observaciones", 
 			FALSE)
 			->from("$tbl[facturacion] AS CT")
 			->join("$tbl[clientes] AS CL", 'CL.id_cliente = CT.id_cliente', 'INNER')

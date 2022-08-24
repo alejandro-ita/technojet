@@ -37,23 +37,24 @@ class Notas_credito extends SB_Model {
 			DATE(CT.fecha_pi) as fecha_pi,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_medio) as medio,
 			CT.id_medio,
-			CT.id_vendedor,
-			VE.vendedor,
 			CT.id_oc as oc,
-			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_forma_envio) as id_forma_envio,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_forma_envio) as forma_envio,
 			CT.id_forma_envio,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_tipo_producto) as tipo_producto,
+			CT.id_tipo_producto,
+			CT.id_tipo_entrega,
 			CT.incluir_iva,
-			CT.id_moneda,
-			MN.moneda,
 			CT.notas_internas,
 			CT.notas_remision,
+			CT.fact_remision,
 			CT.tipo_cambio,
-			CT.id_condiciones", 
+			CT.motivo_credito,
+			CT.observaciones,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_condiciones) as condiciones,
+			CT.id_condiciones,", 
 			FALSE)
 			->from("$tbl[nc_mostrador] AS CT")
 			->join("$tbl[clientes] AS CL", 'CL.id_cliente = CT.id_cliente', 'INNER')
-			->join("$tbl[monedas] AS MN", 'CT.id_moneda = MN.id_moneda', 'INNER')
-			->join("$tbl[vendedores] AS VE", 'CT.id_vendedor = VE.id_vendedor', 'INNER')
 			->where('CT.activo', 1)
 			->get();
 
@@ -202,26 +203,31 @@ class Notas_credito extends SB_Model {
 			DATE(CT.fecha_pi) as fecha_pi,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_medio) as medio,
 			CT.id_medio,
-			CT.id_vendedor,
-			VE.vendedor,
 			CT.oc,
-			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_forma_envio) as id_forma_envio,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_forma_envio) as forma_envio,
 			CT.id_forma_envio,
-			CT.id_moneda,
-			MN.moneda,
 			CT.notas_internas,
 			CT.notas_facturacion,
 			CT.tipo_cambio,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_condiciones) as condiciones,
 			CT.id_condiciones,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_uso_cfdi) as uso_cfdi,
 			CT.id_uso_cfdi,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_forma_pago) as forma_pago,
 			CT.id_forma_pago,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_metodo_pago) as metodo_pago,
 			CT.id_metodo_pago,
-			CT.email_factura", 
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_tipo_producto) as tipo_producto,
+			CT.id_tipo_producto,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_tipo_entrega) as tipo_entrega,
+			CT.id_tipo_entrega,
+			CT.motivo_credito,
+			CT.email_factura,
+			CT.fact_remision,
+			CT.observaciones", 
 			FALSE)
 			->from("$tbl[nc_factura] AS CT")
 			->join("$tbl[clientes] AS CL", 'CL.id_cliente = CT.id_cliente', 'INNER')
-			->join("$tbl[monedas] AS MN", 'CT.id_moneda = MN.id_moneda', 'INNER')
-			->join("$tbl[vendedores] AS VE", 'CT.id_vendedor = VE.id_vendedor', 'INNER')
 			->where('CT.activo', 1)
 			->get();
 

@@ -553,6 +553,10 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 49;
 		$sqlWhere['grupo'] = 9;
 		$dataView['estatus-entrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//FORMA PAGO
+		$sqlWhere['id_categoria'] = 80;
+		$sqlWhere['grupo'] = 9;
+		$dataView['forma-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
 		//Monedas
 		$dataView['monedas'] = $this->db_catalog->get_monedas_min();
 		//Clientes
@@ -581,6 +585,8 @@ class Ventas extends SB_Controller {
 				'concepto',
 				'id_metodo_pago',
 				'id_estatus_entrega',
+				'id_forma_pago',
+				'observaciones'
 			]);
 			
 			$sqlData['concepto'] 	= strtoupper($this->input->post('concepto'));
@@ -630,6 +636,10 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 49;
 		$sqlWhere['selected'] = $this->input->post('id_estatus_entrega');
 		$dataView['estatus-entrega'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Forma de pago
+		$sqlWhere['id_categoria'] = 80;
+		$sqlWhere['selected'] = $this->input->post('id_forma_pago');
+		$dataView['forma-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
 		//Monedas
 		$sqlWhere['selected'] = $this->input->post('id_moneda');
 		$dataView['monedas'] = $this->db_catalog->get_monedas_min($sqlWhere);
@@ -659,6 +669,8 @@ class Ventas extends SB_Controller {
 				'concepto',
 				'id_metodo_pago',
 				'id_estatus_entrega',
+				'id_forma_pago',
+				'observaciones'
 			]);
 
 			$sqlData['concepto'] 	= strtoupper($this->input->post('concepto'));
@@ -828,12 +840,14 @@ class Ventas extends SB_Controller {
 				'notas_internas',
 				'notas_remision',
 				'tipo_cambio',
-				'id_condiciones'
+				'id_condiciones',
+				'observaciones'
 			]);
 			
 			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
 			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
 			$sqlData['notas_remision'] = strtoupper($this->input->post('notas_remision'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
 			$insert = $this->db_pi->insert_pi_mostrador($sqlData);
 			$insert OR set_exception();
 
@@ -905,10 +919,6 @@ class Ventas extends SB_Controller {
 		//VENDEDOR
 		$sqlWhere['selected'] = $this->input->post('id_vendedor');
 		$dataView['vendedores'] = $this->db_vendedor->get_vendedor_select($sqlWhere);
-		//OC
-		$sqlWhere['id_categoria'] = 34;
-		$sqlWhere['selected'] = $this->input->post('id_oc');
-		$dataView['oc'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
 		//FORMA ENVIO
 		$sqlWhere['id_categoria'] = 35;
 		$sqlWhere['selected'] = $this->input->post('id_forma_envio');
@@ -964,12 +974,14 @@ class Ventas extends SB_Controller {
 				'notas_internas',
 				'notas_remision',
 				'tipo_cambio',
-				'id_condiciones'
+				'id_condiciones',
+				'observaciones'
 			]);
 
 			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
 			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
 			$sqlData['notas_remision'] = strtoupper($this->input->post('notas_remision'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
 			$sqlWhere = $this->input->post(['id_pi_mostrador']);
 			$update = $this->db_pi->update_pi($sqlData, $sqlWhere);
 			$update OR set_exception();
@@ -1189,13 +1201,15 @@ class Ventas extends SB_Controller {
 				'id_uso_cfdi',
 				'id_forma_pago',
 				'id_metodo_pago',
-				'email_factura'
+				'email_factura',
+				'observaciones'
 			]);
 			
 			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
 			$sqlData['oc'] = strtoupper($this->input->post('oc'));
 			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
 			$sqlData['notas_facturacion'] = strtoupper($this->input->post('notas_facturacion'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
 			$insert = $this->db_pi->insert_pi_factura($sqlData);
 			$insert OR set_exception();
 
@@ -1337,13 +1351,15 @@ class Ventas extends SB_Controller {
 				'id_uso_cfdi',
 				'id_forma_pago',
 				'id_metodo_pago',
-				'email_factura'
+				'email_factura',
+				'observaciones'
 			]);
 			
 			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
 			$sqlData['oc'] = strtoupper($this->input->post('oc'));
 			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
 			$sqlData['notas_facturacion'] = strtoupper($this->input->post('notas_facturacion'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
 			$sqlWhere = $this->input->post(['id_pi_factura']);
 			$update = $this->db_pi->update_pi_factura($sqlData, $sqlWhere);
 			$update OR set_exception();
@@ -1475,8 +1491,8 @@ class Ventas extends SB_Controller {
     	$includes['modulo']['js'][] = ['name'=>'mostrador_notas', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 
 		$this->load_view('ventas/notas-credito/mostrador/mostrador_view', $dataView, $includes);*/
-		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador');
-		$dataView['tpl-tbl-mostrador-consecutivo']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-mostrador-consecutivo');
+		$dataView['tpl-tbl-mostrador']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-mostrador');
+		$dataView['tpl-tbl-mostrador-consecutivo']= $this->parser_view('ventas/notas-credito/mostrador/tpl/tpl-tbl-mostrador-consecutivo');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/mostrador/tpl/tpl-tbl-reporte-detallado');
 		
@@ -1519,6 +1535,14 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 54;
 		$sqlWhere['grupo'] = 10;
 		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//TIPO PRODUCTO
+		$sqlWhere['id_categoria'] = 81;
+		$sqlWhere['grupo'] = 10;
+		$dataView['tipo-producto'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//TIPO ENTREGA
+		$sqlWhere['id_categoria'] = 82;
+		$sqlWhere['grupo'] = 10;
+		$dataView['tipo-entrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
 		//VENDEDORES
 		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
 		//MONEDAS
@@ -1540,8 +1564,8 @@ class Ventas extends SB_Controller {
 	}
 
 	public function factura_notas() {
-		$dataView['tpl-tbl-factura']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-factura');
-		$dataView['tpl-tbl-factura-consecutivo']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-factura-consecutivo');
+		$dataView['tpl-tbl-factura']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-factura');
+		$dataView['tpl-tbl-factura-consecutivo']= $this->parser_view('ventas/notas-credito/factura/tpl/tpl-tbl-factura-consecutivo');
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-tbl-reporte-detallado');
 		
@@ -1604,6 +1628,14 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 62;
 		$sqlWhere['grupo'] = 11;
 		$dataView['metodo-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//TIPO PRODUCTO
+		$sqlWhere['id_categoria'] = 83;
+		$sqlWhere['grupo'] = 11;
+		$dataView['tipo-producto'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//TIPO ENTREGA
+		$sqlWhere['id_categoria'] = 84;
+		$sqlWhere['grupo'] = 11;
+		$dataView['tipo-entrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
 		//VENDEDORES
 		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
 		//MONEDAS
@@ -1626,21 +1658,23 @@ class Ventas extends SB_Controller {
 			#GUARDAMOS NC
 			$sqlData = $this->input->post([
 				'id_estatus_pi',
-				'id_cotizacion',
+				'fecha_pi',
+				'fact_remision',
 				'id_cliente',
 				'contacto',
 				'id_departamento',
-				'fecha_pi',
 				'id_medio',
-				'id_vendedor',
+				'id_uso_cfdi',
 				'oc',
 				'id_forma_envio',
-				'id_moneda',
 				'notas_internas',
 				'notas_facturacion',
 				'tipo_cambio',
 				'id_condiciones',
-				'id_uso_cfdi',
+				'id_tipo_producto',
+				'id_tipo_entrega',
+				'motivo_credito',
+				'observaciones',
 				'id_forma_pago',
 				'id_metodo_pago',
 				'email_factura'
@@ -1650,6 +1684,8 @@ class Ventas extends SB_Controller {
 			$sqlData['oc'] = strtoupper($this->input->post('oc'));
 			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
 			$sqlData['notas_facturacion'] = strtoupper($this->input->post('notas_facturacion'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
+			$sqlData['motivo_credito'] = strtoupper($this->input->post('motivo_credito'));
 			$insert = $this->db_nc->insert_pi_factura($sqlData);
 			$insert OR set_exception();
 
@@ -1743,6 +1779,14 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 62;
 		$sqlWhere['selected'] = $this->input->post('id_metodo_pago');
 		$dataView['metodo-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//TIPO PRODUCTO
+		$sqlWhere['id_categoria'] = 83;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_producto');
+		$dataView['tipo-producto'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//TIPO ENTREGA
+		$sqlWhere['id_categoria'] = 84;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_entrega');
+		$dataView['tipo-entrega'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
 
 		$sqlWhere 	= $this->input->post(['id_nc_factura']);
 		$productos 	= $this->db_nc->get_pi_factura_productos($sqlWhere);
@@ -1772,21 +1816,23 @@ class Ventas extends SB_Controller {
 			$this->db->trans_begin();
 			$sqlData = $this->input->post([
 				'id_estatus_pi',
-				'id_cotizacion',
+				'fecha_pi',
+				'fact_remision',
 				'id_cliente',
 				'contacto',
 				'id_departamento',
-				'fecha_pi',
 				'id_medio',
-				'id_vendedor',
+				'id_uso_cfdi',
 				'oc',
 				'id_forma_envio',
-				'id_moneda',
 				'notas_internas',
 				'notas_facturacion',
 				'tipo_cambio',
 				'id_condiciones',
-				'id_uso_cfdi',
+				'id_tipo_producto',
+				'id_tipo_entrega',
+				'motivo_credito',
+				'observaciones',
 				'id_forma_pago',
 				'id_metodo_pago',
 				'email_factura'
@@ -1796,6 +1842,8 @@ class Ventas extends SB_Controller {
 			$sqlData['oc'] = strtoupper($this->input->post('oc'));
 			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
 			$sqlData['notas_facturacion'] = strtoupper($this->input->post('notas_facturacion'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
+			$sqlData['motivo_credito'] = strtoupper($this->input->post('motivo_credito'));
 			$sqlWhere = $this->input->post(['id_nc_factura']);
 			$update = $this->db_nc->update_pi_factura($sqlData, $sqlWhere);
 			$update OR set_exception();
@@ -1893,26 +1941,29 @@ class Ventas extends SB_Controller {
 			#GUARDAMOS PI
 			$sqlData = $this->input->post([
 				'id_estatus_pi',
-				'id_cotizacion',
+				'fecha_pi',
+				'fact_remision',
 				'id_cliente',
 				'contacto',
 				'id_departamento',
-				'fecha_pi',
 				'id_medio',
-				'id_vendedor',
 				'id_oc',
 				'id_forma_envio',
-				'incluir_iva',
-				'id_moneda',
 				'notas_internas',
 				'notas_remision',
 				'tipo_cambio',
-				'id_condiciones'
+				'id_condiciones',
+				'id_tipo_producto',
+				'id_tipo_entrega',
+				'motivo_credito',
+				'observaciones'
 			]);
 			
 			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
 			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
 			$sqlData['notas_remision'] = strtoupper($this->input->post('notas_remision'));
+			$sqlData['motivo_credito'] = strtoupper($this->input->post('motivo_credito'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
 			$insert = $this->db_nc->insert_pi_mostrador($sqlData);
 			$insert OR set_exception();
 
@@ -1987,6 +2038,14 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 53;
 		$sqlWhere['selected'] = $this->input->post('id_forma_envio');
 		$dataView['forma-envio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//TIPO PRODUCTO
+		$sqlWhere['id_categoria'] = 81;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_producto');
+		$dataView['tipo-producto'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//TIPO ENTREGA
+		$sqlWhere['id_categoria'] = 82;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_entrega');
+		$dataView['tipo-entrega'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
 		//MONEDA
 		$sqlWhere['selected'] = $this->input->post('id_moneda');
 		$dataView['monedas'] = $this->db_catalog->get_monedas_min($sqlWhere);
@@ -2023,26 +2082,30 @@ class Ventas extends SB_Controller {
 			$this->db->trans_begin();
 			$sqlData = $this->input->post([
 				'id_estatus_pi',
-				'id_cotizacion',
+				'fecha_pi',
+				'fact_remision',
 				'id_cliente',
 				'contacto',
 				'id_departamento',
-				'fecha_pi',
 				'id_medio',
-				'id_vendedor',
 				'id_oc',
 				'id_forma_envio',
-				'incluir_iva',
-				'id_moneda',
 				'notas_internas',
 				'notas_remision',
 				'tipo_cambio',
-				'id_condiciones'
-			]);
+				'id_condiciones',
+				'id_tipo_producto',
+				'id_tipo_entrega',
+				'motivo_credito',
+				'observaciones'
 
+			]);
+			
 			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
 			$sqlData['notas_internas'] 		= strtoupper($this->input->post('notas_internas'));
 			$sqlData['notas_remision'] = strtoupper($this->input->post('notas_remision'));
+			$sqlData['motivo_credito'] = strtoupper($this->input->post('motivo_credito'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
 			$sqlWhere = $this->input->post(['id_nc_mostrador']);
 			$update = $this->db_nc->update_pi($sqlData, $sqlWhere);
 			$update OR set_exception();

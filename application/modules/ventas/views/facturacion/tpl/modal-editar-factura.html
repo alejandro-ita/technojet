@@ -138,12 +138,33 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="id_vale_estatus">Estatus entrega</label>
                                 <div class="form-control-wrap">
-                                    <select id="id_estatus_entrega" name="id_estatus_entrega" class="form-select init-select2 validate required">
+                                    <select id="id_estatus_entrega" name="id_estatus_entrega" class="form-select init-select2 validate">
                                         <option value="" disabled selected>Seleccione estatus vigencia</option>
                                         {estatus-entrega}
                                         <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
                                         {/estatus-entrega}
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_forma_pago">Forma de pago</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_forma_pago" name="id_forma_pago" class="form-select init-select2 validate">
+                                        <option value="" disabled selected>Seleccione forma de pago</option>
+                                        {forma-pago}
+                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        {/forma-pago}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="observaciones">Observaciones</label>
+                                <div class="form-control-wrap">
+                                    <textarea class="form-control no-resize" id="observaciones" name="observaciones">{observaciones}</textarea>
                                 </div>
                             </div>
                         </div>

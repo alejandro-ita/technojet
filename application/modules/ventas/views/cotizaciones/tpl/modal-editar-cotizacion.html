@@ -47,7 +47,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="id_estatus_entrega">Estatus entrega</label>
                                 <div class="form-control-wrap">
-                                    <select id="id_estatus_entrega" name="id_estatus_entrega" aria-readonly="true" class="form-select init-select2 validate required">
+                                    <select id="id_estatus_entrega" name="id_estatus_entrega" aria-readonly="true" class="form-select init-select2 validate">
                                         <option value="" disabled selected>Seleccione estatus entrega</option>
                                         {estatus-entrega}
                                         <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
@@ -197,7 +197,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Fecha de recepción</label>
                                 <div class="form-control-wrap">
-                                    <input type="date" class="form-control validate required" id="fecha_recepcion" name="fecha_recepcion" value="{fecha_recepcion}" required="">
+                                    <input type="date" class="form-control validate" id="fecha_recepcion" name="fecha_recepcion" value="{fecha_recepcion}">
                                 </div>
                             </div>
                         </div>

@@ -34,7 +34,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">Cotización</label>
                                 <div class="form-control-wrap">
-                                    <select id="id_cot" name="id_cotizacion" class="form-select validate required">
+                                    <select id="id_cot" name="id_cotizacion" class="form-select validate">
                                         <option value="" disabled selected>Seleccione cotizacion</option>
                                         {cotizaciones}
                                         <option value="{id_cotizacion}" {if {selected}==1}selected{/if} >{folio}</option>
@@ -115,7 +115,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="">O.C</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="id_oc" name="id_oc" value="{oc}"  required />
+                                    <input type="text" class="form-control validate" id="id_oc" name="id_oc" value="{oc}" />
                                     <!--<select id="id_oc" name="id_oc" class="form-select init-select2 validate required">
                                         <option value="" disabled selected>Seleccione O.C.</option>
                                         {oc}
@@ -167,7 +167,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Notas internas</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="notas_internas" name="notas_internas" value="{notas_internas}"  required />
+                                    <input type="text" class="form-control validate" id="notas_internas" name="notas_internas" value="{notas_internas}" />
                                 </div>
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Notas remision</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="notas_remision" name="notas_remision" value="{notas_remision}" required />
+                                    <input type="text" class="form-control validate" id="notas_remision" name="notas_remision" value="{notas_remision}" />
                                 </div>
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Tipo de cambio</label>
                                 <div class="form-control-wrap">
-                                    <input type="number" class="form-control validate required" id="tipo_cambio" name="tipo_cambio" value="{tipo_cambio}" required />
+                                    <input type="number" class="form-control validate" id="tipo_cambio" name="tipo_cambio" value="{tipo_cambio}" />
                                 </div>
                             </div>
                         </div>
@@ -197,6 +197,14 @@
                                         <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
                                         {/condiciones}
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="observaciones">Observaciones</label>
+                                <div class="form-control-wrap">
+                                    <textarea class="form-control no-resize" id="observaciones" name="observaciones" >{observaciones}</textarea>
                                 </div>
                             </div>
                         </div>

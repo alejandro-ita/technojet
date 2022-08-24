@@ -2,14 +2,14 @@ jQuery(function($) {
 	initDataTable('#tbl-facturas', {
 		
 		ajax: {
-			url: base_url('ventas/ventas/get_facturas')
-			,data: function(dataFilter) {
+			url: base_url('ventas/ventas/get_facturas'),
+			data: function(dataFilter) {
 				
-	    		dataFilter.id_uso = $('select#id_uso').val();
-	    		dataFilter.id_categoria = $('select#id_categoria').val();
+	    		//dataFilter.id_uso = $('select#id_uso').val();
+	    		//dataFilter.id_categoria = $('select#id_categoria').val();
 	    	}
-		}
-		,createdRow: function(row, data, index) {
+		},
+		createdRow: function(row, data, index) {
 			data.acciones = undefined;
 			$(row).addClass('nk-tb-item').data(data);
 		},
@@ -20,14 +20,17 @@ jQuery(function($) {
 			{data: 'estatus_factura', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_elaboracion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'uso_cfdi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'metodo_pago', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'forma_pago', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'no_pi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'subtotal', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'iva', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'total', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'concepto', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'metodo_pago', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estatus_entrega', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'semana', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'mes', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'anio', defaultContent: '', className: 'nk-tb-col'},

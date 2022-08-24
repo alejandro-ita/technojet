@@ -34,7 +34,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label" for="id_vale_estatus">Cotización</label>
                                 <div class="form-control-wrap">
-                                    <select id="id_cotizacion" name="id_cotizacion" class="form-select validate required">
+                                    <select id="id_cotizacion" name="id_cotizacion" class="form-select validate">
                                         <option value="" disabled selected>Seleccione cotizacion</option>
                                         {cotizaciones}
                                         <option value="{id_cotizacion}">{folio}</option>
@@ -149,7 +149,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Notas internas</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="notas_internas" name="notas_internas"  required />
+                                    <input type="text" class="form-control validate" id="notas_internas" name="notas_internas"/>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Notas facturación</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control validate required" id="notas_facturacion" name="notas_facturacion"  required />
+                                    <input type="text" class="form-control validate" id="notas_facturacion" name="notas_facturacion"/>
                                 </div>
                             </div>
                         </div>
@@ -165,7 +165,7 @@
                             <div class="form-group mb-0">
                                 <label class="form-label">Tipo de cambio</label>
                                 <div class="form-control-wrap">
-                                    <input type="number" class="form-control validate required" id="tipo_cambio" name="tipo_cambio"  required />
+                                    <input type="number" class="form-control validate" id="tipo_cambio" name="tipo_cambio"/>
                                 </div>
                             </div>
                         </div>
@@ -220,6 +220,14 @@
                                 <label class="form-label" for="">Email para factura</label>
                                 <div class="form-control-wrap">
                                     <input type="email" class="form-control validate required" id="email_factura" name="email_factura" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="observaciones">Observaciones</label>
+                                <div class="form-control-wrap">
+                                    <textarea class="form-control no-resize" id="observaciones" name="observaciones"></textarea>
                                 </div>
                             </div>
                         </div>

@@ -1,0 +1,230 @@
+<div class="modal fade" id="modal-nueva-solicitud" aria-modal="true" role="dialog" style="overflow-y: auto;">
+    <div class="modal-dialog modal-fs" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nueva solicitud de entrega</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="no-folio">Folio de solicitud</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="id_solicitud" name="id_solicitud" value="SR-{proximo_id}" required readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Fecha de solicitud</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="fecha_solicitud" name="fecha_solicitud" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_estatus">Estatus</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_estatus" name="id_estatus" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione opcion</option>
+                                        {estatus}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/estatus}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_departamento">Departamento</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_departamento" name="id_departamento" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione opcion</option>
+                                        {departamento}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/departamento}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_tipo_envio">Tipo de envío</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_tipo_envio" name="id_tipo_envio"  class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione opcion</option>
+                                        {tipo-envio}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/tipo-envio}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Consignado A</label>
+                                <input type="text" class="form-control validate required" id="consignado" name="consignado" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Pedido interno / Nota crédito / O.C.</label>
+                                <input type="text" class="form-control validate required" id="pi_nc_oc" name="pi_nc_oc" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_paqueteria">Paquetería</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_paqueteria" name="id_paqueteria"  class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione opcion</option>
+                                        {paqueteria}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/paqueteria}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2" >
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_cliente">Cliente</label>
+                                <div class="form-control-wrap">
+                                    <select name="id_cliente" id="id_cliente" class="form-select validate required">
+                                        <option value="" disabled selected>Seleccione cliente</option>
+                                        {clientes}
+                                        <option value="{id_cliente}">{cliente}</option>
+                                        {/clientes}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Contacto</label>
+                                <input type="text" class="form-control validate required" id="contacto" name="contacto" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_condicion_entrega">Condiciones de entrega</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_condicion_entrega" name="id_condicion_entrega"  class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione opcion</option>
+                                        {condicion-entrega}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/condicion-entrega}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Dirección</label>
+                                <input type="text" class="form-control validate required" id="direccion" name="direccion" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_dep_solicitante">Deparamento solicitante</label>
+                                <select id="id_dep_solicitante" name="id_dep_solicitante"  class="form-select init-select2 validate required">
+                                    <option value="" disabled selected>Seleccione opcion</option>
+                                    {departamento-solicitante}
+                                    <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                    {/departamento-solicitante}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_almacen_entrante">Almacén entrante</label>
+                                <select id="id_almacen_entrante" name="id_almacen_entrante" class="form-select init-select2 validate required">
+                                    <option value="" disabled selected>Seleccione opcion</option>
+                                    {almacen-saliente}
+                                    <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                    {/almacen-saliente}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_forma_pago">Forma de pago</label>
+                                <select id="id_forma_pago" name="id_forma_pago" class="form-select init-select2 validate required">
+                                    <option value="" disabled selected>Seleccione opcion</option>
+                                    {forma-pago}
+                                    <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                    {/forma-pago}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="observaciones">Observaciones</label>
+                                <div class="form-control-wrap">
+                                    <textarea class="form-control no-resize" id="observaciones" name="observaciones"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Cliente / proveedor</label>
+                                <input type="text" class="form-control validate required" value="cliente" readonly disabled id="" name="" required="">
+                            </div>
+                        </div> -->
+                        <!-- <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Status</label>
+                                <select id="" name="" disabled aria-readonly="true" class="form-select init-select2 validate required">
+                                    <option value="1"  selected>Pago</option>
+                                    <option value="2">No pago</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Fecha de envío</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="" name="" required="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Fecha de entrega</label>
+                                <div class="form-control-wrap">
+                                    <input type="date" class="form-control validate required" id="" name="" required="">
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card bg-light my-2">
+                                    <div class="card-body px-1 py-2">
+                                        <table class="table dataTable no-footer dtr-inline" id="modal-tbl-productos" data-btn-Add="true">
+                                            <thead>
+                                                <tr class="nk-tb-item nk-tb-head bg-dark">
+                                                    <th class="nk-tb-col text-white">Tipo de producto</th>
+                                                    <th class="nk-tb-col text-white">Unidad de medida</th>
+                                                    <th class="nk-tb-col text-white">No. de parte</th>
+                                                    <th class="nk-tb-col text-white" style="width:350px !important;">Descripción</th>
+                                                    <th class="nk-tb-col text-white">Cantidad</th>
+                                                    <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </form>
+            </div>       
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-save-solicitud" class="btn btn-dark">{lang(general_save)}</button>
+            </div>
+        </div>        
+    </div>
+</div>
+

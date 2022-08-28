@@ -98,4 +98,22 @@ class Facturacion_model extends SB_Model {
 
 		return ($affectedRows ? $this->db->affected_rows() : TRUE);
 	}
+
+	public function get_factura_select(array $where=[], $all=TRUE) {
+		$tbl = $this->tbl;
+		$selected = isset($where['selected'])?$where['selected']:0;
+
+		!isset($where['id_factura']) OR $this->db->where('id_factura', $where['id_factura']);
+
+		$request = $this->db->select("
+				CT.id_factura,
+				CONCAT('F-', CT.id_factura) AS folio,
+				IF(id_factura='$selected', 1, 0) AS selected /*PARA EL SELECT2*/", FALSE)
+			->from("$tbl[facturacion] AS CT")
+			->where('activo', 1)
+			->get();
+		// debug($this->db->last_query());
+
+		return $all ? $request->result_array() : $request->row_array();
+	}
 }

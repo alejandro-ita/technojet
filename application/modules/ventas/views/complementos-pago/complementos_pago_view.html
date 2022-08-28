@@ -10,27 +10,21 @@
 <div class="nk-block">
 	<div class="card">
 		<div class="card-inner pt-0">
-			<form id="form-filtro">
-				<div class="row">
-					<div class="col-sm-12">
-						<div class="form-group">
-						    <label class="form-label d-block">&nbsp;</label>
-							<a class="btn btn-success add-complemento" id="" title="{lang(general_nuevo)}">
-			            		<em class="icon ni ni-plus-sm"></em><span>Nueva Solicitud</span>
-			            	</a>
-						</div>
-					</div>
-				</div>
-			</form>
 			<div class="row">
 				<div class="col-sm-12">
 					<ul class="nav nav-tabs">
 						<li class="nav-item">
-					        <a class="nav-link active" data-toggle="tab" href="#Consecutivos">
+					        <a class="nav-link active" data-toggle="tab" href="#Complementos">
+					        	<em class="icon ni ni-home"></em>
+					        	<span>Complementos</span>
+					        </a>
+					    </li>
+						<!--<li class="nav-item">
+					        <a class="nav-link" data-toggle="tab" href="#Consecutivos">
 					        	<em class="icon ni ni-home"></em>
 					        	<span>Consecutivo</span>
 					        </a>
-					    </li>
+					    </li>-->
 					     <li class="nav-item">
 					        <a class="nav-link " data-toggle="tab" href="#Reporte_mensual">
 					        	<em class="icon ni ni-home"></em>
@@ -46,10 +40,13 @@
 					    </li>
 					</ul>
 					<div class="tab-content">
-						<div class="tab-pane active" id="Consecutivos">
-							{tpl-tbl-solicitud}
+						<div class="tab-pane active" id="Complementos">
+							{tpl-tbl-complementos}
 						</div>
-						<div class="tab-pane " id="Reporte_mensual">
+						<!--<div class="tab-pane" id="Consecutivos">
+							{tpl-tbl-complementos-consecutivo}
+						</div>-->
+						<div class="tab-pane" id="Reporte_mensual">
 							{tpl-tbl-reporte-mensual}
 						</div>
 						<div class="tab-pane" id="Reporte_completo">

@@ -1,0 +1,142 @@
+<div class="modal fade" id="modal-nuevo-complemento" aria-modal="true" role="dialog" style="overflow-y: auto;">
+    <div class="modal-dialog modal-fs" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo complemento de pago</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="no-folio">No. Complemento de pago</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control validate required" id="no-folio"  name="no-folio" value="CP-{proximo_id}" required readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_estatus_complemento">Estatus complemento</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_estatus_complemento" name="id_estatus_complemento"  class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione opcion</option>
+                                        {estatus}
+                                        <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                        {/estatus}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="fecha_complemento">Fecha de complemento</label>
+                                <div class="form-control-wrap">
+                                    <input type="date"  class="form-control validate required" id="fecha_complemento" name="fecha_complemento" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_cliente">Cliente</label>
+                                <div class="form-control-wrap">
+                                    <select name="id_cliente" id="id_cliente" class="form-select validate required">
+                                        <option value="" disabled selected>Seleccione cliente</option>
+                                        {clientes}
+                                        <option value="{id_cliente}">{cliente}</option>
+                                        {/clientes}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="id_factura">No. de factura</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_factura" name="id_factura"  class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione factura</option>
+                                        {facturas}
+                                        <option value="{id_factura}">F-{id_factura}</option>
+                                        {/facturas}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="no-folio">Importe pago</label>
+                                <div class="form-control-wrap">
+                                    <input type="number" class="form-control validate required" id="importe_pago"  name="importe_pago" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Fecha de pago</label>
+                                <div class="form-control-wrap">
+                                    <input type="date"  class="form-control validate required" id="fecha_pago" name="fecha_pago" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="no-folio">Importe restante</label>
+                                <div class="form-control-wrap">
+                                    <input type="number" class="form-control validate required" id="importe_restante"  name="importe_restante" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Moneda</label>
+                                <select name="id_moneda" id="id_moneda" class="form-select init-select2 validate required" >
+                                    <option value="" disabled selected>Seleccione Moneda</option>
+                                    {monedas}
+                                    <option value="{id_moneda}">{moneda}</option>
+                                    {/monedas}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Número de parcialidad</label>
+                                <select name="id_numero_parcialidad" id="id_numero_parcialidad" class="form-select init-select2 validate required" >
+                                    <option value="" disabled selected>Seleccione Moneda</option>
+                                    {parcialidades}
+                                    <option value="{id_ventas_cotizacion}">{c_cotizacion}</option>
+                                    {/parcialidades}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="observaciones">Observaciones</label>
+                                <div class="form-control-wrap">
+                                    <textarea class="form-control no-resize" id="observaciones" name="observaciones"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" id="btn-save-complemento" class="btn btn-dark">{lang(general_save)}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

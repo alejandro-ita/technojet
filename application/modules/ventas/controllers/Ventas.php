@@ -18,6 +18,9 @@ class Ventas extends SB_Controller {
 		$this->load->model('ventas/Pedidos_internos', 'db_pi');
 		$this->load->model('ventas/Facturacion_model', 'db_fac');
 		$this->load->model('ventas/Notas_credito', 'db_nc');
+		$this->load->model('ventas/Solicitudes_entrada', 'db_se');
+		$this->load->model('ventas/Solicitudes_recoleccion', 'db_sr');
+		$this->load->model('ventas/Complementos_model', 'db_com');
 	}
 
 	public function cotizaciones() {
@@ -2263,8 +2266,10 @@ class Ventas extends SB_Controller {
 	public function solicitud_entrega() {
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/solicitud-entrega/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/solicitud-entrega/tpl/tpl-tbl-reporte-detallado');
+		$dataView['tpl-tbl-solicitud-consecutivo']= $this->parser_view('ventas/solicitud-entrega/tpl/tpl-tbl-solicitud-consecutivo');
 		$dataView['tpl-tbl-solicitud']= $this->parser_view('ventas/solicitud-entrega/tpl/tpl-tbl-solicitud');
 		
+		$includes 	= get_includes_vendor(['dataTables', 'jQValidate']);
 		$pathJS = get_var('path_js');
 		$includes['modulo']['js'][] = ['name'=>'solicitud_entrega', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 		
@@ -2272,12 +2277,333 @@ class Ventas extends SB_Controller {
 	}
 
 	public function get_modal_add_solicitud(){
-		$this->parser_view('ventas/solicitud-entrega/tpl/modal-nuevo-entrada', FALSE, FALSE);
+		//Estatus
+		$sqlWhere['id_categoria'] = 63;
+		$sqlWhere['grupo'] = 12;
+		$dataView['estatus'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Departamento
+		$sqlWhere['id_categoria'] = 64;
+		$sqlWhere['grupo'] = 12;
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Tipo envio
+		$sqlWhere['id_categoria'] = 65;
+		$sqlWhere['grupo'] = 12;
+		$dataView['tipo-envio'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Paquetería
+		$sqlWhere['id_categoria'] = 66;
+		$sqlWhere['grupo'] = 12;
+		$dataView['paqueteria'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Condiciones de entrega
+		$sqlWhere['id_categoria'] = 67;
+		$sqlWhere['grupo'] = 12;
+		$dataView['condicion-entrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Departamento solicitante
+		$sqlWhere['id_categoria'] = 68;
+		$sqlWhere['grupo'] = 12;
+		$dataView['departamento-solicitante'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Almacen saliente
+		$sqlWhere['id_categoria'] = 69;
+		$sqlWhere['grupo'] = 12;
+		$dataView['almacen-saliente'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Forma pago
+		$sqlWhere['id_categoria'] = 85;
+		$sqlWhere['grupo'] = 12;
+		$dataView['forma-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//CLIENTES
+		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
+		#OBTENEMOS EL CONSECUTIVO
+		$folio = $this->db_se->get_ultima_solicitud();
+		$dataView = array_merge($dataView, $folio);
+
+		$this->parser_view('ventas/solicitud-entrega/tpl/modal-nueva-solicitud', $dataView, FALSE);
 	}
 
 	public function get_modal_add_solicitud_product(){
-		$this->parser_view('ventas/solicitud-entrega/tpl/modal-add-producto-entrada', FALSE, FALSE);
+		$dataView['tipo-producto'] = $this->db_catalogos->get_tipos_productos_min();
+		$this->parser_view('ventas/solicitud-entrega/tpl/modal-add-producto-entrada', $dataView, FALSE);
 	}
+
+	public function get_solicitudes_entrada(){
+		$response = $this->db_se->get_solicitudes_main();
+
+		$tplAcciones = $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-acciones');
+		foreach ($response as &$cotizacion) {
+			$cotizacion['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($response);
+	}
+
+	public function process_save_solicitud_entrega() {
+		try {
+			$this->db->trans_begin();
+			#GUARDAMOS
+			$sqlData = $this->input->post([
+				'fecha_solicitud',
+				'id_estatus',
+				'id_departamento',
+				'id_tipo_envio',
+				'consignado',
+				'pi_nc_oc',
+				'id_paqueteria',
+				'id_cliente',
+				'contacto',
+				'id_condicion_entrega',
+				'direccion',
+				'id_dep_solicitante',
+				'id_almacen_saliente',
+				'id_forma_pago',
+				'observaciones'
+			]);
+			
+			$sqlData['consignado'] 	= strtoupper($this->input->post('consignado'));
+			$sqlData['pi_nc_oc'] = strtoupper($this->input->post('pi_nc_oc'));
+			$sqlData['contacto'] = strtoupper($this->input->post('contacto'));
+			$sqlData['direccion'] = strtoupper($this->input->post('direccion'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
+			$insert = $this->db_se->insert_solicitud($sqlData);
+			$insert OR set_exception();
+			//SAVE PRODUCTOS
+			$productos 		= $this->input->post('productos');
+			foreach ($productos as $producto) {
+				$sqlData = [
+					'id_solicitud' 			=> $insert,
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				$sqlDataBatch[] = $sqlData;
+			}
+
+			if ($sqlDataBatch) {
+				$insertBatch = $this->db_se->insert_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			$actividad 		= "ha creado una solicitud de entrega";
+			$data_change 	= ['insert'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($insert, 'tbl_solicitud_entrega', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_edit_solicitud_entrega() {
+		$dataView = $this->input->post();
+		$dataEncription = json_encode($this->input->post(['id_solicitud']));
+		$dataView['dataEncription'] = $this->encryption->encrypt($dataEncription);
+		
+		#CATALOGOS & SELECTS
+		$sqlWhere['selected'] = $this->input->post('id_cliente');
+		$dataView['clientes'] = $this->db_cliente->get_cliente_selected($sqlWhere);
+		//ESTATUS
+		$sqlWhere['id_categoria'] = 63;
+		$sqlWhere['selected'] = $this->input->post('id_estatus');
+		$dataView['estatus'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//DEPARTAMENTO
+		$sqlWhere['id_categoria'] = 64;
+		$sqlWhere['selected'] = $this->input->post('id_departamento');
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//TIPO ENVIO
+		$sqlWhere['id_categoria'] = 65;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_envio');
+		$dataView['tipo-envio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//PAQUETERIA
+		$sqlWhere['id_categoria'] = 66;
+		$sqlWhere['selected'] = $this->input->post('id_paqueteria');
+		$dataView['paqueteria'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//CONDICION ENTREGA
+		$sqlWhere['id_categoria'] = 67;
+		$sqlWhere['selected'] = $this->input->post('id_condicion_entrega');
+		$dataView['condicion-entrega'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//DEPARTAMENTO SOLICITANTE
+		$sqlWhere['id_categoria'] = 68;
+		$sqlWhere['selected'] = $this->input->post('id_dep_solicitante');
+		$dataView['departamento-solicitante'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//ALMACEN SALIENTE
+		$sqlWhere['id_categoria'] = 69;
+		$sqlWhere['selected'] = $this->input->post('id_almacen_saliente');
+		$dataView['almacen-saliente'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//FORMA DE PAGO
+		$sqlWhere['id_categoria'] = 85;
+		$sqlWhere['selected'] = $this->input->post('id_forma_pago');
+		$dataView['forma-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+
+		$sqlWhere 	= $this->input->post(['id_solicitud']);
+		$productos 	= $this->db_se->get_solicitud_productos($sqlWhere);
+		$dataView['list-productos'] = json_encode($productos);
+
+		
+		#ELIMINACIÓN DE CONFLICTOS EN EL PARSER VIEW
+		unset($dataView['id_cliente'], $dataView['id_cliente']);
+		unset($dataView['cliente'], $dataView['cliente']);
+		unset($dataView['id_estatus'], $dataView['id_estatus']);
+		unset($dataView['id_departamento'], $dataView['id_departamento']);
+		unset($dataView['id_tipo_envio'], $dataView['id_tipo_envio']);
+		unset($dataView['id_paqueteria'], $dataView['id_paqueteria']);
+		unset($dataView['id_condicion_entrega'], $dataView['id_condicion_entrega']);
+		unset($dataView['id_dep_solicitante'], $dataView['id_dep_solicitante']);
+		unset($dataView['id_almacen_saliente'], $dataView['id_almacen_saliente']);
+		unset($dataView['id_forma_pago'], $dataView['id_forma_pago']);
+
+		$this->parser_view('ventas/solicitud-entrega/tpl/modal-editar-solicitud', $dataView, FALSE);
+	}
+
+	public function process_update_solicitud_entrega() {
+		try {
+			$this->db->trans_begin();
+			$sqlData = $this->input->post([
+				'id_solicitud',
+				'fecha_solicitud',
+				'id_estatus',
+				'id_departamento',
+				'id_tipo_envio',
+				'consignado',
+				'pi_nc_oc',
+				'id_paqueteria',
+				'id_cliente',
+				'contacto',
+				'id_condicion_entrega',
+				'direccion',
+				'id_dep_solicitante',
+				'id_almacen_saliente',
+				'id_forma_pago',
+				'observaciones'
+			]);
+			
+			$sqlData['consignado'] 	= strtoupper($this->input->post('consignado'));
+			$sqlData['pi_nc_oc'] = strtoupper($this->input->post('pi_nc_oc'));
+			$sqlData['contacto'] = strtoupper($this->input->post('contacto'));
+			$sqlData['direccion'] = strtoupper($this->input->post('direccion'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
+			$sqlWhere = $this->input->post(['id_solicitud']);
+			$update = $this->db_se->update_solicitud($sqlData, $sqlWhere);
+			$update OR set_exception();
+
+			/*DATA PARA EL PDF
+			$dataView = $sqlData;
+			$dataView['id_requisicion'] 				= $this->input->post('id_requisicion');
+			$dataView['tipo_requisicion'] 				= $this->input->post('tipo_requisicion');
+			$dataView['vale_entrada'] 					= $this->input->post('vale_entrada');
+			$dataView['departamento_solicitante'] 		= $this->input->post('departamento_solicitante');
+			$dataView['almacen_solicitante'] 			= $this->input->post('almacen_solicitante');
+			$dataView['departamento_encargado_surtir'] 	= $this->input->post('departamento_encargado_surtir');*/
+
+			$productos = $this->input->post('productos');
+			#ELIMINACION DE PRODUCTOS QUE NO LLEGAN EN LA LIST
+			$productosActivos = array_filter(array_column($productos, 'id_solicitud_entrega_productos'));
+			$sqlWhere = $this->input->post(['id_solicitud']);
+			$sqlWhere['activo'] = 1;
+			if($productosActivos) $sqlWhere['notIn'] = $productosActivos;
+			$update = $this->db_se->update_solicitud_productos(['activo'=>0], $sqlWhere);
+			#$update OR set_exception();
+
+			#REGISTRO DE NUEVOS PRODUCTOS
+			$sqlDataBatch = [];
+			foreach ($productos as $producto) {
+				$sqlDataPro = [
+					'id_solicitud' 			=> $this->input->post('id_solicitud'),
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				if (!isset($producto['id_solicitud_entrega_productos'])) {
+					$sqlDataBatch[] = $sqlDataPro;
+				}
+
+				/*DATA PARA EL PDF
+				$sqlDataPro['no_parte'] 	= $producto['no_parte'];
+				$sqlDataPro['descripcion'] = $producto['descripcion'];
+				$sqlDataPro['unidad_medida'] = $producto['unidad_medida'];
+				$sqlDataPro['tipo_producto'] = $producto['tipo_producto'];*/
+				$dataView['list-productos'][] = $sqlDataPro;
+			}
+
+			if ($sqlDataBatch) {
+				//$insertBatch = $this->db_ar->insert_requisiciones_productos($sqlDataBatch);
+				$insertBatch = $this->db_se->insert_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			$sqlData['productos'] = $dataView['list-productos'];
+
+			#GENERANDO EL PDF
+			/*$this->load->library('Create_pdf');
+			$sqlWhere 	= $this->input->post(['id_requisicion']);
+			$estatusRQ 	= $this->db_ar->get_estatus_requisicion($sqlWhere);
+			$dataView 	= array_merge($dataView, $estatusRQ);
+			$settings = array(
+				 'file_name' 	=> 'Vale_requisicion_'.date('YmdHis')
+				,'content_file' => $this->parser_view('almacen/requisicion-material/tpl/tpl-pdf-vale-requisicion-material', $dataView)
+				,'load_file' 	=> FALSE
+				,'orientation' 	=> 'landscape'
+			);*/
+
+			$actividad 		= "ha editado una solicitud de entrega";
+			$data_change 	= ['update'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($sqlWhere['id_solicitud'], 'tbl_solicitud_entrega', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+				//'file_path' => $this->create_pdf->create_file($settings)
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function process_remove_solicitud_entrega() {
+		try {
+			$this->db->trans_begin();
+
+			$sqlWhere 	= $this->input->post(['id_solicitud']);
+			#ELIMIANCIÓN
+			$update = $this->db_se->update_solicitud(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			#ELIMIANCIÓN DE LOS PRODUCTOS
+			$update = $this->db_se->update_solicitud_productos(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			$actividad 		= "ha eliminado una solicitud de entrega";
+			$data_change 	= ['delete'=>['oldData'=>$_POST]];
+			registro_bitacora_actividades($sqlWhere['id_solicitud'], 'tbl_solicitud_entrega', $actividad, $data_change);
+			
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_rm_success'),
+				'icon' 		=> 'success'
+			];
+
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
 	#==============FIN solicitud de entrega================
 
 		
@@ -2285,21 +2611,342 @@ class Ventas extends SB_Controller {
 	public function solicitud_recoleccion() {
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/solicitud-recoleccion/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/solicitud-recoleccion/tpl/tpl-tbl-reporte-detallado');
+		$dataView['tpl-tbl-solicitud-consecutivo']= $this->parser_view('ventas/solicitud-recoleccion/tpl/tpl-tbl-solicitud-consecutivo');
 		$dataView['tpl-tbl-solicitud']= $this->parser_view('ventas/solicitud-recoleccion/tpl/tpl-tbl-solicitud');
 		
+		$includes 	= get_includes_vendor(['dataTables', 'jQValidate']);
 		$pathJS = get_var('path_js');
 		$includes['modulo']['js'][] = ['name'=>'solicitud_recoleccion', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 		
 		$this->load_view('ventas/solicitud-recoleccion/solicitud_recoleccion_view', $dataView, $includes);
 	}
 
+	public function get_solicitudes_recoleccion(){
+		$response = $this->db_sr->get_solicitudes_main();
+
+		$tplAcciones = $this->parser_view('ventas/pedidos-internos/factura/tpl/tpl-acciones');
+		foreach ($response as &$cotizacion) {
+			$cotizacion['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($response);
+	}
+
 	public function get_modal_add_solicitud_recoleccion(){
-		$this->parser_view('ventas/solicitud-recoleccion/tpl/modal-nuevo-entrada', FALSE, FALSE);
+		//Estatus
+		$sqlWhere['id_categoria'] = 70;
+		$sqlWhere['grupo'] = 13;
+		$dataView['estatus'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Departamento
+		$sqlWhere['id_categoria'] = 71;
+		$sqlWhere['grupo'] = 13;
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Tipo envio
+		$sqlWhere['id_categoria'] = 72;
+		$sqlWhere['grupo'] = 13;
+		$dataView['tipo-envio'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Paquetería
+		$sqlWhere['id_categoria'] = 73;
+		$sqlWhere['grupo'] = 13;
+		$dataView['paqueteria'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Condiciones de recoleccion
+		$sqlWhere['id_categoria'] = 74;
+		$sqlWhere['grupo'] = 13;
+		$dataView['condicion-entrega'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Departamento solicitante
+		$sqlWhere['id_categoria'] = 75;
+		$sqlWhere['grupo'] = 13;
+		$dataView['departamento-solicitante'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Almacen saliente
+		$sqlWhere['id_categoria'] = 76;
+		$sqlWhere['grupo'] = 13;
+		$dataView['almacen-saliente'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//Forma pago
+		$sqlWhere['id_categoria'] = 86;
+		$sqlWhere['grupo'] = 13;
+		$dataView['forma-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//CLIENTES
+		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
+		#OBTENEMOS EL CONSECUTIVO
+		$folio = $this->db_sr->get_ultima_solicitud();
+		$dataView = array_merge($dataView, $folio);
+		$this->parser_view('ventas/solicitud-recoleccion/tpl/modal-nueva-solicitud', $dataView, FALSE);
+	}
+
+	public function process_save_solicitud_recoleccion() {
+		try {
+			$this->db->trans_begin();
+			#GUARDAMOS
+			$sqlData = $this->input->post([
+				'fecha_solicitud',
+				'id_estatus',
+				'id_departamento',
+				'id_tipo_envio',
+				'consignado',
+				'pi_nc_oc',
+				'id_paqueteria',
+				'id_cliente',
+				'contacto',
+				'id_condicion_entrega',
+				'direccion',
+				'id_dep_solicitante',
+				'id_almacen_entrante',
+				'id_forma_pago',
+				'observaciones'
+			]);
+			
+			$sqlData['consignado'] 	= strtoupper($this->input->post('consignado'));
+			$sqlData['pi_nc_oc'] = strtoupper($this->input->post('pi_nc_oc'));
+			$sqlData['contacto'] = strtoupper($this->input->post('contacto'));
+			$sqlData['direccion'] = strtoupper($this->input->post('direccion'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
+			$insert = $this->db_sr->insert_solicitud($sqlData);
+			$insert OR set_exception();
+			//SAVE PRODUCTOS
+			$productos 		= $this->input->post('productos');
+			foreach ($productos as $producto) {
+				$sqlData = [
+					'id_solicitud' 			=> $insert,
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				$sqlDataBatch[] = $sqlData;
+			}
+
+			if ($sqlDataBatch) {
+				$insertBatch = $this->db_sr->insert_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			$actividad 		= "ha creado una solicitud de recoleccion";
+			$data_change 	= ['insert'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($insert, 'tbl_solicitud_recoleccion', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_edit_solicitud_recoleccion() {
+		$dataView = $this->input->post();
+		$dataEncription = json_encode($this->input->post(['id_solicitud']));
+		$dataView['dataEncription'] = $this->encryption->encrypt($dataEncription);
+		
+		#CATALOGOS & SELECTS
+		$sqlWhere['selected'] = $this->input->post('id_cliente');
+		$dataView['clientes'] = $this->db_cliente->get_cliente_selected($sqlWhere);
+		//ESTATUS
+		$sqlWhere['id_categoria'] = 70;
+		$sqlWhere['selected'] = $this->input->post('id_estatus');
+		$dataView['estatus'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//DEPARTAMENTO
+		$sqlWhere['id_categoria'] = 71;
+		$sqlWhere['selected'] = $this->input->post('id_departamento');
+		$dataView['departamento'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//TIPO ENVIO
+		$sqlWhere['id_categoria'] = 72;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_envio');
+		$dataView['tipo-envio'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//PAQUETERIA
+		$sqlWhere['id_categoria'] = 73;
+		$sqlWhere['selected'] = $this->input->post('id_paqueteria');
+		$dataView['paqueteria'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//CONDICION ENTREGA
+		$sqlWhere['id_categoria'] = 74;
+		$sqlWhere['selected'] = $this->input->post('id_condicion_entrega');
+		$dataView['condicion-entrega'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//DEPARTAMENTO SOLICITANTE
+		$sqlWhere['id_categoria'] = 75;
+		$sqlWhere['selected'] = $this->input->post('id_dep_solicitante');
+		$dataView['departamento-solicitante'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//ALMACEN SALIENTE
+		$sqlWhere['id_categoria'] = 76;
+		$sqlWhere['selected'] = $this->input->post('id_almacen_entrante');
+		$dataView['almacen-saliente'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//FORMA DE PAGO
+		$sqlWhere['id_categoria'] = 86;
+		$sqlWhere['selected'] = $this->input->post('id_forma_pago');
+		$dataView['forma-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+
+		$sqlWhere 	= $this->input->post(['id_solicitud']);
+		$productos 	= $this->db_sr->get_solicitud_productos($sqlWhere);
+		$dataView['list-productos'] = json_encode($productos);
+
+		
+		#ELIMINACIÓN DE CONFLICTOS EN EL PARSER VIEW
+		unset($dataView['id_cliente'], $dataView['id_cliente']);
+		unset($dataView['cliente'], $dataView['cliente']);
+		unset($dataView['id_estatus'], $dataView['id_estatus']);
+		unset($dataView['id_departamento'], $dataView['id_departamento']);
+		unset($dataView['id_tipo_envio'], $dataView['id_tipo_envio']);
+		unset($dataView['id_paqueteria'], $dataView['id_paqueteria']);
+		unset($dataView['id_condicion_entrega'], $dataView['id_condicion_entrega']);
+		unset($dataView['id_dep_solicitante'], $dataView['id_dep_solicitante']);
+		unset($dataView['id_almacen_entrante'], $dataView['id_almacen_entrante']);
+		unset($dataView['id_forma_pago'], $dataView['id_forma_pago']);
+
+		$this->parser_view('ventas/solicitud-recoleccion/tpl/modal-editar-solicitud', $dataView, FALSE);
+	}
+
+	public function process_update_solicitud_recoleccion() {
+		try {
+			$this->db->trans_begin();
+			$sqlData = $this->input->post([
+				'id_solicitud',
+				'fecha_solicitud',
+				'id_estatus',
+				'id_departamento',
+				'id_tipo_envio',
+				'consignado',
+				'pi_nc_oc',
+				'id_paqueteria',
+				'id_cliente',
+				'contacto',
+				'id_condicion_entrega',
+				'direccion',
+				'id_dep_solicitante',
+				'id_almacen_entrante',
+				'id_forma_pago',
+				'observaciones'
+			]);
+			
+			$sqlData['consignado'] 	= strtoupper($this->input->post('consignado'));
+			$sqlData['pi_nc_oc'] = strtoupper($this->input->post('pi_nc_oc'));
+			$sqlData['contacto'] = strtoupper($this->input->post('contacto'));
+			$sqlData['direccion'] = strtoupper($this->input->post('direccion'));
+			$sqlData['observaciones'] = strtoupper($this->input->post('observaciones'));
+			$sqlWhere = $this->input->post(['id_solicitud']);
+			$update = $this->db_sr->update_solicitud($sqlData, $sqlWhere);
+			$update OR set_exception();
+
+			/*DATA PARA EL PDF
+			$dataView = $sqlData;
+			$dataView['id_requisicion'] 				= $this->input->post('id_requisicion');
+			$dataView['tipo_requisicion'] 				= $this->input->post('tipo_requisicion');
+			$dataView['vale_entrada'] 					= $this->input->post('vale_entrada');
+			$dataView['departamento_solicitante'] 		= $this->input->post('departamento_solicitante');
+			$dataView['almacen_solicitante'] 			= $this->input->post('almacen_solicitante');
+			$dataView['departamento_encargado_surtir'] 	= $this->input->post('departamento_encargado_surtir');*/
+
+			$productos = $this->input->post('productos');
+			#ELIMINACION DE PRODUCTOS QUE NO LLEGAN EN LA LIST
+			$productosActivos = array_filter(array_column($productos, 'id_solicitud_recoleccion_productos'));
+			$sqlWhere = $this->input->post(['id_solicitud']);
+			$sqlWhere['activo'] = 1;
+			if($productosActivos) $sqlWhere['notIn'] = $productosActivos;
+			$update = $this->db_sr->update_solicitud_productos(['activo'=>0], $sqlWhere);
+			#$update OR set_exception();
+
+			#REGISTRO DE NUEVOS PRODUCTOS
+			$sqlDataBatch = [];
+			foreach ($productos as $producto) {
+				$sqlDataPro = [
+					'id_solicitud' 			=> $this->input->post('id_solicitud'),
+					'id_producto' 			=> $producto['id_producto'],
+					'cantidad' 				=> $producto['cantidad'],
+					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+					'timestamp_insert' 	=> timestamp()
+				];
+
+				if (!isset($producto['id_solicitud_recoleccion_productos'])) {
+					$sqlDataBatch[] = $sqlDataPro;
+				}
+
+				/*DATA PARA EL PDF
+				$sqlDataPro['no_parte'] 	= $producto['no_parte'];
+				$sqlDataPro['descripcion'] = $producto['descripcion'];
+				$sqlDataPro['unidad_medida'] = $producto['unidad_medida'];
+				$sqlDataPro['tipo_producto'] = $producto['tipo_producto'];*/
+				$dataView['list-productos'][] = $sqlDataPro;
+			}
+
+			if ($sqlDataBatch) {
+				//$insertBatch = $this->db_ar->insert_requisiciones_productos($sqlDataBatch);
+				$insertBatch = $this->db_sr->insert_producto($sqlDataBatch);
+				$insertBatch OR set_exception();
+			}
+
+			$sqlData['productos'] = $dataView['list-productos'];
+
+			#GENERANDO EL PDF
+			/*$this->load->library('Create_pdf');
+			$sqlWhere 	= $this->input->post(['id_requisicion']);
+			$estatusRQ 	= $this->db_ar->get_estatus_requisicion($sqlWhere);
+			$dataView 	= array_merge($dataView, $estatusRQ);
+			$settings = array(
+				 'file_name' 	=> 'Vale_requisicion_'.date('YmdHis')
+				,'content_file' => $this->parser_view('almacen/requisicion-material/tpl/tpl-pdf-vale-requisicion-material', $dataView)
+				,'load_file' 	=> FALSE
+				,'orientation' 	=> 'landscape'
+			);*/
+
+			$actividad 		= "ha editado una solicitud de recoleccion";
+			$data_change 	= ['update'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($sqlWhere['id_solicitud'], 'tbl_solicitud_recoleccion', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+				//'file_path' => $this->create_pdf->create_file($settings)
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
 	}
 
 	public function get_modal_add_recoleccion_product(){
 		$this->parser_view('ventas/solicitud-recoleccion/tpl/modal-add-producto-entrada', FALSE, FALSE);
 	}
+
+	public function process_remove_solicitud_recoleccion() {
+		try {
+			$this->db->trans_begin();
+
+			$sqlWhere 	= $this->input->post(['id_solicitud']);
+			#ELIMIANCIÓN
+			$update = $this->db_sr->update_solicitud(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			#ELIMIANCIÓN DE LOS PRODUCTOS
+			$update = $this->db_sr->update_solicitud_productos(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			$actividad 		= "ha eliminado una solicitud de recoleccion";
+			$data_change 	= ['delete'=>['oldData'=>$_POST]];
+			registro_bitacora_actividades($sqlWhere['id_solicitud'], 'tbl_solicitud_recoleccion', $actividad, $data_change);
+			
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_rm_success'),
+				'icon' 		=> 'success'
+			];
+
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
 	#==============FIN recoleccion================
 
 
@@ -2307,16 +2954,212 @@ class Ventas extends SB_Controller {
 	public function complementos_pago() {
 		$dataView['tpl-tbl-reporte-mensual']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-reporte-mensual');
 		$dataView['tpl-tbl-reporte-detallado']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-reporte-detallado');
-		$dataView['tpl-tbl-solicitud']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-complemento');
+		//$dataView['tpl-tbl-complementos-consecutivo']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-complemento-consecutivo');
+		$dataView['tpl-tbl-complementos']= $this->parser_view('ventas/complementos-pago/tpl/tpl-tbl-complementos');
 		
+		$includes 	= get_includes_vendor(['dataTables', 'jQValidate']);
 		$pathJS = get_var('path_js');
 		$includes['modulo']['js'][] = ['name'=>'complementos_pago', 'dirname'=>"$pathJS/ventas", 'fulldir'=>TRUE];
 		
 		$this->load_view('ventas/complementos-pago/complementos_pago_view', $dataView, $includes);
 	}
 
+	public function get_complementos(){
+		$response = $this->db_com->get_complementos_main();
+
+		$tplAcciones = $this->parser_view('ventas/cotizaciones/tpl/tpl-acciones');
+		foreach ($response as &$cotizacion) {
+			$cotizacion['acciones'] = $tplAcciones;
+		}
+
+		echo json_encode($response);
+	}
+
 	public function get_modal_add_complementos_pago(){
-		$this->parser_view('ventas/complementos-pago/tpl/modal-nuevo-entrada', FALSE, FALSE);
+		//ESTATUS COMPLEMENTO
+		$sqlWhere['id_categoria'] = 77;
+		$sqlWhere['grupo'] = 14;
+		$dataView['estatus'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//NUMERO PARCIALIDAD
+		$sqlWhere['id_categoria'] = 79;
+		$sqlWhere['grupo'] = 14;
+		$dataView['parcialidades'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//CLIENTES
+		$dataView['clientes'] = $this->db_cliente->get_clientes_main();
+		//FACTURAS
+		$dataView['facturas'] = $this->db_fac->get_facturas_main();
+		//MONEDAS
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min();
+		#OBTENEMOS EL CONSECUTIVO
+		$folio = $this->db_com->get_ultimo_complemento();
+		$dataView = array_merge($dataView, $folio);
+
+		$this->parser_view('ventas/complementos-pago/tpl/modal-nuevo-complemento', $dataView, FALSE);
+	}
+
+	public function process_save_complemento() {
+		try {
+			$this->db->trans_begin();
+			#GUARDAMOS complemento
+			$sqlData = $this->input->post([
+				'id_estatus_complemento',
+				'fecha_complemento',
+				'id_cliente',
+				'id_factura',
+				'importe_pago',
+				'fecha_pago',
+				'importe_restante',
+				'id_moneda',
+				'id_numero_parcialidad',
+				'observaciones'
+			]);
+			
+			$sqlData['observaciones'] 	= strtoupper($this->input->post('observaciones'));
+			$insert = $this->db_com->insert_complemento($sqlData);
+			$insert OR set_exception();
+
+			$actividad 		= "ha creado un complemento de pago";
+			$data_change 	= ['insert'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($insert, 'tbl_complementos_pago', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function get_modal_edit_complemento() {
+		$dataView = $this->input->post();
+		$dataEncription = json_encode($this->input->post(['id_complemento_pago']));
+		$dataView['dataEncription'] = $this->encryption->encrypt($dataEncription);
+
+		#CATALOGOS & SELECTS
+		$sqlWhere['selected'] = $this->input->post('id_cliente');
+		$dataView['clientes'] = $this->db_cliente->get_cliente_selected($sqlWhere);
+		//Estatus complemento
+		$sqlWhere['id_categoria'] = 77;
+		$sqlWhere['selected'] = $this->input->post('id_estatus_complemento');
+		$dataView['estatus'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Numero parcialidad
+		$sqlWhere['id_categoria'] = 79;
+		$sqlWhere['selected'] = $this->input->post('id_numero_parcialidad');
+		$dataView['parcialidades'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//Monedas
+		$sqlWhere['selected'] = $this->input->post('id_moneda');
+		$dataView['monedas'] = $this->db_catalog->get_monedas_min($sqlWhere);
+		//Facturación
+		$sqlWhere['selected'] = $this->input->post('id_factura');
+		$dataView['facturas'] = $this->db_fac->get_factura_select($sqlWhere);
+		
+		
+		#ELIMINACIÓN DE CONFLICTOS EN EL PARSER VIEW
+		unset($dataView['id_cliente'], $dataView['id_cliente']);
+		unset($dataView['id_factura'], $dataView['id_factura']);
+		unset($dataView['cliente'], $dataView['cliente']);
+		unset($dataView['id_estatus_complemento'], $dataView['id_estatus_complemento']);
+		unset($dataView['id_moneda'], $dataView['id_moneda']);
+		unset($dataView['moneda'], $dataView['moneda']);
+
+		$this->parser_view('ventas/complementos-pago/tpl/modal-editar-complemento', $dataView, FALSE);
+	}
+
+	public function process_update_complemento() {
+		try {
+			$this->db->trans_begin();
+			$sqlData = $this->input->post([
+				'id_complemento_pago',
+				'id_estatus_complemento',
+				'fecha_complemento',
+				'id_cliente',
+				'id_factura',
+				'importe_pago',
+				'fecha_pago',
+				'importe_restante',
+				'id_moneda',
+				'id_numero_parcialidad',
+				'observaciones'
+			]);
+			
+			$sqlData['observaciones'] 	= strtoupper($this->input->post('observaciones'));
+
+			$sqlWhere = $this->input->post(['id_complemento_pago']);
+			$update = $this->db_com->update_complemento($sqlData, $sqlWhere);
+			$update OR set_exception();
+
+			/*DATA PARA EL PDF
+			$dataView = $sqlData;
+			$dataView['id_requisicion'] 				= $this->input->post('id_requisicion');
+			$dataView['tipo_requisicion'] 				= $this->input->post('tipo_requisicion');
+			$dataView['vale_entrada'] 					= $this->input->post('vale_entrada');
+			$dataView['departamento_solicitante'] 		= $this->input->post('departamento_solicitante');
+			$dataView['almacen_solicitante'] 			= $this->input->post('almacen_solicitante');
+			$dataView['departamento_encargado_surtir'] 	= $this->input->post('departamento_encargado_surtir');*/
+
+			#GENERANDO EL PDF
+			/*$this->load->library('Create_pdf');
+			$sqlWhere 	= $this->input->post(['id_requisicion']);
+			$estatusRQ 	= $this->db_ar->get_estatus_requisicion($sqlWhere);
+			$dataView 	= array_merge($dataView, $estatusRQ);
+			$settings = array(
+				 'file_name' 	=> 'Vale_requisicion_'.date('YmdHis')
+				,'content_file' => $this->parser_view('almacen/requisicion-material/tpl/tpl-pdf-vale-requisicion-material', $dataView)
+				,'load_file' 	=> FALSE
+				,'orientation' 	=> 'landscape'
+			);*/
+
+			$actividad 		= "ha editado un complemento de pago";
+			$data_change 	= ['update'=>['newData'=>$sqlData]];
+			registro_bitacora_actividades($sqlWhere['id_complemento_pago'], 'tbl_complementos_pago', $actividad, $data_change);
+
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_save_success'),
+				'icon' 		=> 'success',
+				//'file_path' => $this->create_pdf->create_file($settings)
+			];
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
+	}
+
+	public function process_remove_complemento() {
+		try {
+			$this->db->trans_begin();
+
+			$sqlWhere 	= $this->input->post(['id_complemento_pago']);
+			#ELIMIANCIÓN DE COMPLEMENTO
+			$update = $this->db_com->update_complemento(['activo'=>0], $sqlWhere);
+			$update OR set_exception();
+
+			$actividad 		= "ha eliminado un complemento de pago";
+			$data_change 	= ['delete'=>['oldData'=>$_POST]];
+			registro_bitacora_actividades($sqlWhere['id_complemento_pago'], 'tbl_complementos_pago', $actividad, $data_change);
+			
+			$response = [
+				'success'	=> TRUE,
+				'msg' 		=> lang('vales_entrada_rm_success'),
+				'icon' 		=> 'success'
+			];
+
+			$this->db->trans_commit();
+		} catch (SB_Exception $e) {
+			$this->db->trans_rollback();
+			$response = get_exception($e);
+		}
+
+		echo json_encode($response);
 	}
 
 	public function get_modal_add_complemento_product(){

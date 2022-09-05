@@ -12,6 +12,13 @@ jQuery(function($) {
 			{data: 'cliente', defaultContent: '', className: 'nk-tb-col'},
             {data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
             {data: 'rfc', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'direccion', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'municipio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estado', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'telefono', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cp', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'acciones', defaultContent: '', className: 'nk-tb-col nk-tb-col-tools text-right'}
 		]
 	});

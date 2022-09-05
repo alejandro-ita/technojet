@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{get_var(site_name)} - Solicitud de entrega</title>
+	<style type="text/css">
+		/*@font-face {
+			font-family: 'Arial';
+			font-style: normal;
+			font-weight: normal;
+			src: url({base_url()}{get_var(path_fonts)}/arial/arial.ttf) format('truetype');
+		}*/
+
+		body{
+			font-family: 'arial';
+			font-size: 12px;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		table {
+			font-family: 'arial';
+			width: 100%;
+			/*border: 2px solid black;*/
+			border-collapse: collapse;
+		}
+
+		th, td {
+			font-family: 'arial';
+			/*border: 1px solid black;*/
+			border-collapse: collapse;
+		}
+
+        tr{
+            width: 100%;
+        }
+
+		.border-1 {
+			border: 1px solid black;
+		}
+
+		.border-2 {
+			border: 2px solid black;
+		}
+
+		.bb-2 {
+			border-bottom: 2px solid black;
+		}
+
+		.no-border {
+			border: 0px solid transparent;
+		}
+
+		.bx-0 {
+			border-left: 0px solid transparent;
+			border-right: 0px solid transparent;
+		}
+
+        .bg-head{
+            background-color:  #718DEC;
+            color: #ffffff;
+            font-weight: bold !important;
+            font-size: 15px;
+        }
+
+        .bg-head-black{
+            background-color: #000;
+            color: #ffffff;
+            font-weight: bold !important;
+            font-size: 15px;
+        }
+
+        .cantidadLetra{
+            font-size: 20px;
+            color: #c00000;
+            text-align: center;
+        }
+
+        .opcionales{
+            font-size: 20px;
+            color: #000;
+            text-align: center;
+        }
+
+	</style>
+</head>
+<body>
+    <div style="text-align: center;">
+        <img width="780px" height="120px" src="{base_url()}/assets/img/cabecera.jpg">
+    </div>
+	<table>
+		<tbody>
+            <tr>
+                <th colspan="2" style="width: 80% !important; background-color: #718DEC; color: #fff; text-align: center;">
+                    <h2 style="font-weight: 900;">SOLICITUD DE ENTREGA</h2>
+                </th>
+                <th style="width: 10% !important;">
+                    FOLIO DE SOLICITUD
+                </th>
+                <th class="border-1" style="width: 10% !important;">{folio}</th>
+            </tr>
+            <tr><td colspan="4">&nbsp;</td></tr>
+        </tbody>
+    </table>
+    <table>
+        <tbody>
+            <tr>
+                <th style="width: 25%;">FECHA SOLICITUD</th>
+                <td style="width: 25%;" class="border-1">{fecha_solicitud}</td>
+                <th style="width: 25%;">DEPARTAMENTO</th>
+                <td style="width: 25%;" class="border-1">{departamento}</td>
+            </tr>
+            <tr>
+                <th style="width: 25%;">TIPO DE ENVIO</th>
+                <td style="width: 25%;" class="border-1">{tipo_envio}</td>
+                <th style="width: 25%;">CONSIGNADO A</th>
+                <td style="width: 25%;" class="border-1">{consignado}</td>
+            </tr>
+            <tr>
+                <th style="width: 25%;">PEDIDO INTERNO</th>
+                <td style="width: 25%;" class="border-1">{pedido_interno}</td>
+                <th style="width: 25%;">PAQUETERIA</th>
+                <td style="width: 25%;" class="border-1">{paqueteria}</td>
+            </tr>
+            <tr>
+                <th style="width: 25%;">CLIENTE</th>
+                <td style="width: 25%;" class="border-1">{cliente}</td>
+                <th style="width: 25%;">CONDICIONES DE ENVIO</th>
+                <td style="width: 25%;" class="border-1">{condiciones_envio}</td>
+            </tr>
+            <tr>
+                <th style="width: 25%;">DIRECCION</th>
+                <td style="width: 25%;" class="border-1">{direccion}</td>
+                <th style="width: 25%;">DEPARTAMENTO SOLICITANTE</th>
+                <td style="width: 25%;" class="border-1">{depto_solicitante}</td>
+            </tr>
+            <tr>
+                <th style="width: 25%;">CONTACTO</th>
+                <td style="width: 25%;" class="border-1">{contacto}</td>
+                <th style="width: 25%;">ALMACEN SALIENTE</th>
+                <td style="width: 25%;" class="border-1">{almacen}</td>
+            </tr>
+            <tr><td colspan="4">&nbsp;</td></tr>
+        </tbody>
+    </table>
+    <table>
+        <tbody>
+            <tr><td colspan="6">&nbsp;</td></tr>
+			<tr class="bg-head">
+				<th class="border-1">CANTIDAD</th>
+				<th class="border-1">NO. PARTE</th>
+				<th class="border-1">UNIDAD</th>
+				<th class="border-1" colspan="3">DESCRIPCION</th>
+			</tr>
+			{list-productos}
+			<tr>
+				<th class="border-1">{cantidad}</th>
+				<th class="border-1">{no_parte}</th>
+				<th class="border-1">{unidad_medida}</th>
+				<th class="border-1" colspan="3">{descripcion}</th>
+			</tr>
+			{/list-productos}
+			<tr><td colspan="6">&nbsp;</td></tr>
+            <tr>
+                <th>OBSERVACIONES</th>
+                <td colspan="5" rowspan="2" class="border-1">{observaciones}</td>
+            </tr>
+            <tr><td colspan="6">&nbsp;</td></tr>
+            <tr><td colspan="6">&nbsp;</td></tr>
+            <tr>
+                <th>NOMBRE Y FIRMA DE VENTAS</th>
+                <td colspan="2" class="bb-2"></td>
+                <th>NOMBRE Y FIRMA DE AUTORIZACIÓN</th>
+                <td colspan="2" class="bb-2"></td>
+            </tr>
+            <tr>
+                <th>NOMBRE Y FIRMA DE LOGÍSTICA</th>
+                <td colspan="2" class="bb-2"></td>
+                <th></th>
+                <td colspan="2" class="bb-2"></td>
+            </tr>
+		</tbody>
+	</table>
+</body>
+</html>

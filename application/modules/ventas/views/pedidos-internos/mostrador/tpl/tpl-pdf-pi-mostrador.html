@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{get_var(site_name)} - Pedido Interno Mostrador</title>
+	<style type="text/css">
+		@font-face {
+			font-family: 'Arial';
+			font-style: normal;
+			font-weight: normal;
+			src: url({base_url()}{get_var(path_fonts)}/arial/arial.ttf) format('truetype');
+		}
+
+		body{
+			font-family: 'arial';
+			font-size: 12px;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		table {
+			font-family: 'arial';
+			width: 100%;
+			/*border: 2px solid black;*/
+			border-collapse: collapse;
+		}
+
+		th, td {
+			font-family: 'arial';
+			/*border: 1px solid black;*/
+			border-collapse: collapse;
+            height: 25px;
+		}
+
+		.border-1 {
+			border: 1px solid black;
+		}
+
+		.border-2 {
+			border: 2px solid black;
+		}
+
+		.bb-2 {
+			border-bottom: 2px solid black;
+		}
+
+		.no-border {
+			border: 0px solid transparent;
+		}
+
+		.bx-0 {
+			border-left: 0px solid transparent;
+			border-right: 0px solid transparent;
+		}
+
+		.text-uc {
+			text-transform: uppercase;
+		}
+
+        .bd-tp{
+            border-top: 1px solid #000;
+        }
+
+	</style>
+</head>
+<body>
+	<table>
+		<tbody>
+			<tr>
+				<th colspan="8" rowspan="2"><h2>TECHNOCODING INTERNATIONAL S.A. DE C.V.</h2></th>
+				<th colspan="2" >FECHA DE ELABORACIÓN</th>
+                <th >FOLIO</th>
+                <th colspan="2">TIPO DE CAMBIO</th>
+			</tr>
+			<tr>
+				<th colspan="2" class="border-1">{fecha}</th>
+                <th class="border-1">{folio}</th>
+                <th colspan="2" class="border-1">{tipo_cambio}</th>
+			</tr>
+			<tr>
+				<th colspan="5">RAZÓN SOCIAL</th>
+                <th></th>
+                <th colspan="2">LOCALIDAD</th>
+                <td></td>
+                <th>TIPO DE PEDIDO</th>
+                <th>MEDIO</th>
+                <th>TIPO DE PRODUCTO</th>
+                <th>TIPO DE SERVICIO</th>
+			</tr>
+			<tr>
+				<th colspan="5" class="border-1">{razon_social}</th>
+                <th></th>
+                <th colspan="2" class="border-1">{localidad}</th>
+                <th></th>
+                <th class="border-1">{tipo_pedido}</th>
+                <th class="border-1">{medio}</th>
+                <th class="border-1">{tipo_producto}</th>
+                <th class="border-1">{tipo_servicio}</th>
+			</tr>
+			<tr>
+				<th colspan="5">CONTACTO</th>
+                <th></th>
+                <th colspan="2">DEPARTAMENTO</th>
+                <th></th>
+                <th># POLIZA SERVICIO</th>
+                <th>ORDEN DE COMPRA</th>
+                <th>TIPO ENTREGA</th>
+                <th>REQUISICIONES</th>
+			</tr>
+			<tr>
+				<th colspan="5" class="border-1">{contacto}</th>
+                <th></th>
+                <th colspan="2" class="border-1">{departamento}</th>
+                <th></th>
+                <th class="border-1">{poliza_servicio}</th>
+                <th class="border-1">{orden_compra}</th>
+                <th class="border-1">{tipo_entrega}</th>
+                <th class="border-1">{requisiciones}</th>
+			</tr>
+            <tr>
+				<td colspan="13">&nbsp;</td>
+			</tr>
+    		<tr>
+				<th class="border-2 text-uc">P</th>
+                <th class="border-2 text-uc">CANTIDAD</th>
+                <th class="border-2 text-uc">NO. PARTE</th>
+                <th class="border-2 text-uc">UNID. MED.</th>
+                <th class="border-2 text-uc" colspan="3" style="width: 5000px !important;">DESCRIPCION</th>
+                <th class="border-2 text-uc">EXISTE</th>
+                <th class="border-2 text-uc">PRECIO U.</th>
+                <th class="border-2 text-uc" style="width:20px !important;">DESC. POR PZ</th>
+                <th class="border-2 text-uc" style="width:20px !important;">DESC. TOTAL</th>
+                <th class="border-2 text-uc" style="width:20px !important;">TOTAL</th>
+                <th class="border-2 text-uc" style="width:20px !important;">OK?</th>
+			</tr>
+			{list-productos}
+			<tr style="text-align: center;">
+                <td>{p}</td>
+				<td>{cantidad}</td>
+				<td>{no_parte}</td>
+				<td>{unidad_medida}</td>
+				<td colspan="3" style="width: 50000px !important;">{descripcion}</td>
+				<td></td>
+				<td style="width: 20px !important;">{precio_unitario}</td>
+				<td style="width: 20px !important;">{descuento_pieza} %</td>
+				<td style="width: 20px !important;">$ {descuento_total}</td>
+				<td style="width: 20px !important;">$ {total}</td>
+                <td style="width: 20px !important;"></td>
+			</tr>
+			{/list-productos}
+			<tr>
+				<td class="bb-2" colspan="13">&nbsp;</td>
+			</tr>
+			<tr>
+				<th colspan="10"></th>
+                <th class="text-uc">SUBTOTAL</th>
+                <th class="border-1"></th>
+                <th></th>
+			</tr>
+		</tbody>
+        <tr>
+            <th colspan="5">NOTAS INTERNAS</th>
+            <th></th>
+            <th colspan="2">DESCRIPCION DE ENTREGAS:</th>
+            <th>FORMA ENVIO:</th>
+            <th class="border-1">{forma_envio}</th>
+            <th class="text-uc">DESCUENTO TOTAL</th>
+            <th class="border-1"></th>
+            <th></th>
+        </tr>
+        <tr>
+            <th colspan="5" rowspan="2" class="border-1">{notas_internas}</th>
+            <th></th>
+            <th colspan="2" class="border-1">REMISION, NO. GUIA, ORDEN DE SERVICIO, FACTURA</th>
+            <th class="border-1">FECHA ENVIO</th>
+            <th class="border-1">FECHA ENTREGA</th>
+            <th>TOTAL</th>
+            <th class="border-1">{total}</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th colspan="4" rowspan="5" class="border-1"></th>
+            <th>CONDICIONES</th>
+            <th class="border-1"></th>
+            <th></th>
+        </tr>
+        <tr>
+            <th colspan="5">NOTAS REMISION</th>
+            <th></th>
+            <th class="text-uc">FECHA DE PAGO</th>
+            <th class="border-1"></th>
+            <th></th>
+        </tr>
+        <tr>
+            <th colspan="5" rowspan="3" class="border-1">{notas_remision}</th>
+            <th></th>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th colspan="13"><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p></th>
+        </tr>
+        <tr>
+            <td class="bd-tp" colspan="3">ELABORÓ</td>
+            <td ></td>
+            <td class="bd-tp" >Vo. Bo.</td>
+            <td ></td>
+            <td class="bd-tp" colspan="2">RECTIFICACIÓN STOCK</td>
+            <td ></td>
+            <td class="bd-tp" colspan="2">AUTORIZA</td>
+        </tr>
+	</table>
+</body>
+</html>

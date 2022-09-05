@@ -18,7 +18,7 @@ jQuery(function($) {
 			{data: {
 				_: 'folio', sort: 'id_cotizacion'
 		   	}, defaultContent: '', className: 'nk-tb-col'},
-			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cliente', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_vigencia', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_entrega', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_elaboracion', defaultContent: '', className: 'nk-tb-col'},
@@ -57,6 +57,7 @@ jQuery(function($) {
 		   	}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'cliente', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estatus_vigencia', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_elaboracion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'atencion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
@@ -69,7 +70,7 @@ jQuery(function($) {
 			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_recepcion', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'estatus_vigencia', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vendedor', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'depto_nuestro', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'correo', defaultContent: '', className: 'nk-tb-col'},
@@ -104,6 +105,19 @@ jQuery(function($) {
 		$(this).parent('li').addClass('active');
 
 		IS.init.dataTable['tbl-cotizaciones'].page.len($(this).data('length')).draw();
+
+		e.preventDefault();
+	})
+
+	.on('keyup', '.tools-tbl-cotizaciones-consecutivo #buscar', function(e) {
+		IS.init.dataTable['tbl-cotizaciones-consecutivo'].search(this.value).draw();
+	})
+
+	.on('click', '.tools-tbl-cotizaciones-consecutivo .cotizaciones_consecutivo_length a', function(e) {
+		$(this).closest('ul').find('li').removeClass('active');
+		$(this).parent('li').addClass('active');
+
+		IS.init.dataTable['tbl-cotizaciones-consecutivo'].page.len($(this).data('length')).draw();
 
 		e.preventDefault();
 	})
@@ -436,6 +450,25 @@ jQuery(function($) {
 			}
 		});
 	})
+
+	.on('click', '#tbl-cotizaciones button#build-pdf', function(e) {
+		$(this).tooltip('hide');
+		var tr = $(this).closest('tr');
+		
+    	$.formAjaxSend({
+    		url: base_url('ventas/ventas/createPdfCotizacion'),
+    		data: tr.data(),
+    		success: function(response) {
+				console.log(response)
+    			if(response.success) {
+					gotoLink(base_url(response.file_path));
+
+				} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
+    		}
+    	});
+	})
+
+	//gotoLink(base_url(response.file_path));
 
 	function calculaTotal(){
 		subtotal = $("#cantidad").val() * $("#precio_unitario").val();

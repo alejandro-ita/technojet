@@ -94,6 +94,19 @@ jQuery(function($) {
 		e.preventDefault();
 	})
 
+	.on('keyup', '.tools-tbl-solicitud-consecutivo #buscar', function(e) {
+		IS.init.dataTable['tpl-tbl-solicitud-recoleccion-consecutivo'].search(this.value).draw();
+	})
+
+	.on('click', '.tools-tbl-solicitud-consecutivo .solicitudes_length a', function(e) {
+		$(this).closest('ul').find('li').removeClass('active');
+		$(this).parent('li').addClass('active');
+
+		IS.init.dataTable['tpl-tbl-solicitud-recoleccion-consecutivo'].page.len($(this).data('length')).draw();
+
+		e.preventDefault();
+	})
+
 	.on('click' , '.tools-tbl-solicitudes-entrega .add-solicitud-entrega', function(e) {
 		$(this).tooltip('hide');
 		$('#form-filtro').formAjaxSend({

@@ -23,7 +23,7 @@ jQuery(function($) {
 			{data: 'metodo_pago', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'forma_pago', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'no_pi', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cliente', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'subtotal', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'iva', defaultContent: '', className: 'nk-tb-col'},

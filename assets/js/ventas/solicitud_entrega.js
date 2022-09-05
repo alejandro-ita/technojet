@@ -94,6 +94,19 @@ jQuery(function($) {
 		e.preventDefault();
 	})
 
+	.on('keyup', '.tools-tbl-solicitud-consecutivo #buscar', function(e) {
+		IS.init.dataTable['tpl-tbl-solicitud-entrega-consecutivo'].search(this.value).draw();
+	})
+
+	.on('click', '.tools-tbl-solicitud-consecutivo .solicitudes_length a', function(e) {
+		$(this).closest('ul').find('li').removeClass('active');
+		$(this).parent('li').addClass('active');
+
+		IS.init.dataTable['tpl-tbl-solicitud-entrega-consecutivo'].page.len($(this).data('length')).draw();
+
+		e.preventDefault();
+	})
+
 	.on('click' , '.tools-tbl-solicitudes-entrega .add-solicitud-entrega', function(e) {
 		$(this).tooltip('hide');
 		$('#form-filtro').formAjaxSend({
@@ -325,6 +338,22 @@ jQuery(function($) {
 		    	});
 		    }
 		});
+	})
+
+	.on('click', '#tbl-solicitudes-entrega button#build-pdf', function(e) {
+		$(this).tooltip('hide');
+		var tr = $(this).closest('tr');
+		
+    	$.formAjaxSend({
+    		url: base_url('ventas/ventas/process_build_pdf_solicitud_entrega'),
+    		data: tr.data(),
+    		success: function(response) {
+    			if(response.success) {
+					gotoLink(base_url(response.file_path));
+
+				} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
+    		}
+    	});
 	})
 
 	function init_table_productos_add(data) {

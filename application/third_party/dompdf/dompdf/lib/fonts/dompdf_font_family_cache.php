@@ -79,7 +79,7 @@ return array (
     'normal' => $fontDir . '/DejaVuSerif',
   ),
   'arial' => array(
-    'normal' => $fontDir . '/arial_normal_e1921e228b7863cb15930e1259704ec9',
+    'normal' => $fontDir . '/arial_normal_03113449f74aff5a143ee72ef5cd7e7e',
   ),
 );
 }; ?>

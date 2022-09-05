@@ -20,7 +20,7 @@ jQuery(function($) {
 		   	}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_pi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'cotizacion', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cliente', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
@@ -62,6 +62,7 @@ jQuery(function($) {
 			{data: 'estatus_pi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'num_fact', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_fact', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_fact', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'uso_cfdi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'forma_pago', defaultContent: '', className: 'nk-tb-col'},
@@ -132,6 +133,19 @@ jQuery(function($) {
 		$(this).parent('li').addClass('active');
 
 		IS.init.dataTable['tbl-pi-mostrador'].page.len($(this).data('length')).draw();
+
+		e.preventDefault();
+	})
+
+	.on('keyup', '.tools-tbl-factura-consecutivo #buscar', function(e) {
+		IS.init.dataTable['tbl-pi-mostrador-consecutivo'].search(this.value).draw();
+	})
+
+	.on('click', '.tools-tbl-factura-consecutivo .factura_consecutivo_length a', function(e) {
+		$(this).closest('ul').find('li').removeClass('active');
+		$(this).parent('li').addClass('active');
+
+		IS.init.dataTable['tbl-pi-mostrador-consecutivo'].page.len($(this).data('length')).draw();
 
 		e.preventDefault();
 	})
@@ -400,6 +414,22 @@ jQuery(function($) {
 
 	.on('click', '#add-nota', function(e){
 		alert('add nota');
+	})
+
+	.on('click', '#tbl-pi-mostrador button#build-pdf', function(e) {
+		$(this).tooltip('hide');
+		var tr = $(this).closest('tr');
+		
+    	$.formAjaxSend({
+    		url: base_url('ventas/ventas/process_build_pdf_pi_factura'),
+    		data: tr.data(),
+    		success: function(response) {
+    			if(response.success) {
+					gotoLink(base_url(response.file_path));
+
+				} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
+    		}
+    	});
 	})
 
 	function calculaTotal(){

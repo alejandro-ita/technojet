@@ -35,6 +35,7 @@ class Facturacion_model extends SB_Model {
 			CT.id_forma_pago,
 			CT.id_cliente,
 			CL.razon_social,
+			CL.cliente,
 			CT.subtotal,
 			CT.descuento,
 			CT.iva,

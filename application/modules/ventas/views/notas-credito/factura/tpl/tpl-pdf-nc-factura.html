@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{get_var(site_name)} - Nota de crédito Factura</title>
+	<style type="text/css">
+		/*@font-face {
+			font-family: 'Arial';
+			font-style: normal;
+			font-weight: normal;
+			src: url({base_url()}{get_var(path_fonts)}/arial/arial.ttf) format('truetype');
+		}*/
+
+		body{
+			font-family: 'arial';
+			font-size: 12px;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		table {
+			font-family: 'arial';
+			width: 100%;
+			/*border: 2px solid black;*/
+			border-collapse: collapse;
+		}
+
+		th, td {
+			font-family: 'arial';
+			/*border: 1px solid black;*/
+			border-collapse: collapse;
+            height: 25px;
+		}
+
+        tr{
+            width: 100%;
+        }
+
+		.border-1 {
+			border: 1px solid black;
+		}
+
+		.border-2 {
+			border: 2px solid black;
+		}
+
+		.bb-2 {
+			border-bottom: 2px solid black;
+		}
+
+		.no-border {
+			border: 0px solid transparent;
+		}
+
+		.bx-0 {
+			border-left: 0px solid transparent;
+			border-right: 0px solid transparent;
+		}
+
+		.text-uc {
+			text-transform: uppercase;
+		}
+
+        .bd-tp{
+            border-top: 1px solid #000;
+        }
+
+	</style>
+</head>
+<body>
+	<table>
+		<tbody>
+			<tr>
+				<th colspan="3" rowspan="2" style="width: 40%"><h3>TECHNOCODING INTERNATIONAL S.A. DE C.V.</h3></th>
+				<th style="width: 10%">FECHA DE ELABORACIÓN</th>
+                <th style="width: 10%">FOLIO</th>
+                <th style="width: 10%">FACTURA RELACIONADA</th>
+                <th style="width: 10%">TIPO DE CAMBIO</th>
+                <th style="width: 10%">MEDIO</th>
+                <th style="width: 10%">TIPO DE PRODUCTO</th>
+			</tr>
+			<tr style="text-align: center;">
+                
+				<td class="border-1" style="width: 10%">{fecha}</td>
+                <td class="border-1" style="width: 10%">{folio}</td>
+                <td class="border-1" style="width: 10%">{factura_relacionada}</td>
+                <td class="border-1" style="width: 10%">{tipo_cambio}</td>
+                <td class="border-1" style="width: 10%">{medio}</td>
+                <td style="width: 10%" class="border-1">{tipo_producto}</td>
+			</tr>
+			<tr>
+				<th style="width: 30%">RAZÓN SOCIAL</th>
+                <th style="width: 2%"></th>
+                <th style="width: 15%">LOCALIDAD</th>
+                <td style="width: 2%;"></td>
+                <th style="width: 10%">TIPO DE SERVICIO</th>
+                <th style="width: 10%"># POLIZA DE SERVICIO</th>
+                <th style="width: 10%">ORDEN DE COMPRA</th>
+                <th style="width: 10%">TIPO DE ENTREGA</th>
+                <th style="width: 10%">REQUISICIONES</th>
+			</tr>
+			<tr style="text-align: center;">
+				<td style="width: 30%" class="border-1">{razon_social}</td>
+                <td style="width: 2%"></td>
+                <td style="width: 15%" class="border-1">{localidad}</td>
+                <td style="width: 2%"></td>
+                <td style="width: 10%" class="border-1">{tipo_servicio}</td>
+                <td style="width: 10%" class="border-1">{poliza_servicio}</td>
+                <td style="width: 10%" class="border-1">{orde_compra}</td>
+                <td style="width: 10%" class="border-1">{tipo_entrega}</td>
+                <td style="width: 10%" class="border-1">{requisiciones}</td>
+			</tr>
+			<tr>
+				<th style="width: 30%">CONTACTO</th>
+                <th style="width: 2%"></th>
+                <th style="width: 15%">DEPARTAMENTO</th>
+                <td style="width: 2%;"></td>
+                <th style="width: 10%;">VALE DE SALIDA</th>
+                <th style="width: 10%;">MOTIVO DE CRÉDITO</th>
+                <th style="width: 10%;">USO DE CFDI</th>
+                <th style="width: 10%;">FORMA DE PAGO</th>
+                <th style="width: 10%;">METODO DE PAGO</th>
+			</tr>
+			<tr style="text-align: center;">
+				<td style="width: 30%" class="border-1">{contacto}</td>
+                <td style="width: 2%"></td>
+                <td style="width: 15%" class="border-1">{departamento}</td>
+                <td style="width: 2%"></td>
+                <td style="width: 10%;" class="border-1">{vale_salida}</td>
+                <td style="width: 10%;" class="border-1">{motivo_credito}</td>
+                <td style="width: 10%;" class="border-1">{uso_cfdi}</td>
+                <td style="width: 10%;" class="border-1">{forma_pago}</td>
+                <td style="width: 10%;" class="border-1">{metodo_pago}</td>
+			</tr>
+            <tr>
+				<td colspan="9">&nbsp;</td>
+			</tr>
+        </tbody>
+    </table>
+    <table>
+        <tbody>
+    		<tr>
+				<th class="border-2 text-uc">P</th>
+                <th class="border-2 text-uc">CANTIDAD</th>
+                <th class="border-2 text-uc">NO. PARTE</th>
+                <th class="border-2 text-uc">UNID. MED.</th>
+                <th class="border-2 text-uc">UNID. SAT.</th>
+                <th class="border-2 text-uc">CLAVE PROD SAT</th>
+                <th class="border-2 text-uc" style="width: 35% !important;">DESCRIPCION</th>
+                <th class="border-2 text-uc" style="width: 7% !important;">PRECIO U.</th>
+                <th class="border-2 text-uc">DESC. POR PZ</th>
+                <th class="border-2 text-uc" style="width: 7% !important;">DESC. TOTAL</th>
+                <th class="border-2 text-uc" style="width: 7% !important;">TOTAL</th>
+                <th class="border-2 text-uc">EXIST.</th>
+                <th class="border-2 text-uc">OK?</th>
+			</tr>
+			{list-productos}
+			<tr style="text-align: center;">
+                <td>{p}</td>
+				<td>{cantidad}</td>
+				<td>{no_parte}</td>
+				<td>{unidad_medida}</td>
+                <td>{unidad_sat}</td>
+                <td>{clave_prod}</td>
+				<td>{descripcion}</td>
+				<td style="width: 7% !important;">$ {precio_unitario}</td>
+				<td>{descuento_pieza} %</td>
+				<td style="width: 7% !important;">$ {descuento_total}</td>
+				<td style="width: 7% !important;">$ {total}</td>
+                <td></td>
+                <td></td>
+			</tr>
+			{/list-productos}
+            <tr>
+				<td class="bb-2" colspan="13">&nbsp;</td>
+		    </tr>
+        </tbody>
+    </table>
+    <table>
+        <tbody>
+            <tr>
+                <th colspan="6"></th>
+                <th>SUBTOTAL</th>
+                <th class="border-1">{subtotal}</th>
+            </tr>
+            <tr style="text-align: center">
+                <th style="width: 25%;">NOTAS INTERNAS</th>
+                <th style="width: 2%;"></th>
+                <th colspan="2" style="width: 20% !important;">DESCRIPCION DE ENTREGAS:</th>
+                <th style="width: 15%;">FORMA ENVIO</th>
+                <th style="width: 15%;" class="border-1">{forma_envio}</th>
+                <th style="width: 10%;">DESCUENTO</th>
+                <td style="width: 10%;" class="border-1">{descuento}</td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="width: 25%;" rowspan="3" class="border-1">{notas_internas}</td>
+                <td style="width: 2%;"></td>
+                <td colspan="2" class="border-1" style="width: 20% !important;">REMISION, NO. GUIA, ORDEN DE SERVICIO, NOTA DE CRÉDITO</td>
+                <td style="width: 13%;" class="border-1">FECHA ENVIO</td>
+                <td style="width: 13%;" class="border-1">FECHA ENTREGA</td>
+                <th style="width: 10%;">IVA</th>
+                <td style="width: 10%;" class="border-1">{iva}</td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="width: 2%;"></td>
+                <td colspan="2" rowspan="2" class="border-1" style="width: 20% !important;">{rem_guia_oserv}</td>
+                <td style="width: 13%;" rowspan="2" class="border-1">{fecha_envio}</td>
+                <td style="width: 13%;" rowspan="2" class="border-1">{fecha_entrega}</td>
+                <th style="width: 10%;">TOTAL</th>
+                <td style="width: 10%;" class="border-1">{total}</td>
+            </tr>
+            <tr style="text-align: center">
+                <td colspan="5"></td>
+                <th>LIMITE DE CREDITO</th>
+                <td class="border-1">{limite_credito}</td>
+            </tr>
+            <tr style="text-align: center">
+                <td colspan="6"></td>
+                <th>CONDICIONES</th>
+                <td class="border-1">{condiciones}</td>
+            </tr>
+            <tr style="text-align: center">
+                <th style="width: 25%;">NOTAS PARA CREDITO</th>
+                <th style="width: 2%;"></th>
+                <th colspan="2" style="width: 15% !important;">NOTAS DE CREDITO:</th>
+                <td colspan="2"></td>
+                <td colspan="2">EMAIL PARA ENVIAR FACTURA</td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="width: 25%;" rowspan="3" class="border-1">{notas_facturacion}</td>
+                <td style="width: 2%;"></td>
+                <td class="border-1">NO. FACTURA</td>
+                <td class="border-1">FECHA DE ELAB.</td>
+                <td class="border-1">FECHA DE PAGO</td>
+                <th class="border-1">ESTATUS</th>
+                <td rowspan="3" colspan="2" class="border-1">{email}</td>
+            </tr>
+            <tr style="text-align: center;">
+                <th></th>
+                <td rowspan="2" style="border-left: 1px solid #000; border-bottom: 1px solid #000;">{num_fact}</td>
+                <td rowspan="2" style="border-bottom: 1px solid #000;">{fecha_elab}</td>
+                <td rowspan="2" style="border-bottom: 1px solid #000;">{fecha_pago}</td>
+                <td rowspan="2" style="border-bottom: 1px solid #000;">{estatus}</td>
+            </tr>
+            <tr>
+                <td colspan="7"></td>
+            </tr>
+        </tbody>
+	</table>
+    <table>
+        <tbody>
+            <tr>
+                <th colspan="9"><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p></th>
+            </tr>
+            <tr style="text-align: center;">
+                <td class="bd-tp">ELABORÓ</td>
+                <td style="width: 5%;"></td>
+                <td class="bd-tp" >Vo. Bo.</td>
+                <td style="width: 5%;"></td>
+                <td class="bd-tp">RECTIFICACIÓN STOCK</td>
+                <td style="width: 5%;"></td>
+                <td class="bd-tp">AUTORIZA FACTURACION</td>
+                <td style="width: 5%;"></td>
+                <td class="bd-tp">FACTURACION</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

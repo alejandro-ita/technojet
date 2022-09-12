@@ -84,6 +84,7 @@ jQuery(function($) {
 			{data: 'tipo_entrega', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'forma_envio', defaultContent: '', className: 'nk-tb-col'},			
 			{data: 'fecha_envio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'remision', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'guia', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'requisicion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vale_salida', defaultContent: '', className: 'nk-tb-col'},

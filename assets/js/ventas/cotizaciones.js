@@ -486,8 +486,11 @@ jQuery(function($) {
 		});
 
 		var table 	= IS.init.dataTable['tbl-incluye'];
-		table.row.add(data).draw();
-		$('#modal-add-producto #incluir').val('');
+
+		if($("#incluir").val() != ''){
+			table.row.add(data).draw();
+			$('#modal-add-producto #incluir').val('');
+		}
 
 		e.preventDefault();
 	})

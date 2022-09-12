@@ -205,7 +205,7 @@ class Ventas extends SB_Controller {
 					'precio_unitario' 		=> $producto['precio_unitario'],
 					'descuento' 			=> $producto['descuento'],
 					'total' 				=> $producto['total'],
-					'incluye' 				=> json_encode($producto['incluye']),
+					'incluye' 				=> isset($producto['incluye']) ? json_encode($producto['incluye']) : '',
 					'comision_vendedor' 	=> $producto['comision_vendedor'],
 					'opcional' 				=> $producto['opcional'],
 					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
@@ -387,6 +387,7 @@ class Ventas extends SB_Controller {
 			#REGISTRO DE NUEVOS PRODUCTOS
 			$sqlDataBatch = [];
 			foreach ($productos as $producto) {
+				
 				$sqlDataPro = [
 					'id_cotizacion' 		=> $this->input->post('id_cotizacion'),
 					'id_producto' 			=> $producto['id_producto'],
@@ -394,7 +395,7 @@ class Ventas extends SB_Controller {
 					'precio_unitario' 		=> $producto['precio_unitario'],
 					'descuento' 			=> $producto['descuento'],
 					'total' 				=> $producto['total'],
-					'incluye' 				=> json_encode($producto['incluye']),
+					'incluye' 				=> isset($producto['incluye']) ? json_encode($producto['incluye']) : '',
 					'comision_vendedor' 	=> $producto['comision_vendedor'],
 					'opcional' 				=> $producto['opcional'],
 					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
@@ -1140,7 +1141,7 @@ class Ventas extends SB_Controller {
 					'descuento_pieza' 		=> $producto['descuento_pieza'],
 					'descuento_total' 		=> $producto['descuento_total'],
 					'total' 				=> $producto['total'],
-					'comision_vendedor' 	=> $producto['comision_vendedor'],
+					//'comision_vendedor' 	=> $producto['comision_vendedor'],
 					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
 					'timestamp_insert' 	=> timestamp()
 				];

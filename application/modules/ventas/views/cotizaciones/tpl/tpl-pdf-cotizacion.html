@@ -5,12 +5,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{get_var(site_name)} - Cotización</title>
 	<style type="text/css">
-		@font-face {
+		/*@font-face {
 			font-family: 'Arial';
 			font-style: normal;
 			font-weight: normal;
 			src: url({base_url()}{get_var(path_fonts)}/arial/arial.ttf) format('truetype');
-		}
+		}*/
 
 		body{
 			font-family: 'arial';
@@ -89,30 +89,30 @@
 	<table>
 		<tbody>
             <tr>
-                <th colspan="8">
-                    <div style="text-align: left;"><h2 style="font-weight: 900;">{razon_social}</h2></div>
+                <th colspan="6" style="text-align: left; font-size: 20px; font-weight: 900;">
+                    {razon_social}
+                </th>
+                <th colspan="2" style="text-align: center; vertical-align: top;">
+                    COTIZACION: {folio}<br/>
+					{fecha_elaboracion}
                 </th>
             </tr>
 			<tr>
 				<th colspan="3" style="text-align: left;">
-                    <p>DIRECCION: {direccion}</p>
-                    <p>MUNICIPIO: {municipio}</p>
-                    <p>TELÉFONO: {telefono}</p>
-                    <p>CONTACTO: {contacto}</p>
+                    DIRECCION: {direccion}<br/>
+                    MUNICIPIO: {municipio}<br/>
+                    TELÉFONO: {telefono}<br/>
+                    CONTACTO: {contacto}
                 </th>
 				<th colspan="3" style="text-align: left;">
-                    <p>RFC: {rfc}</p>
-                    <p>ESTADO: {estado}</p>
-                    <p>CÓDIGO POSTAL: {cp}</p>
-                    <p>DEPARTAMENTO: {departamento}</p>
-                </th>
-                <th colspan="2" style="text-align: center; vertical-align: top;">
-                    <h2>COTIZACION: {folio}</h2>
-                    <p>{fecha_elaboracion}</p>
+                    RFC: {rfc}<br/>
+                    ESTADO: {estado}<br/>
+                    CÓDIGO POSTAL: {cp}<br/>
+                    DEPARTAMENTO: {departamento}
                 </th>
 			</tr>
 			<tr>
-				<th colspan="8"><h2 style="font-weight: 900;">ASUNTO: COTIZACIÓN POR RENTA DE EQUIPO CODIFICADOR DE INYECCIÓN DE TINTA CONTINUA</h2></th>
+				<th colspan="8"><h3 style="font-weight: 900;">ASUNTO: COTIZACIÓN POR RENTA DE EQUIPO CODIFICADOR DE INYECCIÓN DE TINTA CONTINUA</h3></th>
 			</tr>
 			<tr>
 				<th colspan="8">POR ESTE CONDUCTO LE SALUDO Y ATENDIENDO A SU SOLICITUD; A CONTINUACIÓN PONEMOS A SU CONSIDERACION LA SIGUIENTE COTIZACIÓN POR RENTA DE EQUIPO CODIFICADOR</th>
@@ -127,14 +127,23 @@
 				<th>TOTAL</th>
 			</tr>
 			{list-productos}
-			<tr>
-				<th>{cantidad}</th>
-				<th>{no_parte}</th>
-				<th>{unidad_medida}</th>
-				<th colspan="3">{descripcion}</th>
-				<th>{precio}</th>
-                <th>{total}</th>
-			</tr>
+				<tr>
+					<th>{cantidad}</th>
+					<th>{no_parte}</th>
+					<th>{unidad_medida}</th>
+					<th colspan="3">{descripcion}</th>
+					<th>{precio}</th>
+					<th>{total}</th>
+				</tr>
+				{if true === ( isset( {list-incluye} ))} 
+					<tr>
+						<td colspan="8">
+							<b>INCLUYE: </b>
+							{list-incluye}
+						</td>
+
+					</tr>
+				{/if}
 			{/list-productos}
 			<tr><td class="bb-2" colspan="8">&nbsp;</td></tr>
 			<tr>
@@ -148,33 +157,48 @@
 				<td colspan="8" class="cantidadLetra">{cantidadLetra}</td>
 			</tr>
             <tr><td colspan="8"><br/></td></tr>
-            <tr>
-				<td colspan="8" class="cantidadLetra" style="text-align: left;">NOTA: {nota}</td>
-			</tr>
-            <tr><td colspan="8"><br/></td></tr>
-            <tr>
-				<td colspan="8" class="opcionales">PRODUCTOS OPCIONALES</td>
-			</tr>
-            <tr><td colspan="8">&nbsp;</td></tr>
-			<tr class="bg-head-black">
-				<th>CANTIDAD</th>
-				<th>NO. PARTE</th>
-				<th>UNIDAD</th>
-				<th colspan="3">DESCRIPCION</th>
-				<th>PRECIO U.</th>
-				<th>TOTAL</th>
-			</tr>
-			{list-opcionales}
-			<tr>
-				<th>{cantidad}</th>
-				<th>{no_parte}</th>
-				<th>{unidad_medida}</th>
-				<th colspan="3">{descripcion}</th>
-				<th>{precio}</th>
-                <th>{total}</th>
-			</tr>
-			{/list-opcionales}
-			<tr><td class="bb-2" colspan="8">&nbsp;</td></tr>
+			{if {total-notas} > 0 }
+				<tr>
+					<td colspan="8" class="cantidadLetra">NOTAS</td>
+				</tr>
+				<tr class="bg-head-black">
+					<th colspan="3">NOTA</th>
+					<th colspan="5">DESCRIPCION</th>
+				</tr>
+				{list-notas}
+				<tr>
+					<th colspan="3">{nota}</th>
+					<th colspan="5">{descripcion}</th>
+				</tr>
+				{/list-notas}
+				<tr><td colspan="8"><br/></td></tr>
+			{/if}
+
+			{if {total-opcionales} > 0 }
+				<tr>
+					<td colspan="8" class="opcionales">PRODUCTOS OPCIONALES</td>
+				</tr>
+				<tr><td colspan="8">&nbsp;</td></tr>
+				<tr class="bg-head-black">
+					<th>CANTIDAD</th>
+					<th>NO. PARTE</th>
+					<th>UNIDAD</th>
+					<th colspan="3">DESCRIPCION</th>
+					<th>PRECIO U.</th>
+					<th>TOTAL</th>
+				</tr>
+				{list-opcionales}
+				<tr>
+					<th>{cantidad}</th>
+					<th>{no_parte}</th>
+					<th>{unidad_medida}</th>
+					<th colspan="3">{descripcion}</th>
+					<th>{precio}</th>
+					<th>{total}</th>
+				</tr>
+				{/list-opcionales}
+				<tr><td class="bb-2" colspan="8">&nbsp;</td></tr>
+			{/if}
 		</tbody>
 	</table>
 </body>

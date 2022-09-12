@@ -33,6 +33,7 @@ jQuery(function($) {
 			{data: 'notas_internas', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas_remision', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_cambio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_entrega', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'acciones', defaultContent: '', className: 'nk-tb-col nk-tb-col-tools text-right'},
 		]
 	});
@@ -56,25 +57,15 @@ jQuery(function($) {
 				_: 'folio', sort: 'id_nc_mostrador'
 		   	}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_pi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'cliente', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'localidad', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fact_remision', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'medio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'subtotal', defaultContent: '', className: 'nk-tb-col'},			
-			{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'total', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'motivo_credito', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'notas_internas', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'notas_remision', defaultContent: '', className: 'nk-tb-col'},			
-			{data: 'condiciones', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'semana', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'mes', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'anio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_servicio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'poliza_servicio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'oc', defaultContent: '', className: 'nk-tb-col'},
@@ -82,10 +73,23 @@ jQuery(function($) {
 			{data: 'tipo_entrega', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'forma_envio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_envio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'remision', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'guia', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'requisicion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vale_salida', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'subtotal', defaultContent: '', className: 'nk-tb-col'},			
+			{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'total', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'motivo_credito', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'notas_internas', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'notas_remision', defaultContent: '', className: 'nk-tb-col'},			
+			{data: 'tipo_cambio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'condiciones', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'semana', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'mes', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'anio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'solvente', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tinta', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'solucion_limpieza', defaultContent: '', className: 'nk-tb-col'},
@@ -202,7 +206,7 @@ jQuery(function($) {
 		$.formAjaxSend({
 			 url: base_url('ventas/ventas/get_productos_por_tipo')
 			,data: {
-				 id_tipo_producto: $('#modal-add-producto form #id_tipo_producto').val()
+				 id_tipo_producto: $('#modal-add-producto form #id_tipo_prod').val()
 				,id_unidad_medida: $(this).val()
 			}
 			,blockScreen: false

@@ -205,7 +205,7 @@ class Ventas extends SB_Controller {
 					'precio_unitario' 		=> $producto['precio_unitario'],
 					'descuento' 			=> $producto['descuento'],
 					'total' 				=> $producto['total'],
-					'incluye' 				=> $producto['incluye'],
+					'incluye' 				=> json_encode($producto['incluye']),
 					'comision_vendedor' 	=> $producto['comision_vendedor'],
 					'opcional' 				=> $producto['opcional'],
 					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
@@ -223,25 +223,29 @@ class Ventas extends SB_Controller {
 			$sqlData['productos'] = $sqlData;
 
 			//SAVE NOTAS
-			$notas 		= $this->input->post('notas');
-			foreach ($notas as $nota) {
-				$sqlData = [
-					'id_cotizacion' 		=> $insert,
-					'nota' 					=> $nota['nota'],
-					'descripcion' 			=> $nota['descripcion'],
-					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
-					'timestamp_insert' 	=> timestamp()
-				];
+			$notas 	= $this->input->post('notas');
+			if($notas != null){
+				
+				foreach ($notas as $nota) {
+					$sqlData = [
+						'id_cotizacion' 		=> $insert,
+						'nota' 					=> $nota['nota'],
+						'descripcion' 			=> $nota['descripcion'],
+						'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+						'timestamp_insert' 	=> timestamp()
+					];
+	
+					$sqlNotasBatch[] = $sqlData;
+				}
+	
+				if ($sqlNotasBatch) {
+					$insertBatch = $this->db_cotizaciones->insert_cotizacion_nota($sqlNotasBatch);
+					$insertBatch OR set_exception();
+				}
 
-				$sqlNotasBatch[] = $sqlData;
+				$sqlData['notas'] = $sqlData;
 			}
 
-			if ($sqlNotasBatch) {
-				$insertBatch = $this->db_cotizaciones->insert_cotizacion_nota($sqlNotasBatch);
-				$insertBatch OR set_exception();
-			}
-
-			$sqlData['notas'] = $sqlData;
 			$actividad 		= "ha creado una cotización";
 			$data_change 	= ['insert'=>['newData'=>$sqlData]];
 			registro_bitacora_actividades($insert, 'tbl_cotizaciones', $actividad, $data_change);
@@ -390,7 +394,7 @@ class Ventas extends SB_Controller {
 					'precio_unitario' 		=> $producto['precio_unitario'],
 					'descuento' 			=> $producto['descuento'],
 					'total' 				=> $producto['total'],
-					'incluye' 				=> $producto['incluye'],
+					'incluye' 				=> json_encode($producto['incluye']),
 					'comision_vendedor' 	=> $producto['comision_vendedor'],
 					'opcional' 				=> $producto['opcional'],
 					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
@@ -419,41 +423,44 @@ class Ventas extends SB_Controller {
 
 			#ELIMINACION DE NOTAS QUE NO LLEGAN EN LA LIST	
 			$notas = $this->input->post('notas');
-			$notasActivas = array_filter(array_column($notas, 'id_nota'));
-			$sqlWhere = $this->input->post(['id_cotizacion']);
-			$sqlWhere['activo'] = 1;
-			if($notasActivas) $sqlWhere['notIn'] = $notasActivas;
-			$update = $this->db_cotizaciones->update_cotizacion_notas(['activo'=>0], $sqlWhere);
+			
+			if($notas != null){
+				$notasActivas = array_filter(array_column($notas, 'id_nota'));
+				$sqlWhere = $this->input->post(['id_cotizacion']);
+				$sqlWhere['activo'] = 1;
+				if($notasActivas) $sqlWhere['notIn'] = $notasActivas;
+				$update = $this->db_cotizaciones->update_cotizacion_notas(['activo'=>0], $sqlWhere);
 
-			#REGISTRO DE NUEVAS NOTAS
-			$sqlBatchNotas = [];
-			foreach ($notas as $nota) {
-				$sqlDataPro = [
-					'id_cotizacion' 		=> $this->input->post('id_cotizacion'),
-					'nota' 					=> $nota['nota'],
-					'descripcion' 			=> $nota['descripcion'],
-					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
-					'timestamp_insert' 	=> timestamp()
-				];
+				#REGISTRO DE NUEVAS NOTAS
+				$sqlBatchNotas = [];
+				foreach ($notas as $nota) {
+					$sqlDataPro = [
+						'id_cotizacion' 		=> $this->input->post('id_cotizacion'),
+						'nota' 					=> $nota['nota'],
+						'descripcion' 			=> $nota['descripcion'],
+						'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
+						'timestamp_insert' 	=> timestamp()
+					];
 
-				if (!isset($nota['id_nota'])) {
-					$sqlBatchNotas[] = $sqlDataPro;
+					if (!isset($nota['id_nota'])) {
+						$sqlBatchNotas[] = $sqlDataPro;
+					}
+
+					/*DATA PARA EL PDF
+					$sqlDataPro['no_parte'] 	= $producto['no_parte'];
+					$sqlDataPro['descripcion'] = $producto['descripcion'];
+					$sqlDataPro['unidad_medida'] = $producto['unidad_medida'];
+					$sqlDataPro['tipo_producto'] = $producto['tipo_producto'];*/
+					$dataView['list-notas'][] = $sqlDataPro;
 				}
 
-				/*DATA PARA EL PDF
-				$sqlDataPro['no_parte'] 	= $producto['no_parte'];
-				$sqlDataPro['descripcion'] = $producto['descripcion'];
-				$sqlDataPro['unidad_medida'] = $producto['unidad_medida'];
-				$sqlDataPro['tipo_producto'] = $producto['tipo_producto'];*/
-				$dataView['list-notas'][] = $sqlDataPro;
-			}
+				if ($sqlBatchNotas) {
+					$insertBatch = $this->db_cotizaciones->insert_cotizacion_nota($sqlBatchNotas);
+					$insertBatch OR set_exception();
+				}
 
-			if ($sqlBatchNotas) {
-				$insertBatch = $this->db_cotizaciones->insert_cotizacion_nota($sqlBatchNotas);
-				$insertBatch OR set_exception();
+				$sqlData['notas'] = $dataView['list-notas'];
 			}
-
-			$sqlData['notas'] = $dataView['list-notas'];
 
 			#GENERANDO EL PDF
 			/*$this->load->library('Create_pdf');
@@ -522,11 +529,22 @@ class Ventas extends SB_Controller {
 		
 		$sqlWhere 	= $this->input->post(['id_cotizacion']);
 		$productos 	= $this->db_cotizaciones->get_cotizacion_productos($sqlWhere);
+		$notas 	= $this->db_cotizaciones->get_cotizacion_notas($sqlWhere);
 		$cotizacion = $this->db_cotizaciones->get_cotizaciones_main($sqlWhere, FALSE);
 		$total = 0;
 		$listProductos = [];
 		$listOpcionales = [];
+		$listNotas = [];
 		foreach ($productos as $producto) {
+
+			$array = json_decode($producto['incluye'], true);
+			$lista = '';
+			if($array){
+				foreach ($array as $value) {
+					$lista .=  "* <b>" . strtoupper($value['incluye']) . "</b> &nbsp;&nbsp;&nbsp;";
+				}
+			}
+
 			if($producto['opcional'] == 1){
 				//opcional
 				$listOpcionales[] = [
@@ -535,7 +553,8 @@ class Ventas extends SB_Controller {
 					'unidad_medida' 		=> $producto['unidad_medida'],
 					'descripcion' 			=> $producto['descripcion'],
 					'precio'				=> $producto['precio_unitario'],
-					'total'					=> $producto['total']
+					'total'					=> $producto['total'],
+					'list-incluye'			=> $lista
 				];
 			}else{
 				//Grand total
@@ -546,9 +565,17 @@ class Ventas extends SB_Controller {
 					'unidad_medida' 		=> $producto['unidad_medida'],
 					'descripcion' 			=> $producto['descripcion'],
 					'precio'				=> $producto['precio_unitario'],
-					'total'					=> $producto['total']
+					'total'					=> $producto['total'],
+					'list-incluye'			=> $lista
 				];
 			}
+		}
+
+		foreach($notas as $nota){
+			$listNotas[] = [
+				'nota' 		=> $nota['nota'],
+				'descripcion' 	=> $nota['descripcion'],
+			];
 		}
 
 		setlocale(LC_ALL, 'es_mx');
@@ -570,7 +597,9 @@ class Ventas extends SB_Controller {
 		$dataView['cp'] = $cotizacion['cp'];
 		$dataView['contacto'] = $cotizacion['contacto'];
 		$dataView['departamento'] = $cotizacion['depto_cliente'];
-		$dataView['nota'] = '';
+		$dataView['list-notas'] = $listNotas;
+		$dataView['total-opcionales'] = count($listOpcionales);
+		$dataView['total-notas'] = count($listNotas);
 
 
 		#GENERANDO EL PDF
@@ -823,7 +852,8 @@ class Ventas extends SB_Controller {
 				'id_metodo_pago',
 				'id_estatus_entrega',
 				'id_forma_pago',
-				'observaciones'
+				'observaciones',
+				'total'
 			]);
 			
 			$sqlData['concepto'] 	= strtoupper($this->input->post('concepto'));
@@ -908,7 +938,8 @@ class Ventas extends SB_Controller {
 				'id_metodo_pago',
 				'id_estatus_entrega',
 				'id_forma_pago',
-				'observaciones'
+				'observaciones',
+				'total'
 			]);
 
 			$sqlData['concepto'] 	= strtoupper($this->input->post('concepto'));
@@ -1037,6 +1068,14 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 36;
 		$sqlWhere['grupo'] = 7;
 		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//TIPO PEDIDO
+		$sqlWhere['id_categoria'] = 87;
+		$sqlWhere['grupo'] = 7;
+		$dataView['tipo-pedido'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//TIPO PRODUCTO
+		$sqlWhere['id_categoria'] = 88;
+		$sqlWhere['grupo'] = 7;
+		$dataView['tipo-producto'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
 		//VENDEDORES
 		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
 		//MONEDAS
@@ -1079,7 +1118,9 @@ class Ventas extends SB_Controller {
 				'notas_remision',
 				'tipo_cambio',
 				'id_condiciones',
-				'observaciones'
+				'observaciones',
+				'id_tipo_pedido',
+				'id_tipo_producto'
 			]);
 			
 			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
@@ -1168,6 +1209,14 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 36;
 		$sqlWhere['selected'] = $this->input->post('id_condiciones');
 		$dataView['condiciones'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//TIPO PEDIDO
+		$sqlWhere['id_categoria'] = 87;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_pedido');
+		$dataView['tipo-pedido'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//TIPO PRODUCTO
+		$sqlWhere['id_categoria'] = 88;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_producto');
+		$dataView['tipo-producto'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
 
 		$sqlWhere 	= $this->input->post(['id_pi_mostrador']);
 		$productos 	= $this->db_pi->get_pi_productos($sqlWhere);
@@ -1178,7 +1227,6 @@ class Ventas extends SB_Controller {
 		unset($dataView['folio'], $dataView['folio']);
 		unset($dataView['id_cliente'], $dataView['id_cliente']);
 		unset($dataView['id_estatus_pi'], $dataView['id_estatus_pi']);
-		unset($dataView['id_departamento'], $dataView['id_departamento']);
 		unset($dataView['id_departamento'], $dataView['id_departamento']);
 		unset($dataView['id_medio'], $dataView['id_medio']);
 		unset($dataView['id_oc'], $dataView['id_oc']);
@@ -1214,7 +1262,9 @@ class Ventas extends SB_Controller {
 				'notas_remision',
 				'tipo_cambio',
 				'id_condiciones',
-				'observaciones'
+				'observaciones',
+				'id_tipo_pedido',
+				'id_tipo_producto'
 			]);
 
 			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
@@ -1451,6 +1501,14 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 44;
 		$sqlWhere['grupo'] = 8;
 		$dataView['metodo-pago'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//TIPO DE PEDIDO
+		$sqlWhere['id_categoria'] = 89;
+		$sqlWhere['grupo'] = 8;
+		$dataView['tipo-pedido'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
+		//TIPO DE PRODUCTO
+		$sqlWhere['id_categoria'] = 90;
+		$sqlWhere['grupo'] = 8;
+		$dataView['tipo-producto'] = $this->db_vc->get_ventas_cotizacion_min($sqlWhere);
 		//VENDEDORES
 		$dataView['vendedores'] = $this->db_vendedor->get_vendedores_main();
 		//MONEDAS
@@ -1494,7 +1552,9 @@ class Ventas extends SB_Controller {
 				'id_forma_pago',
 				'id_metodo_pago',
 				'email_factura',
-				'observaciones'
+				'observaciones',
+				'id_tipo_pedido',
+				'id_tipo_producto'
 			]);
 			
 			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));
@@ -1595,6 +1655,14 @@ class Ventas extends SB_Controller {
 		$sqlWhere['id_categoria'] = 44;
 		$sqlWhere['selected'] = $this->input->post('id_metodo_pago');
 		$dataView['metodo-pago'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//TIPO PEDIDO
+		$sqlWhere['id_categoria'] = 89;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_pedido');
+		$dataView['tipo-pedido'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
+		//TIPO PRODUCTO
+		$sqlWhere['id_categoria'] = 90;
+		$sqlWhere['selected'] = $this->input->post('id_tipo_producto');
+		$dataView['tipo-producto'] = $this->db_vc->get_ventas_cotizacion_select($sqlWhere);
 
 		$sqlWhere 	= $this->input->post(['id_pi_factura']);
 		$productos 	= $this->db_pi->get_pi_factura_productos($sqlWhere);
@@ -1606,7 +1674,6 @@ class Ventas extends SB_Controller {
 		unset($dataView['folio'], $dataView['folio']);
 		unset($dataView['id_cliente'], $dataView['id_cliente']);
 		unset($dataView['id_estatus_pi'], $dataView['id_estatus_pi']);
-		unset($dataView['id_departamento'], $dataView['id_departamento']);
 		unset($dataView['id_departamento'], $dataView['id_departamento']);
 		unset($dataView['id_medio'], $dataView['id_medio']);
 		unset($dataView['id_oc'], $dataView['id_oc']);
@@ -1645,7 +1712,9 @@ class Ventas extends SB_Controller {
 				'id_forma_pago',
 				'id_metodo_pago',
 				'email_factura',
-				'observaciones'
+				'observaciones',
+				'id_tipo_pedido',
+				'id_tipo_producto'
 			]);
 			
 			$sqlData['contacto'] 	= strtoupper($this->input->post('contacto'));

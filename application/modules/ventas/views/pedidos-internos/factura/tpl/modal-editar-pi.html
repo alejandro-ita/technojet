@@ -217,6 +217,32 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             <div class="form-group mb-0">
+                                <label class="form-label" for="">Tipo de pedido</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_tipo_pedido" name="id_tipo_pedido" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione opcion</option>
+                                        {tipo-pedido}
+                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        {/tipo-pedido}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Tipo de producto</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_tipo_producto" name="id_tipo_producto" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione opcion</option>
+                                        {tipo-producto}
+                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        {/tipo-producto}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
                                 <label class="form-label" for="">Email para factura</label>
                                 <div class="form-control-wrap">
                                     <input type="email" class="form-control validate required" id="email_factura" name="email_factura" value="{email_factura}" required />

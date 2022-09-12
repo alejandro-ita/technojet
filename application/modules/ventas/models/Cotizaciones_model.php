@@ -94,6 +94,7 @@ class Cotizaciones_model extends SB_Model {
 			CT.id_estatus_entrega,
 			DATE(CT.fecha_elaboracion) as fecha_elaboracion,
 			CT.atencion,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.departamento) as depto,
 			CT.departamento,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_condiciones_pago) as condiciones_pago,
 			CT.id_condiciones_pago,
@@ -113,7 +114,9 @@ class Cotizaciones_model extends SB_Model {
 			CT.id_moneda,
 			MN.moneda,
 			CT.id_vendedor,
+			VE.departamento as depto_vendedor,
 			VE.vendedor,
+			VE.correo,
 			CT.creador_cotizacion,
 			DATE(CT.fecha_recepcion) as fecha_recepcion,", 
 			FALSE)

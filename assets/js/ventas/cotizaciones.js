@@ -60,7 +60,7 @@ jQuery(function($) {
 			{data: 'estatus_vigencia', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_elaboracion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'atencion', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'depto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'precio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'condiciones_pago', defaultContent: '', className: 'nk-tb-col'},
@@ -72,7 +72,7 @@ jQuery(function($) {
 			{data: 'fecha_recepcion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vendedor', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'depto_nuestro', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'depto_vendedor', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'correo', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'semana', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'mes', defaultContent: '', className: 'nk-tb-col'},
@@ -155,6 +155,7 @@ jQuery(function($) {
 					onOpenEnd: function() {
 						initSelect2('.modal select');
 						$('#modal-add-producto form').validate();
+						init_table_incluye_add();
 					},
 					onCloseEnd: function() {
 						$('#modal-add-producto').remove();
@@ -197,13 +198,13 @@ jQuery(function($) {
 		$('#modal-add-producto form #descripcion').val('');
 		$('#modal-add-producto form #descripcion').attr('title', '');
 		$.formAjaxSend({
-			 url: base_url('ventas/ventas/get_productos_por_tipo')
-			,data: {
-				 id_tipo_producto: $('#modal-add-producto form #id_tipo_producto').val()
-				,id_unidad_medida: $(this).val()
-			}
-			,blockScreen: false
-			,success: function(response) {
+			url: base_url('ventas/ventas/get_productos_por_tipo'),
+			data: {
+				id_tipo_producto: $('#modal-add-producto form #id_tipo_prod').val(),
+				id_unidad_medida: $(this).val()
+			},
+			blockScreen: false,
+			success: function(response) {
 				var $select = $('#modal-add-producto form #id_producto');
 				$.each(response, function(key, producto) {
 					var newOption = $(new Option(producto['no_parte'], producto['id_producto'], false, false));
@@ -223,8 +224,18 @@ jQuery(function($) {
 	.on('click', '#btn-add-producto-cotizacion', function(e) {
 		if ($('#modal-add-producto form').valid()) {
 			var opcional = 0;
+			var tableIncluye = IS.init.dataTable['tbl-incluye'];
+			var listIncluye = [];
+
 			if( $('#opcional').is(':checked') ) {
 				opcional = 1;
+			}
+
+			var rows = tableIncluye.rows().data();
+			if(rows.length) {
+				tableIncluye.$('tr').each(function(key, tr) {
+					listIncluye.push($(tr).data());
+				});
 			}
 
 			var productoData = $('#modal-add-producto form #id_producto option:selected').data();
@@ -237,7 +248,8 @@ jQuery(function($) {
 				precio_unitario: $('#modal-add-producto form #precio_unitario').val(),
 				descuento: $('#modal-add-producto form #descuento').val(),
 				total: $('#modal-add-producto form #total').val(),
-				incluye: $('#modal-add-producto form #incluye').val(),
+				//incluye: $('#modal-add-producto form #incluye').val(),
+				incluye: listIncluye,
 				comision_vendedor: $('#modal-add-producto form #comision_vendedor').val(),
 				opcional: opcional
 			});
@@ -459,13 +471,30 @@ jQuery(function($) {
     		url: base_url('ventas/ventas/createPdfCotizacion'),
     		data: tr.data(),
     		success: function(response) {
-				console.log(response)
     			if(response.success) {
 					gotoLink(base_url(response.file_path));
 
 				} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
     		}
     	});
+	})
+
+	.on('click', '#modal-add-producto #add-incluye', function(e){
+		
+		var data = $.extend({}, {
+			incluye: $('#modal-add-producto #incluir').val(),
+		});
+
+		var table 	= IS.init.dataTable['tbl-incluye'];
+		table.row.add(data).draw();
+		$('#modal-add-producto #incluir').val('');
+
+		e.preventDefault();
+	})
+
+	.on('click', '#modal-add-producto .btn-remove', function(e) {
+		var tr = $(this).closest('tr');
+		IS.init.dataTable['tbl-incluye'].row(tr).remove().draw();
 	})
 
 	//gotoLink(base_url(response.file_path));
@@ -497,8 +526,6 @@ jQuery(function($) {
 				{data: 'precio_unitario', defaultContent: '', className: 'nk-tb-col'},
 				{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
 				{data: 'total', defaultContent: '', className: 'nk-tb-col'},
-				{data: 'incluye', defaultContent: '', className: 'nk-tb-col'},
-				{data: 'comision_vendedor', defaultContent: '', className: 'nk-tb-col'},
 				{data: function() {
 					return `<button class="btn btn-dim btn-sm text-danger btn-remove py-0 px-1" title="${lang('general_quitar')}">
 					        	<em class="icon ni ni-trash"></em>
@@ -521,6 +548,29 @@ jQuery(function($) {
 			columns: [
 				{data: 'nota', defaultContent: '', className: 'nk-tb-col'},
 				{data: 'descripcion', defaultContent: '', className: 'nk-tb-col'},
+				{data: function() {
+					return `<button class="btn btn-dim btn-sm text-danger btn-remove py-0 px-1" title="${lang('general_quitar')}">
+					        	<em class="icon ni ni-trash"></em>
+					        </button>`;
+				}, defaultContent: '', className: 'nk-tb-col text-center'}
+			]
+		});
+	}
+
+	function init_table_incluye_add(data) {
+		var tblData = data || [];
+		initDataTable('.modal #tbl-incluye', {
+			pageLength: 8,
+			paging: false,
+			ordering: false,
+			info: false,
+			data: tblData,
+			createdRow: function(row, data, index) {
+				data.acciones = undefined;
+				$(row).addClass('nk-tb-item').data(data);
+			},
+			columns: [
+				{data: 'incluye', defaultContent: '', className: 'nk-tb-col'},
 				{data: function() {
 					return `<button class="btn btn-dim btn-sm text-danger btn-remove py-0 px-1" title="${lang('general_quitar')}">
 					        	<em class="icon ni ni-trash"></em>

@@ -57,6 +57,7 @@ jQuery(function($) {
 				_: 'folio', sort: 'id_pi_mostrador'
 		   	}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_pi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'remision', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_remision', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_remision', defaultContent: '', className: 'nk-tb-col'},
@@ -66,7 +67,6 @@ jQuery(function($) {
 			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'localidad', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_pedido', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'medio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
@@ -211,13 +211,13 @@ jQuery(function($) {
 		$('#modal-add-producto form #descripcion').val('');
 		$('#modal-add-producto form #descripcion').attr('title', '');
 		$.formAjaxSend({
-			 url: base_url('ventas/ventas/get_productos_por_tipo')
-			,data: {
-				 id_tipo_producto: $('#modal-add-producto form #id_tipo_producto').val()
-				,id_unidad_medida: $(this).val()
-			}
-			,blockScreen: false
-			,success: function(response) {
+			url: base_url('ventas/ventas/get_productos_por_tipo'),
+			data: {
+				id_tipo_producto: $('#modal-add-producto form #id_tipo_prod').val(),
+				id_unidad_medida: $(this).val()
+			},
+			blockScreen: false,
+			success: function(response) {
 				var $select = $('#modal-add-producto form #id_producto');
 				$.each(response, function(key, producto) {
 					var newOption = $(new Option(producto['no_parte'], producto['id_producto'], false, false));
@@ -298,6 +298,7 @@ jQuery(function($) {
 	.on('click', '#tbl-pi-mostrador button#open-modal-update', function(e) {
 		$(this).tooltip('hide');
 		var tr = $(this).closest('tr');
+		console.log(tr.data());
 		$.formAjaxSend({
 			url: base_url('ventas/ventas/get_modal_edit_pi'),
 			data: tr.data(),

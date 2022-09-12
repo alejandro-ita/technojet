@@ -163,4 +163,29 @@ jQuery(function($) {
 		});
 	})
 
+	.on('change', '#modal-nueva-factura #subtotal, #modal-editar-factura #subtotal', function(e){
+		
+		if($("#subtotal").val() != '' && $("#descuento").val() != '' ){
+			calculaTotal();
+		}
+		
+	})
+
+	.on('change', '#modal-nueva-factura #descuento, #modal-editar-factura #descuento', function(e){
+		
+		if($("#subtotal").val() != '' && $("#descuento").val() != '' ){
+			calculaTotal();
+		}
+	})
+
+	function calculaTotal(){
+		subtotal = $("#subtotal").val();
+		descuento = subtotal * $("#descuento").val() / 100;
+		iva = (subtotal - descuento) * 0.16;
+		total = (subtotal - descuento) * 1.16;
+		$("#iva").val(iva.toFixed(2));
+		$("#total").val(total.toFixed(2));
+		//console.log("sub: " + subtotal + " desc: " + descuento + " IVA: " + iva + " total: " + total);
+	}
+
 });

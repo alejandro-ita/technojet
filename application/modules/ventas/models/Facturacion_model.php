@@ -39,6 +39,7 @@ class Facturacion_model extends SB_Model {
 			CT.subtotal,
 			CT.descuento,
 			CT.iva,
+			CT.total,
 			CT.id_moneda,
 			MN.moneda,
 			CT.concepto,

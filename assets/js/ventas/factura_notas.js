@@ -61,6 +61,7 @@ jQuery(function($) {
 				_: 'folio', sort: 'id_nc_factura'
 		   	}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_pi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'nota_credito_cfdi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_nc_cfdi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_nc_cfdi', defaultContent: '', className: 'nk-tb-col'},
@@ -72,7 +73,6 @@ jQuery(function($) {
 			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'localidad', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fact_remision', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'medio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
@@ -83,6 +83,7 @@ jQuery(function($) {
 			{data: 'tipo_entrega', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'forma_envio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_envio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'remision', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'guia', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'req', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vale_salida', defaultContent: '', className: 'nk-tb-col'},
@@ -90,11 +91,11 @@ jQuery(function($) {
 			{data: 'sub', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'desc', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tot', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'motivo_credito', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas_internas', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas_facturacion', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'tipo_cambio', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'remision', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_cambio', defaultContent: '', className: 'nk-tb-col'},	
 			{data: 'condiciones', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'email_factura', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'semana', defaultContent: '', className: 'nk-tb-col'},
@@ -103,15 +104,17 @@ jQuery(function($) {
 			{data: 'solvente', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tinta', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'solucion_limpieza', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'cartucho', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'refacciones', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'servicio', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'poliza', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'paqueteria', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'viaticos', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'kit', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'otros', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cartucho_solvente', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'cartucho_tinta', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'ribbon', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'aditivos', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'etiqueta', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'equipo', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'equipo_renta', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'refaccion', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'servicio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'accesorio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'otro', defaultContent: '', className: 'nk-tb-col'},
 		]
 	});
 
@@ -215,7 +218,7 @@ jQuery(function($) {
 		$.formAjaxSend({
 			 url: base_url('ventas/ventas/get_productos_por_tipo')
 			,data: {
-				 id_tipo_producto: $('#modal-add-producto form #id_tipo_producto').val()
+				 id_tipo_producto: $('#modal-add-producto form #id_tipo_prod').val()
 				,id_unidad_medida: $(this).val()
 			}
 			,blockScreen: false

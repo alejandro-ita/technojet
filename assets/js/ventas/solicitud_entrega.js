@@ -56,12 +56,12 @@ jQuery(function($) {
 		   	}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_solicitud', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'forma_envio', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'forma_pago', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_envio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'pi_nc_oc', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'cliente', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'razon_social', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'lugar_entrega', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'direccion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'consignado', defaultContent: '', className: 'nk-tb-col'},
@@ -178,7 +178,7 @@ jQuery(function($) {
 		$.formAjaxSend({
 			 url: base_url('ventas/ventas/get_productos_por_tipo')
 			,data: {
-				 id_tipo_producto: $('#modal-add-producto form #id_tipo_producto').val()
+				 id_tipo_producto: $('#modal-add-producto form #id_tipo_prod').val()
 				,id_unidad_medida: $(this).val()
 			}
 			,blockScreen: false

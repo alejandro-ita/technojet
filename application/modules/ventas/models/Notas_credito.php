@@ -43,6 +43,7 @@ class Notas_credito extends SB_Model {
 			CT.id_forma_envio,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_tipo_producto) as tipo_producto,
 			CT.id_tipo_producto,
+			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_tipo_entrega) as tipo_entrega,
 			CT.id_tipo_entrega,
 			CT.incluir_iva,
 			CT.notas_internas,

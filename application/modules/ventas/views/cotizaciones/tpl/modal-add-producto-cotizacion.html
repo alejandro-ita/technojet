@@ -66,10 +66,30 @@
                     </div>
                     <div class="form-group mb-0">
                         <label class="form-label" for="id_tipo_producto">Incluye</label>
-                        <div class="form-control-wrap">
+                        <!--<div class="form-control-wrap">
                             <input type="text" class="form-control validate" id="incluye" name="incluye" />
+                            <textarea class="form-control no-resize" id="incluye" name="incluye" required ></textarea>
+                        </div>-->
+                        <div class="form-control-wrap">    
+                            <div class="input-group">        
+                                <input type="text" id="incluir" name="incluir" class="form-control" placeholder="Agregar">        
+                                    <div class="input-group-append">            
+                                        <button class="btn btn-icon btn-success" id="add-incluye"><em class="icon ni ni-plus-sm"></em></button>        
+                                    </div>    
+                            </div>
                         </div>
                     </div>
+                    <div class="form-group mb-0">
+                        <table class="table dataTable no-footer dtr-inline table-sm" id="tbl-incluye">
+                            <thead>
+                                <tr class="nk-tb-item nk-tb-head bg-dark">
+                                    <th class="nk-tb-col text-white">Incluye</th>
+                                    <th class="nk-tb-col content-colVis noVis all text-right text-white" data-orderable="false"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                                                
                     <div class="form-group mb-0">
                         <label class="form-label" for="id_tipo_producto">Producto opcional</label>
                         <div class="form-control-wrap">

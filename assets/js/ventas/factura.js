@@ -60,9 +60,9 @@ jQuery(function($) {
 				_: 'folio', sort: 'id_pi_factura'
 		   	}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_pi', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'num_fact', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'estatus_fact', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_fact', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'uso_cfdi', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'forma_pago', defaultContent: '', className: 'nk-tb-col'},
@@ -73,8 +73,7 @@ jQuery(function($) {
 			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'localidad', defaultContent: '', className: 'nk-tb-col'},			
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'fecha_pi', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'modo_pedido', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'tipo_pedido', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'medio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_servicio', defaultContent: '', className: 'nk-tb-col'},
@@ -93,11 +92,9 @@ jQuery(function($) {
 			{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'total', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'tipo_pedido', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas_internas', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas_facturacion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_cambio', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'remision', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'condiciones', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_pago', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_pago', defaultContent: '', className: 'nk-tb-col'},		
@@ -219,13 +216,13 @@ jQuery(function($) {
 		$('#modal-add-producto form #descripcion').val('');
 		$('#modal-add-producto form #descripcion').attr('title', '');
 		$.formAjaxSend({
-			 url: base_url('ventas/ventas/get_productos_por_tipo')
-			,data: {
-				 id_tipo_producto: $('#modal-add-producto form #id_tipo_producto').val()
-				,id_unidad_medida: $(this).val()
-			}
-			,blockScreen: false
-			,success: function(response) {
+			url: base_url('ventas/ventas/get_productos_por_tipo'),
+			data: {
+				id_tipo_producto: $('#modal-add-producto form #id_tipo_prod').val(),
+				id_unidad_medida: $(this).val()
+			},
+			blockScreen: false,
+			success: function(response) {
 				var $select = $('#modal-add-producto form #id_producto');
 				$.each(response, function(key, producto) {
 					var newOption = $(new Option(producto['no_parte'], producto['id_producto'], false, false));
@@ -306,6 +303,7 @@ jQuery(function($) {
 	.on('click', '#tbl-pi-mostrador button#open-modal-update', function(e) {
 		$(this).tooltip('hide');
 		var tr = $(this).closest('tr');
+		//console.log(tr.data());
 		$.formAjaxSend({
 			url: base_url('ventas/ventas/get_modal_edit_pi_factura'),
 			data: tr.data(),

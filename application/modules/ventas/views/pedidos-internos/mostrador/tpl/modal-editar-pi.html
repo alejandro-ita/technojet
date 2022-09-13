@@ -226,6 +226,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="form-label" for="">Tipo de entrega</label>
+                                <div class="form-control-wrap">
+                                    <select id="id_tipo_entrega" name="id_tipo_entrega" class="form-select init-select2 validate required">
+                                        <option value="" disabled selected>Seleccione opcion</option>
+                                        {tipo-entrega}
+                                        <option value="{id_ventas_cotizacion}" {if {selected}==1}selected{/if}>{c_cotizacion}</option>
+                                        {/tipo-entrega}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group mb-0">
                                 <label class="form-label" for="observaciones">Observaciones</label>

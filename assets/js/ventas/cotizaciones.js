@@ -41,7 +41,7 @@ jQuery(function($) {
 	initDataTable('#tbl-cotizaciones-consecutivo', {
 		
 		ajax: {
-			url: base_url('ventas/ventas/get_consecutivo'),
+			url: base_url('ventas/ventas/get_cotizaciones'),
 			data: function(dataFilter) {
 				//FILTROS
 	    		//dataFilter.id_categoria = $('select#id_categoria').val();

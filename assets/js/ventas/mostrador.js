@@ -72,7 +72,7 @@ jQuery(function($) {
 			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_servicio', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'poliza_servicio', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'comision', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'vendedor', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'oc', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_entrega', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'tipo_entrega', defaultContent: '', className: 'nk-tb-col'},

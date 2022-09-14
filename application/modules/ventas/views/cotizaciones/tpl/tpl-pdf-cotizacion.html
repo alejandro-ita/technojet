@@ -156,7 +156,6 @@
             <tr>
 				<td colspan="8" class="cantidadLetra">{cantidadLetra}</td>
 			</tr>
-            <tr><td colspan="8"><br/></td></tr>
 			{if {total-notas} > 0 }
 				<tr>
 					<td colspan="8" class="cantidadLetra">NOTAS</td>
@@ -168,10 +167,10 @@
 				{list-notas}
 				<tr>
 					<th>{nota}</th>
-					<th colspan="7">{descripcion}</th>
+					<th style="overflow: hidden; height: auto;" colspan="7">{descripcion}</th>
 				</tr>
 				{/list-notas}
-				<tr><td colspan="8"><br/></td></tr>
+				<tr><td colspan="8"><p>&nbsp;</p></td></tr>
 			{/if}
 
 			{if {total-opcionales} > 0 }
@@ -206,9 +205,8 @@
 					</tr>
 				{/if}
 				{/list-opcionales}
-				<tr><td class="bb-2" colspan="8">&nbsp;</td></tr>
+				<tr><td class="bb-2" colspan="8"><p>&nbsp;</p><p>&nbsp;</p></td></tr>
 			{/if}
-			<tr><td colspan="8" ><p>&nbsp;</p><p>&nbsp;</p></td></tr>
 			<tr>
 				<td colspan="8">
 					<h3 class="opcionales" >CONDICIONES COMERCIALES</h3>

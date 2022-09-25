@@ -66,20 +66,20 @@ class Cotizaciones_model extends SB_Model {
 			WEEKOFYEAR(CT.fecha_elaboracion) as semana,
 			YEAR(CT.fecha_elaboracion) as anio,
 			MONTH(CT.fecha_elaboracion) as mes,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 1) as solvente,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 2) as tinta,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 3) as solucion_limpieza,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 4) as cartucho_solvente,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 5) as cartucho_tinta,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 6) as ribbon,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 7) as kit_aditivos,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 8) as etiqueta,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 9) as equipo,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 10) as equipo_renta,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 11) as refaccion,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 12) as servicio,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 13) as accesorio,
-			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 14) as otro,", 
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 1 and CTP.activo = 1) as solvente,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 2 and CTP.activo = 1) as tinta,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 3 and CTP.activo = 1) as solucion_limpieza,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 4 and CTP.activo = 1) as cartucho_solvente,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 5 and CTP.activo = 1) as cartucho_tinta,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 6 and CTP.activo = 1) as ribbon,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 7 and CTP.activo = 1) as kit_aditivos,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 8 and CTP.activo = 1) as etiqueta,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 9 and CTP.activo = 1) as equipo,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 10 and CTP.activo = 1) as equipo_renta,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 11 and CTP.activo = 1) as refaccion,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 12 and CTP.activo = 1) as servicio,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 13 and CTP.activo = 1) as accesorio,
+			(SELECT SUM(total) FROM $tbl[cotizaciones_productos] as CTP INNER JOIN $tbl[productos] as PR ON CTP.id_producto = PR.id_producto WHERE CTP.id_cotizacion = CT.id_cotizacion and PR.id_tipo_producto = 14 and CTP.activo = 1) as otro,", 
 			FALSE)
 			->from("$tbl[cotizaciones] AS CT")
 			->join("$tbl[clientes] AS CL", 'CL.id_cliente = CT.id_cliente', 'INNER')
@@ -399,6 +399,23 @@ class Cotizaciones_model extends SB_Model {
 
 		return ($affectedRows ? $this->db->affected_rows() : TRUE);
 	}
+
+	public function delete_cotizacion_notas(array $data, array $where, $affectedRows=TRUE) {
+		$tbl = $this->tbl;
+
+		$data['id_usuario_update'] = $this->session->userdata('id_usuario');
+		$data['timestamp_update'] = timestamp();
+		$this->db->update($tbl['cotizaciones_notas'], $data, $where);
+
+		$error = $this->db->error();
+		if ($error['message']) {
+			log_message('error', $error['message']);
+			return FALSE;
+		}
+
+		return ($affectedRows ? $this->db->affected_rows() : TRUE);
+	}
+
 }
 
 /* End of file vales_productos_model.php */

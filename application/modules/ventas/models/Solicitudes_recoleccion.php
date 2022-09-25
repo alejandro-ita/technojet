@@ -24,7 +24,7 @@ class Solicitudes_recoleccion extends SB_Model {
 		
 		$request = $this->db->select("
 			CT.id_solicitud,
-			CONCAT('SE-', CT.id_solicitud) AS folio,
+			CONCAT('SR-', CT.id_solicitud) AS folio,
             DATE(CT.fecha_solicitud) as fecha_solicitud,
 			(SELECT c_cotizacion FROM $tbl[ventas_cotizaciones] as VC WHERE VC.id_ventas_cotizacion = CT.id_estatus) as estatus,
 			CT.id_estatus,

@@ -463,6 +463,9 @@ class Ventas extends SB_Controller {
 				}
 
 				$sqlData['notas'] = $dataView['list-notas'];
+			}else{
+				$sqlWhere = $this->input->post(['id_cotizacion']);
+				$update = $this->db_cotizaciones->delete_cotizacion_notas(['activo'=>0], $sqlWhere);
 			}
 
 			#GENERANDO EL PDF
@@ -1323,7 +1326,7 @@ class Ventas extends SB_Controller {
 					'descuento_pieza' 		=> $producto['descuento_pieza'],
 					'descuento_total' 		=> $producto['descuento_total'],
 					'total' 				=> $producto['total'],
-					'comision_vendedor' 	=> $producto['comision_vendedor'],
+					//'comision_vendedor' 	=> $producto['comision_vendedor'],
 					'id_usuario_insert' 	=> $this->session->userdata('id_usuario'),
 					'timestamp_insert' 	=> timestamp()
 				];
@@ -1802,7 +1805,7 @@ class Ventas extends SB_Controller {
 
 			if ($sqlDataBatch) {
 				//$insertBatch = $this->db_ar->insert_requisiciones_productos($sqlDataBatch);
-				$insertBatch = $this->db_pi->insert_pi_producto($sqlDataBatch);
+				$insertBatch = $this->db_pi->insert_pi_producto_factura($sqlDataBatch);
 				$insertBatch OR set_exception();
 			}
 
@@ -2340,7 +2343,7 @@ class Ventas extends SB_Controller {
 
 			if ($sqlDataBatch) {
 				//$insertBatch = $this->db_ar->insert_requisiciones_productos($sqlDataBatch);
-				$insertBatch = $this->db_nc->insert_pi_producto($sqlDataBatch);
+				$insertBatch = $this->db_nc->insert_pi_producto_factura($sqlDataBatch);
 				$insertBatch OR set_exception();
 			}
 

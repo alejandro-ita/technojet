@@ -280,6 +280,10 @@ jQuery(function($) {
 							    IS.init.dataTable['tbl-pi-mostrador'].columns.adjust().draw();
 							});
 
+							IS.init.dataTable['tbl-nc-mostrador-consecutivo'].ajax.reload(function(jsonData) {
+							    IS.init.dataTable['tbl-nc-mostrador-consecutivo'].columns.adjust().draw();
+							});
+
 						} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});
 					}
 				})
@@ -336,6 +340,10 @@ jQuery(function($) {
 							ISToast.fire({icon: response.icon, title: response.msg, customClass: response.icon});
 							IS.init.dataTable['tbl-pi-mostrador'].ajax.reload(function(jsonData) {
 							    IS.init.dataTable['tbl-pi-mostrador'].columns.adjust().draw();
+							});
+
+							IS.init.dataTable['tbl-nc-mostrador-consecutivo'].ajax.reload(function(jsonData) {
+							    IS.init.dataTable['tbl-nc-mostrador-consecutivo'].columns.adjust().draw();
 							});
 
 						} else ISswal.fire({icon: response.icon, title: response.title, text: response.msg, customClass: response.icon});

@@ -88,10 +88,64 @@ jQuery(function($) {
 			{data: 'guia', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'requisicion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vale_salida', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
+			{data: function(data){
+				if(data['estatus_pi'] === 'cancelado'){
+					return 'Cancelado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['tipo_entrega'] === 'parcial'){
+					return 'Entrega parcial'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['tipo_pago'] === 'parcial'){
+					return 'Pago parcial'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['estatus_fact'] === 'vigente' && data['fecha_entrega'] && data['fecha_pago']){
+					return 'Facturado/Entregado/Pagado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['estatus_fact'] === 'vigente' && data['fecha_entrega'] && !data['fecha_pago']){
+					return 'Facturado/Entregado/ No Pagado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['estatus_fact'] === 'vigente' && !data['fecha_entrega'] && !data['fecha_pago']){
+					return 'Facturado/No Entregado/ No Pagado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['estatus_fact'] === 'vigente' && !data['fecha_entrega'] && data['fecha_pago']){
+					return 'Facturado/No Entregado/Pagado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && !data['estatus_fact'] && !data['fecha_entrega'] && !data['fecha_pago']){
+					return 'No Facturado/No Entregado/No Pagado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && !data['estatus_fact'] && !data['fecha_entrega'] && data['fecha_pago']){
+					return 'No Facturado/No Entregado/Pagado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && !data['estatus_fact'] && data['fecha_entrega'] && !data['fecha_pago']){
+					return 'No Facturado/Entregado/No Pagado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && !data['estatus_fact'] && data['fecha_entrega'] && data['fecha_pago']){
+					return 'No Facturado/Entregado/Pagado'
+				}
+
+
+				return 'Sin estatus'
+
+			}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'subtotal', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'total', defaultContent: '', className: 'nk-tb-col'},
+			{data: function(data){
+				
+				var iva = (parseInt(data['subtotal']) - parseInt(data['descuento'])) * 0.16;
+				var total = (parseInt(data['subtotal']) - parseInt(data['descuento'])) + iva;
+				return total
+				
+			}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas_internas', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas_facturacion', defaultContent: '', className: 'nk-tb-col'},

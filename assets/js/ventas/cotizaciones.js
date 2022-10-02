@@ -70,7 +70,26 @@ jQuery(function($) {
 			{data: 'tipo_producto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'fecha_recepcion', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
+			{data: function(data){
+				if(data['estatus_vigencia'] === 'cancelado'){
+					return "Cancelada"
+				}
+
+				if(data['estatus_vigencia'] === 'vigente' && data['fecha_recepcion'] == '0000-00-00'){
+					return 'No entregada'
+				}
+
+				if(data['estatus_vigencia'] === 'vigente' && data['fecha_recepcion'] != '0000-00-00'){
+					return 'Entregada'
+				}
+
+				if(data['estatus_vigencia'] === 'vigente' && (!data['referencia_pi_mostrador'] || !data['referencia_pi_factura'] )){
+					return 'Entregada'
+				}
+
+				return 'Sin estatus';
+
+			}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vendedor', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'depto_vendedor', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'correo', defaultContent: '', className: 'nk-tb-col'},

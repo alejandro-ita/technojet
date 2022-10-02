@@ -19,6 +19,7 @@ jQuery(function($) {
 			{data: 'cp', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'contacto', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'departamento', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'localidad', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'acciones', defaultContent: '', className: 'nk-tb-col nk-tb-col-tools text-right'}
 		]
 	});

@@ -82,12 +82,61 @@ jQuery(function($) {
 			{data: 'guia', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'requisicion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vale_salida', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
+			{data: function(data){
+				
+				if(data['estatus_pi'] === 'cancelado'){
+					return 'Cancelado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['tipo_entrega'] === 'parcial'){
+					return 'Entrega parcial'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['tipo_pago'] === 'parcial'){
+					return 'Pago parcial'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['fecha_entrega'] && data['fecha_pago']){
+					return 'Entregado/Pagado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && !data['fecha_entrega'] && data['fecha_pago']){
+					return 'No Entregado/Pagado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && !data['fecha_entrega'] && !data['fecha_pago']){
+					return 'No Entregado/No Pagado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['fecha_entrega'] && !data['fecha_pago']){
+					return 'Entregado/No Pagado'
+				}
+
+				return 'Sin estatus'
+
+			}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'incluir_iva', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'subtotal', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'iva', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'total', defaultContent: '', className: 'nk-tb-col'},
+			{data: function(data){
+				if(data['incluir_iva'] === 'SI'){
+					var iva = (parseInt(data['subtotal']) - parseInt(data['descuento'])) * 0.16;
+					return iva
+				}
+
+				return 'Sin IVA'
+
+			}, defaultContent: '', className: 'nk-tb-col'},
+			{data: function(data){
+				if(data['incluir_iva'] === 'SI'){
+					var iva = (parseInt(data['subtotal']) - parseInt(data['descuento'])) * 0.16;
+					var total = (parseInt(data['subtotal']) - parseInt(data['descuento'])) + iva;
+					return total
+				}
+
+				return (parseInt(data['subtotal']) - parseInt(data['descuento']));
+
+			}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas_internas', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas_remision', defaultContent: '', className: 'nk-tb-col'},

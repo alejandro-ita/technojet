@@ -41,7 +41,7 @@ class Clientes extends SB_Controller {
 			$exist = $this->db_cliente->get_clientes_main($sqlWhere, FALSE);
 
 			if (!$exist) {
-				$sqlData = $this->input->post(['cliente', 'razon_social', 'rfc', 'direccion', 'municipio', 'estado', 'telefono', 'cp', 'contacto', 'departamento']);
+				$sqlData = $this->input->post(['cliente', 'razon_social', 'rfc', 'direccion', 'municipio', 'estado', 'telefono', 'cp', 'contacto', 'departamento', 'localidad']);
 				$insert = $this->db_cliente->insert_cliente($sqlData);
 				$insert OR set_exception();
 				$actividad 		= "ha creado un nuevo cliente";
@@ -80,7 +80,7 @@ class Clientes extends SB_Controller {
 
 			if (!$exist) {
 				$sqlWhere = $this->input->post(['id_cliente']);
-				$sqlData = $this->input->post(['cliente', 'razon_social', 'rfc', 'direccion', 'municipio', 'estado', 'telefono', 'cp', 'contacto', 'departamento']);
+				$sqlData = $this->input->post(['cliente', 'razon_social', 'rfc', 'direccion', 'municipio', 'estado', 'telefono', 'cp', 'contacto', 'departamento', 'localidad']);
 				$update = $this->db_cliente->update_cliente($sqlData, $sqlWhere);
 				$update OR set_exception();
 				$actividad 		= "ha editado un cliente ";

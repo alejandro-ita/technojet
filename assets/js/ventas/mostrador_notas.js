@@ -77,7 +77,27 @@ jQuery(function($) {
 			{data: 'guia', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'requisicion', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vale_salida', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
+			{data: function(data){
+
+				if(data['estatus_pi'] === 'cancelado'){
+					return 'Cancelado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['tipo_entrega'] === 'parcial'){
+					return 'Entrega parcial'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['fecha_entrega'] ){
+					return 'Entregado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && !data['fecha_entrega']){
+					return 'No Entregado'
+				}
+
+				return 'Sin estatus'
+
+			}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'subtotal', defaultContent: '', className: 'nk-tb-col'},			
 			{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'total', defaultContent: '', className: 'nk-tb-col'},

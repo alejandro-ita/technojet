@@ -87,10 +87,42 @@ jQuery(function($) {
 			{data: 'guia', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'req', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'vale_salida', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'estatus', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'sub', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'desc', defaultContent: '', className: 'nk-tb-col'},
-			{data: 'tot', defaultContent: '', className: 'nk-tb-col'},
+			{data: function(data){
+				if(data['estatus_pi'] === 'cancelado'){
+					return 'Cancelado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['tipo_entrega'] === 'parcial'){
+					return 'Entrega parcial'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['estatus_nc_cfdi'] === 'vigente' && data['fecha_entrega']){
+					return 'Facturado/Entregado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && data['estatus_nc_cfdi'] === 'vigente' && !data['fecha_entrega']){
+					return 'Facturado/No Entregado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && !data['nota_credito_cfdi'] && data['fecha_entrega']){
+					return 'No Facturado/Entregado'
+				}
+
+				if(data['estatus_pi'] === 'vigente' && !data['nota_credito_cfdi'] && !data['fecha_entrega']){
+					return 'No Facturado/No Entregado'
+				}
+
+				return 'Sin estatus'
+
+			}, defaultContent: '', className: 'nk-tb-col'},
+			{data: 'subtotal', defaultContent: '', className: 'nk-tb-col'},
+			{data: 'descuento', defaultContent: '', className: 'nk-tb-col'},
+			{data: function(data){
+				var iva = (data['subtotal'] - data['descuento']) * 0.16;
+				var total = (data['subtotal'] - data['descuento']) + iva;
+				return total;
+
+			}, defaultContent: '', className: 'nk-tb-col'},
 			{data: 'moneda', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'motivo_credito', defaultContent: '', className: 'nk-tb-col'},
 			{data: 'notas_internas', defaultContent: '', className: 'nk-tb-col'},
